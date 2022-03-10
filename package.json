@@ -1,0 +1,76 @@
+{
+  "name": "@frsource/light-scrollbar",
+  "description": "Minimalistic plugin to create custom scrollbars! 💪",
+  "source": "./src/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "unpkg": "./dist/index.umd.js",
+  "types": "./dist/index.d.ts",
+  "sass": "src/index.scss",
+  "styles": "dist/index.css",
+  "scripts": {
+    "start": "yarn clean && microbundle --no-compress --format umd watch",
+    "builds": "yarn clean && yarn minify-data && microbundle -i src/index_tmp.ts --compress && yarn clean:tmp",
+    "build": "yarn clean && microbundle --no-compress && yarn clean:tmp",
+    "lint": "eslint '**/*.ts' --ignore-pattern '**/*.d.ts'",
+    "lint:fix": "yarn lint --fix",
+    "lint:ci": "yarn lint --max-warnings 0",
+    "prettify": "prettier --write src",
+    "prettify:ci": "prettier --check src",
+    "release": "semantic-release",
+    "release:ci": "yarn release --yes",
+    "release:test": "yarn release --no-git-tag-version --no-push --skip-npm",
+    "clean": "rimraf dist/**/*",
+    "minify-data": "node scripts/replace.js",
+    "clean:tmp": "rimraf src/index_tmp.ts"
+  },
+  "homepage": "https://github.com/FRSOURCE/light-scrollbar/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FRSOURCE/light-scrollbar.git"
+  },
+  "keywords": [
+    "custom scrollbar",
+    "light scrollbar",
+    "lightweight",
+    "simple",
+    "every browser"
+  ],
+  "bugs": {
+    "url": "https://github.com/FRSOURCE/light-scrollbar/issues"
+  },
+  "author": "Szymon Dziewoński <szymondziewonski@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@frsource/frs-replace": "^3.0.3",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.2",
+    "@semantic-release/npm": "^9.0.0",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "incstr": "^1.2.3",
+    "microbundle": "^0.14.2",
+    "prettier": "^2.5.1",
+    "sass": "^1.49.9",
+    "semantic-release": "^19.0.2",
+    "typescript": "^4.5.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@frsource/frs-hide-scrollbar": "^2.0.7"
+  }
+}
