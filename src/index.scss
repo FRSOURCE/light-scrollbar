@@ -1,0 +1,76 @@
+$light-scrollbar-classname: 'light-scrollbar' !default;
+$frs-hide-scroll-classname: $light-scrollbar-classname !default;
+$disable-default-theme: false;
+
+@import '../node_modules/@frsource/frs-hide-scrollbar/src/index.scss';
+
+
+.#{$light-scrollbar-classname} {
+    max-height: 100%;
+
+    &-wrapper{
+        position: relative;
+        scroll-behavior: smooth;
+        min-width: 0;
+        max-height: 100%;
+
+        &::after,
+        &::before {
+            content: '';
+            position: absolute;
+            @if($disable-default-theme != true) {
+                background-color: #CBD5E1;
+                border-radius: 12px;
+            }
+        }
+
+
+        &::after {
+            top: 0;
+            right: 0;
+            height: var(--light-scrollbar-y-height);
+            width: var(--light-scrollbar-y-width);
+            transform: translate3d(0, var(--light-scrollbar-y-top), 0);
+        }
+
+        &::before{
+            left: 0;
+            bottom: 0;
+            height: var(--light-scrollbar-x-height);
+            width: var(--light-scrollbar-x-width);
+            transform: translate3d(var(--light-scrollbar-x-left), 0, 0);
+        }
+
+        &.no-smooth{
+            scroll-behavior: auto;
+        }
+
+        &.hover-x,
+        &.hover-y {
+            user-select: none;
+
+            &::after,
+            &::before{
+                cursor: pointer;
+            }
+        }
+
+        @if($disable-default-theme != true) {
+            &.hover-y::after {
+                background-color: #94A3B8;
+            }
+
+            &.hover-x::before {
+                background-color: #94A3B8;
+            }
+
+            &.active-y::after {
+                background-color: #94A3B8;
+            }
+
+            &.active-x::before {
+                background-color: #94A3B8;
+            }
+        }
+    }
+}
