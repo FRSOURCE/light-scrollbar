@@ -21,12 +21,13 @@ function wrap(el: HTMLElement, wrapper: HTMLElement) {
 const unwrap = (el: Element) => {
   el.replaceWith(el.children[0]);
 };
+const defaultName = "light-scrollbar";
 export const attach = (
   containerElement: HTMLElement,
   config: config = {
     scrollBarYWidth: 6,
     scrollBarXHeight: 6,
-    className: "light-scrollbar",
+    className: defaultName,
     enableFocusPrevent: true,
   }
 ) => {
@@ -36,11 +37,11 @@ export const attach = (
   wrapper.classList.add(`${config.className}-wrapper`);
   wrap(containerElement, wrapper);
   wrapper.style.setProperty(
-    "--light-scrollbar-y-width",
+    `--${defaultName}-y-width`,
     `${config.scrollBarYWidth}px`
   );
   wrapper.style.setProperty(
-    "--light-scrollbar-x-height",
+    `--${defaultName}-x-height`,
     `${config.scrollBarXHeight}px`
   );
   wrapper.setAttribute("tabindex", "-1");
@@ -169,7 +170,7 @@ export const attach = (
 
       const perc = data.scrollbar[dir].long.percent;
       wrapper.style.setProperty(
-        `--light-scrollbar-${dir}-${long}`,
+        `--${defaultName}-${dir}-${long}`,
         `${perc >= 100 ? 0 : perc}%`
       );
     });
@@ -202,7 +203,7 @@ export const attach = (
 
       const isTop = dir === "y" ? "top" : "left";
       wrapper.style.setProperty(
-        `--light-scrollbar-${dir}-${isTop}`,
+        `--${defaultName}-${dir}-${isTop}`,
         `${data.scrollbar[dir].gap.toContainer.pixel}px`
       );
     });
