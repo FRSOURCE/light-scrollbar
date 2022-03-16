@@ -22,6 +22,9 @@ const unwrap = (el: Element) => {
   el.replaceWith(el.children[0]);
 };
 const defaultName = "light-scrollbar";
+const doActionForBothAxis = (callback: (dir: "x" | "y")=>void) => {
+  (["x", "y"] as ("x" | "y")[]).forEach(callback);
+}
 export const attach = (
   containerElement: HTMLElement,
   config: config = {
@@ -36,14 +39,14 @@ export const attach = (
   containerElement.classList.add(config.className);
   wrapper.classList.add(`${config.className}-wrapper`);
   wrap(containerElement, wrapper);
-  wrapper.style.setProperty(
-    `--${defaultName}-y-width`,
-    `${config.scrollBarYWidth}px`
-  );
-  wrapper.style.setProperty(
-    `--${defaultName}-x-height`,
-    `${config.scrollBarXHeight}px`
-  );
+  doActionForBothAxis((dir) => {
+    const axisDimension = dir === 'y' ? 'scrollBarYWidth' : 'scrollBarXHeight';
+    wrapper.style.setProperty(
+      `--${defaultName}-${dir}-width`,
+      `${config[axisDimension]}px`
+    );
+  });
+
   wrapper.setAttribute("tabindex", "-1");
 
   let containerRect = containerElement.getBoundingClientRect();
