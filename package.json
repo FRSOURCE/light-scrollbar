@@ -11,7 +11,7 @@
   "scripts": {
     "start": "yarn clean && microbundle --no-compress --format umd watch",
     "builds": "yarn clean && yarn minify-data && microbundle -i src/index_tmp.ts --compress && yarn clean:tmp",
-    "build": "yarn clean && microbundle --no-compress && yarn clean:tmp",
+    "build": "yarn clean && microbundle --compress && yarn clean:tmp",
     "lint": "eslint '**/*.ts' --ignore-pattern '**/*.d.ts'",
     "lint:fix": "yarn lint --fix",
     "lint:ci": "yarn lint --max-warnings 0",

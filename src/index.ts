@@ -11,6 +11,7 @@ type config = {
   scrollBarYWidth: number;
   scrollBarXHeight: number;
   className: string;
+  enableFocusPrevent: boolean;
 };
 const addEventListener = "addEventListener";
 function wrap(el: HTMLElement, wrapper: HTMLElement) {
@@ -23,6 +24,7 @@ export const attach = (
     scrollBarYWidth: 6,
     scrollBarXHeight: 6,
     className: "light-scrollbar",
+    enableFocusPrevent: true
   }
 ) => {
   if (!containerElement) return;
@@ -165,7 +167,7 @@ export const attach = (
       const perc = data.scrollbar[dir].long.percent;
       wrapper.style.setProperty(
         `--light-scrollbar-${dir}-${long}`,
-        `${perc === 100 ? 0 : perc}%`
+        `${perc >= 100 ? 0 : perc}%`
       );
     });
   };
@@ -319,13 +321,15 @@ export const attach = (
   };
   wrapper.addEventListener("click", clickHandler);
 
-  wrapper.addEventListener("focus", (e) => {
+  const focusHandler = (e: Event) => {
+    if(!config.enableFocusPrevent) return;
     if (data.rail.x.isHovered || data.rail.y.isHovered) {
       e.preventDefault();
       e.stopImmediatePropagation();
       e.stopPropagation();
     }
-  });
+  };
+  wrapper.addEventListener("focus", focusHandler);
 
   const scrollHandler = (e: Event) => calculateTopOfScrollbar(e);
   containerElement.addEventListener("scroll", scrollHandler, { passive: true });
@@ -348,6 +352,7 @@ export const attach = (
       "mousemove",
       containerMouseMoveHandler
     );
+    wrapper.removeEventListener('focus', focusHandler);
     window.removeEventListener("mousedown", mouseDownHandler);
     window.removeEventListener("mouseup", mouseUpHandler);
     window.removeEventListener("mousemove", mouseMoveHandler);

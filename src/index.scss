@@ -5,13 +5,14 @@ $disable-default-theme: false;
 @import "../node_modules/@frsource/frs-hide-scrollbar/src/index.scss";
 
 .#{$light-scrollbar-classname} {
-  max-height: 100%;
+  max-height: inherit;
 
   &-wrapper {
     position: relative;
     scroll-behavior: smooth;
     min-width: 0;
-    max-height: 100%;
+    max-height: inherit;
+
 
     &::after,
     &::before {
