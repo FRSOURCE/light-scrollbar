@@ -18,13 +18,16 @@ function wrap(el: HTMLElement, wrapper: HTMLElement) {
   el?.parentNode?.insertBefore(wrapper, el);
   wrapper.appendChild(el);
 }
+const unwrap = (el: Element) => {
+  el.replaceWith(el.children[0]);
+};
 export const attach = (
   containerElement: HTMLElement,
   config: config = {
     scrollBarYWidth: 6,
     scrollBarXHeight: 6,
     className: "light-scrollbar",
-    enableFocusPrevent: true
+    enableFocusPrevent: true,
   }
 ) => {
   if (!containerElement) return;
@@ -322,7 +325,7 @@ export const attach = (
   wrapper.addEventListener("click", clickHandler);
 
   const focusHandler = (e: Event) => {
-    if(!config.enableFocusPrevent) return;
+    if (!config.enableFocusPrevent) return;
     if (data.rail.x.isHovered || data.rail.y.isHovered) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -352,10 +355,12 @@ export const attach = (
       "mousemove",
       containerMouseMoveHandler
     );
-    wrapper.removeEventListener('focus', focusHandler);
+    wrapper.removeEventListener("focus", focusHandler);
     window.removeEventListener("mousedown", mouseDownHandler);
     window.removeEventListener("mouseup", mouseUpHandler);
     window.removeEventListener("mousemove", mouseMoveHandler);
+    unwrap(wrapper);
+    containerElement.classList.remove(config.className);
   };
 
   return {

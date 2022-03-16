@@ -8,10 +8,12 @@ module.exports = {
         'eslint:recommended',
         'plugin:eslint-comments/recommended',
         'plugin:@typescript-eslint/recommended',
+        'prettier'
     ],
     plugins: [
         '@typescript-eslint',
-    ],
+        'eslint-comments'
+      ],
     parserOptions: {
         parser: '@typescript-eslint/parser',
         ecmaVersion: 2020,
