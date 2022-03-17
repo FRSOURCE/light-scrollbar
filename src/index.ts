@@ -6,12 +6,16 @@ import "./index.scss";
 // TODO: min height should be fixed e.g
 // TODO: sub pixel diff on min 10% scrollbar
 // TODO: when  paginated list recalculate grab
+// TODO: increase bar once hovered
+// TODO: wrapper inside/outside their own wrapper element
+// TODO: offset to edges
+// TODO: show only on hover
 
 type config = {
-  scrollBarYWidth: number;
-  scrollBarXHeight: number;
-  className: string;
-  enableFocusPrevent: boolean;
+  scrollBarYWidth?: number;
+  scrollBarXHeight?: number;
+  className?: string;
+  enableFocusPrevent?: boolean;
 };
 const addEventListener = "addEventListener";
 function wrap(el: HTMLElement, wrapper: HTMLElement) {
@@ -22,28 +26,31 @@ const unwrap = (el: Element) => {
   el.replaceWith(el.children[0]);
 };
 const defaultName = "light-scrollbar";
-const doActionForBothAxis = (callback: (dir: "x" | "y")=>void) => {
+const doActionForBothAxis = (callback: (dir: "x" | "y") => void) => {
   (["x", "y"] as ("x" | "y")[]).forEach(callback);
-}
-export const attach = (
-  containerElement: HTMLElement,
-  config: config = {
-    scrollBarYWidth: 6,
-    scrollBarXHeight: 6,
-    className: defaultName,
-    enableFocusPrevent: true,
-  }
-) => {
+};
+const isDirY = (dir: "x" | "y") => dir === "y";
+
+const defaultConfig = {
+  scrollBarYWidth: 6,
+  scrollBarXHeight: 6,
+  className: defaultName,
+  enableFocusPrevent: true,
+};
+export const attach = (containerElement: HTMLElement, config: config = {}) => {
   if (!containerElement) return;
+  const internalConfig = { ...defaultConfig, ...config };
   const wrapper = document.createElement("div");
-  containerElement.classList.add(config.className);
-  wrapper.classList.add(`${config.className}-wrapper`);
+  containerElement.classList.add(internalConfig.className);
+  wrapper.classList.add(`${internalConfig.className}-wrapper`);
   wrap(containerElement, wrapper);
+
   doActionForBothAxis((dir) => {
-    const axisDimension = dir === 'y' ? 'scrollBarYWidth' : 'scrollBarXHeight';
+    const axisDimension = isDirY(dir) ? "scrollBarYWidth" : "scrollBarXHeight";
+    const widthOrHeight = isDirY(dir) ? "width" : "height";
     wrapper.style.setProperty(
-      `--${defaultName}-${dir}-width`,
-      `${config[axisDimension]}px`
+      `--${defaultName}-${dir}-${widthOrHeight}`,
+      `${internalConfig[axisDimension]}px`
     );
   });
 
@@ -136,7 +143,8 @@ export const attach = (
       data.scrollbar[dir].isHovered =
         data.mouse[reverse] <= data.container[widthOrHeight] &&
         data.mouse[reverse] >=
-          data.container[widthOrHeight] - config[scrollbarWidthOrHeight] &&
+          data.container[widthOrHeight] -
+            internalConfig[scrollbarWidthOrHeight] &&
         data.mouse[dir] >= data.scrollbar[dir].gap.toContainer.pixel &&
         data.mouse[dir] <=
           data.scrollbar[dir].gap.toContainer.pixel +
@@ -308,7 +316,8 @@ export const attach = (
       data.rail[dir].isHovered =
         data.mouse[reverse] <= data.container[widthOrHeight] &&
         data.mouse[reverse] >=
-          data.container[widthOrHeight] - config[scrollbarWidthOrHeight] &&
+          data.container[widthOrHeight] -
+            internalConfig[scrollbarWidthOrHeight] &&
         data.mouse[dir] < data.container[percWidthOrHeight] &&
         data.mouse[dir] > 0;
     });
@@ -329,7 +338,7 @@ export const attach = (
   wrapper.addEventListener("click", clickHandler);
 
   const focusHandler = (e: Event) => {
-    if (!config.enableFocusPrevent) return;
+    if (!internalConfig.enableFocusPrevent) return;
     if (data.rail.x.isHovered || data.rail.y.isHovered) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -364,7 +373,7 @@ export const attach = (
     window.removeEventListener("mouseup", mouseUpHandler);
     window.removeEventListener("mousemove", mouseMoveHandler);
     unwrap(wrapper);
-    containerElement.classList.remove(config.className);
+    containerElement.classList.remove(internalConfig.className);
   };
 
   return {
