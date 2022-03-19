@@ -10,8 +10,8 @@
   "styles": "dist/index.css",
   "scripts": {
     "start": "yarn clean && microbundle --no-compress --format umd watch",
-    "builds": "yarn clean && yarn minify-data && microbundle -i src/index_tmp.ts --compress && yarn clean:tmp",
-    "build": "yarn clean && microbundle --compress && yarn clean:tmp",
+    "build": "yarn clean && yarn minify-data && microbundle --compress && yarn copy-tmp-to-src && yarn clean:tmp && yarn restore-index",
+    "build-backup": "yarn clean && microbundle --compress && yarn clean:tmp",
     "lint": "eslint '**/*.ts' --ignore-pattern '**/*.d.ts'",
     "lint:fix": "yarn lint --fix",
     "lint:ci": "yarn lint --max-warnings 0",
@@ -22,7 +22,9 @@
     "release:test": "yarn release --no-git-tag-version --no-push --skip-npm",
     "clean": "rimraf dist/**/*",
     "minify-data": "node scripts/replace.js",
-    "clean:tmp": "rimraf src/index_tmp.ts"
+    "copy-tmp-to-src": "cpy index_tmp.ts src",
+    "restore-index": "renamer --find index_tmp.ts --replace index.ts 'src/**'",
+    "clean:tmp": "rimraf src/index.ts && rimraf index_tmp.ts"
   },
   "homepage": "https://github.com/FRSOURCE/light-scrollbar/",
   "repository": {
@@ -51,12 +53,14 @@
     "@semantic-release/release-notes-generator": "^10.0.3",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
+    "cpy-cli": "^4.1.0",
     "eslint": "^8.9.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "incstr": "^1.2.3",
     "microbundle": "^0.14.2",
     "prettier": "^2.5.1",
+    "renamer": "^4.0.0",
     "sass": "^1.49.9",
     "semantic-release": "^19.0.2",
     "typescript": "^4.5.5"

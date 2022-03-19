@@ -4,17 +4,14 @@ const nextClassName = require('incstr').idGenerator({
     alphabet: 'abcdefghijklmnopqrstuvwz',
 });
 
-const newFileName = 'src/index_tmp.ts';
-fs.copyFile('src/index.ts', newFileName, (err) => {
+const newFilePath = 'index_tmp.ts';
+const originalFilePath = 'src/index.ts';
+fs.copyFile(originalFilePath, newFilePath, (err) => {
     if (err) throw err;
     console.log('File copied');
 
+    const originalFileContent = fs.readFileSync(originalFilePath, { encoding: 'utf8' });
 
-    const data = fs.readFileSync(newFileName, { encoding: 'utf8' });
-    const reg = new RegExp(/data\s=\s\{([\s\S]*?)\};/, 'gm');
-    const regexResult = reg.exec(data)[1];
-    const dataObject = eval(`({${regexResult}})`);
-    const tempRegexResult = regexResult.replace(/\n/g, " ").replace(/\s/g, '');
     const keyNames = [];
     const getKeyNames = (key, object) => {
         for (key in object) {
@@ -25,41 +22,40 @@ fs.copyFile('src/index.ts', newFileName, (err) => {
         }
     }
 
+    const attachReg = new RegExp(/replace-this-start([\s\S]*?)replace-this-end/, 'gm');
+    const attachMethodContent = attachReg.exec(originalFileContent)[0];
+
+    const reg = new RegExp(/data\s=\s\{([\s\S]*?)\};/, 'gm');
+    const regexResult = reg.exec(attachMethodContent)[1];
+    const dataObject = eval(`({${regexResult}})`);
+    const tempRegexResultDataObject = regexResult.replace(/\n/g, " ").replace(/\s/g, '');
+
     getKeyNames('', dataObject);
-    let tmp = tempRegexResult;
+    let tmpDataObject = tempRegexResultDataObject;
+    let tmpMainMethod = attachMethodContent;
 
     const replaceAll = (replace) => {
-        if (replace != 'x' && replace != 'y') {
+        if (replace != 'x' && replace != 'y' && replace != 'height' && replace != 'width') {
             const replaceTo = nextClassName();
-
-            // tmp = FRSReplace.sync({
-            //     content: tmp,
-            //     needle: `${replace}:`,
-            //     replacement: `${replaceTo}:`,
-            //     strategy: 'flatten'
-            // })
-            FRSReplace.sync({
-                input: newFileName,
-                needle: `.${replace}`,
-                replacement: `.${replaceTo}`,
-                output: newFileName
-            })
-            FRSReplace.sync({
-                input: newFileName,
-                needle: `'${replace}'`,
-                replacement: `'${replaceTo}'`,
-                output: newFileName
-            })
-            tmp = tmp.replaceAll(`${replace}:`, `${replaceTo}:`)
+            tmpMainMethod = tmpMainMethod.replaceAll(`.${replace}`, `.${replaceTo}`);
+            tmpMainMethod = tmpMainMethod.replaceAll(`'${replace}'`, `'${replaceTo}'`);
+            tmpDataObject = tmpDataObject.replaceAll(`${replace}:`, `${replaceTo}:`)
         };
     }
     keyNames.forEach(keyName => replaceAll(keyName));
+    FRSReplace.sync({
+        input: originalFilePath,
+        needle: attachMethodContent,
+        replacement: tmpMainMethod,
+        output: originalFilePath
+    })
 
     FRSReplace.sync({
-        input: newFileName,
+        input: originalFilePath,
         needle: regexResult,
-        replacement: tmp,
-        output: newFileName
+        replacement: tmpDataObject,
+        output: originalFilePath
     })
-    console.log('replaced')
+
+    console.log('All Replaced')
 });

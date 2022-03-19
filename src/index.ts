@@ -3,7 +3,7 @@ import "./index.scss";
 // TODO: increase dragging area for y, e.g 5px to left
 // TODO: intersection of x/y scrollbars in corner should be excluded
 // TODO: add rail
-// TODO: min height should be fixed e.g
+// TODO: min height should be fixed e.g 30px? maybe prop and possibility to use px and %?
 // TODO: sub pixel diff on min 10% scrollbar
 // TODO: when  paginated list recalculate grab
 // TODO: increase bar once hovered
@@ -11,12 +11,23 @@ import "./index.scss";
 // TODO: offset to edges
 // TODO: show only on hover
 
-type config = {
-  scrollBarYWidth?: number;
-  scrollBarXHeight?: number;
+export type config = {
+  bar?: {
+    y: {
+      width: number;
+      offset: [number, number];
+    };
+    x: {
+      height: number;
+      offset: [number, number];
+    };
+  };
   className?: string;
   enableFocusPrevent?: boolean;
 };
+type Axis = "x" | "y";
+type Dimension = "height" | "width";
+
 const addEventListener = "addEventListener";
 function wrap(el: HTMLElement, wrapper: HTMLElement) {
   el?.parentNode?.insertBefore(wrapper, el);
@@ -26,35 +37,87 @@ const unwrap = (el: Element) => {
   el.replaceWith(el.children[0]);
 };
 const defaultName = "light-scrollbar";
-const doActionForBothAxis = (callback: (dir: "x" | "y") => void) => {
-  (["x", "y"] as ("x" | "y")[]).forEach(callback);
+
+//UTILS
+const isDirY = (dir: Axis) => dir === "y";
+const reverseDir = (dir: Axis) => (isDirY(dir) ? "x" : "y");
+const isHeightOrWidth = (is: boolean) => (is ? "height" : "width");
+const isLeftOrTop = (dir: Axis) => isDirY(dir) ? "scrollTop" : "scrollLeft";
+const dimensionLong = (dir: Axis) => isHeightOrWidth(isDirY(dir));
+//when direction 'y', dimension long is 'height'
+const dimensionShort = (dir: Axis) => isHeightOrWidth(!isDirY(dir));
+//when direction 'y', dimension short is 'width'
+const scrollbarShort = (dir: Axis, internalConfig: Required<config>) =>
+  isDirY(dir) ? internalConfig.bar.y.width : internalConfig.bar.x.height;
+
+type DoActionForBothAxis = {
+  dir: Axis;
+  isDirY: boolean;
+  isLeftOrTop: 'scrollTop' | 'scrollLeft',
+  reverseDir: Axis;
+  dimensionLong: Dimension;
+  dimensionShort: Dimension;
+  scrollbarShort: number;
 };
-const isDirY = (dir: "x" | "y") => dir === "y";
+const doActionForBothAxis = (
+  internalConfig: Required<config>,
+  callback: (callbackData: DoActionForBothAxis) => void
+) => {
+  (["x", "y"] as Axis[]).forEach((dir) => {
+    callback({
+      dir,
+      isDirY: isDirY(dir),
+      isLeftOrTop: isLeftOrTop(dir),
+      reverseDir: reverseDir(dir),
+      dimensionLong: dimensionLong(dir),
+      dimensionShort: dimensionShort(dir),
+      scrollbarShort: scrollbarShort(dir, internalConfig),
+    });
+  });
+};
 
 const defaultConfig = {
-  scrollBarYWidth: 6,
-  scrollBarXHeight: 6,
+  bar: {
+    y: {
+      width: 6,
+      offset: [0, 0] as [number, number],
+    },
+    x: {
+      height: 6,
+      offset: [0, 0] as [number, number],
+    },
+  },
   className: defaultName,
   enableFocusPrevent: true,
 };
+
+const setupWidthAndHeightForScrollbars = (internalConfig: Required<config>, wrapper: HTMLElement) => {
+  doActionForBothAxis(internalConfig, ({ dir, dimensionShort, scrollbarShort }) => {
+    wrapper.style.setProperty(`--${defaultName}-${dir}-${dimensionShort}`, `${scrollbarShort}px`);
+  });
+};
+
+const deepMergeConfig = (defaultConfig: Required<config>,config: config ) => {
+  return {
+    ...defaultConfig,
+    ...config,
+    bar: {
+      y: { ...defaultConfig.bar.y, ...config?.bar?.y },
+      x: { ...defaultConfig.bar.x, ...config?.bar?.x },
+    },
+  }
+}
+//replace-this-start
 export const attach = (containerElement: HTMLElement, config: config = {}) => {
   if (!containerElement) return;
-  const internalConfig = { ...defaultConfig, ...config };
+  const internalConfig = deepMergeConfig(defaultConfig, config);
   const wrapper = document.createElement("div");
   containerElement.classList.add(internalConfig.className);
   wrapper.classList.add(`${internalConfig.className}-wrapper`);
+  wrapper.setAttribute("tabindex", "-1");
   wrap(containerElement, wrapper);
 
-  doActionForBothAxis((dir) => {
-    const axisDimension = isDirY(dir) ? "scrollBarYWidth" : "scrollBarXHeight";
-    const widthOrHeight = isDirY(dir) ? "width" : "height";
-    wrapper.style.setProperty(
-      `--${defaultName}-${dir}-${widthOrHeight}`,
-      `${internalConfig[axisDimension]}px`
-    );
-  });
-
-  wrapper.setAttribute("tabindex", "-1");
+  setupWidthAndHeightForScrollbars(internalConfig, wrapper);
 
   let containerRect = containerElement.getBoundingClientRect();
   const data = {
@@ -133,159 +196,113 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     data.mouse.y = e.clientY - containerRect.top - 2; //Browser render wrong position of mouse
   };
 
-  const hoverScrollbar = () => {
-    (["x", "y"] as ("x" | "y")[]).forEach((dir) => {
-      const reverse = dir === "y" ? "x" : "y";
-      const scrollbarWidthOrHeight =
-        dir === "y" ? "scrollBarYWidth" : "scrollBarXHeight";
-      const widthOrHeight = dir === "y" ? "width" : "height";
-
-      data.scrollbar[dir].isHovered =
-        data.mouse[reverse] <= data.container[widthOrHeight] &&
-        data.mouse[reverse] >=
-          data.container[widthOrHeight] -
-            internalConfig[scrollbarWidthOrHeight] &&
-        data.mouse[dir] >= data.scrollbar[dir].gap.toContainer.pixel &&
-        data.mouse[dir] <=
-          data.scrollbar[dir].gap.toContainer.pixel +
-            data.scrollbar[dir].long.pixel;
-
-      if (data.scrollbar[dir].isStartingPointHover) {
-        data.scrollbar[dir].isStartingPointHover = true;
-      } else {
-        data.scrollbar[dir].isStartingPointHover =
-          data.scrollbar[dir].isHovered;
-      }
-      wrapper.classList.toggle(
-        `hover-${dir}`,
-        data.scrollbar[dir].isStartingPointHover
-      );
-    });
-  };
-
-  const calculateHeightOfScrollbars = () => {
+  const updateContainerDimensions = () => {
     data.container.height = containerElement.clientHeight;
     data.container.width = containerElement.clientWidth;
     data.content.height = containerElement.scrollHeight;
     data.content.width = containerElement.scrollWidth;
+  }
 
-    (["x", "y"] as ("x" | "y")[]).forEach((dir) => {
-      const long = dir === "y" ? "height" : "width";
-      data.scrollbar[dir].long.realPercent =
-        (data.container[long] / data.content[long]) * 100;
-      const realPerc = data.scrollbar[dir].long.realPercent;
-      data.scrollbar[dir].long.percent =
-        realPerc >= data.minLongPercent ? realPerc : data.minLongPercent;
-      data.scrollbar[dir].long.pixel =
-        (data.scrollbar[dir].long.percent / 100) * data.container[long];
+  const hoverScrollbar = ({ dir, reverseDir, scrollbarShort, dimensionShort }: DoActionForBothAxis) => {
+    data.scrollbar[dir].isHovered =
+      data.mouse[reverseDir] <= data.container[dimensionShort] &&
+      data.mouse[reverseDir] >= data.container[dimensionShort] - scrollbarShort &&
+      data.mouse[dir] >= data.scrollbar[dir].gap.toContainer.pixel &&
+      data.mouse[dir] <= data.scrollbar[dir].gap.toContainer.pixel + data.scrollbar[dir].long.pixel;
 
-      const perc = data.scrollbar[dir].long.percent;
-      wrapper.style.setProperty(
-        `--${defaultName}-${dir}-${long}`,
-        `${perc >= 100 ? 0 : perc}%`
-      );
-    });
+    if (data.scrollbar[dir].isStartingPointHover) {
+      data.scrollbar[dir].isStartingPointHover = true;
+    } else {
+      data.scrollbar[dir].isStartingPointHover = data.scrollbar[dir].isHovered;
+    }
+    wrapper.classList.toggle(`hover-${dir}`, data.scrollbar[dir].isStartingPointHover);
   };
 
-  const calculateTopOfScrollbar = (e?: Event) => {
-    (["x", "y"] as ("x" | "y")[]).forEach((dir) => {
-      const leftOrTop = dir === "y" ? "scrollTop" : "scrollLeft";
-      const long = dir === "y" ? "height" : "width";
+  const calculateHeightOfScrollbars = ({dir, dimensionLong}: DoActionForBothAxis) => {
+    data.scrollbar[dir].long.realPercent = (data.container[dimensionLong] / data.content[dimensionLong]) * 100;
+    const realPerc = data.scrollbar[dir].long.realPercent;
+    data.scrollbar[dir].long.percent = realPerc >= data.minLongPercent ? realPerc : data.minLongPercent;
+    data.scrollbar[dir].long.pixel = (data.scrollbar[dir].long.percent / 100) * data.container[dimensionLong];
 
-      const scrollTopLeft =
-        (e?.target as HTMLElement)?.[leftOrTop] || containerElement[leftOrTop];
+    const perc = data.scrollbar[dir].long.percent;
+    wrapper.style.setProperty(`--${defaultName}-${dir}-${dimensionLong}`, `${perc >= 100 ? 0 : perc}%`);
+  };
 
-      let diffPercent = 0;
-      let diffPixels = 0;
-      const isScrollbarTooSmall =
-        data.scrollbar[dir].long.realPercent <= data.minLongPercent;
-      if (isScrollbarTooSmall) {
-        diffPercent =
-          data.minLongPercent - data.scrollbar[dir].long.realPercent;
-        diffPixels = (data.container[long] * diffPercent) / 100;
-      }
-      data.scrollbar[dir].gap.toContent.percent =
-        scrollTopLeft / data.content[long];
-      data.scrollbar[dir].gap.toContainer.pixel =
-        ((scrollTopLeft + data.container[long] - diffPixels) /
-          data.content[long]) *
-          (data.container[long] - diffPixels) -
-        (data.scrollbar[dir].long.pixel - diffPixels);
+  const calculateTopOfScrollbar = (e: Event | undefined, {dir, dimensionLong, isLeftOrTop}: DoActionForBothAxis) => {
+    const isTop = dir === "y" ? "top" : "left";
+    const scrollTopLeft = (e?.target as HTMLElement)?.[isLeftOrTop] || containerElement[isLeftOrTop];
 
-      const isTop = dir === "y" ? "top" : "left";
-      wrapper.style.setProperty(
-        `--${defaultName}-${dir}-${isTop}`,
-        `${data.scrollbar[dir].gap.toContainer.pixel}px`
-      );
-    });
+    let diffPercent = 0;
+    let diffPixels = 0;
+    const isScrollbarTooSmall = data.scrollbar[dir].long.realPercent <= data.minLongPercent;
+    if (isScrollbarTooSmall) {
+      diffPercent = data.minLongPercent - data.scrollbar[dir].long.realPercent;
+      diffPixels = (data.container[dimensionLong] * diffPercent) / 100;
+    }
+    data.scrollbar[dir].gap.toContent.percent = scrollTopLeft / data.content[dimensionLong];
+    data.scrollbar[dir].gap.toContainer.pixel =
+      ((scrollTopLeft + data.container[dimensionLong] - diffPixels) / data.content[dimensionLong]) *
+        (data.container[dimensionLong] - diffPixels) -
+      (data.scrollbar[dir].long.pixel - diffPixels);
+
+    wrapper.style.setProperty(`--${defaultName}-${dir}-${isTop}`, `${data.scrollbar[dir].gap.toContainer.pixel}px`);
   };
 
   const scrollOnDrag = (event: MouseEvent, prevent = false) => {
-    (["x", "y"] as ("x" | "y")[]).forEach((dir) => {
-      const percWidthOrHeight = dir === "y" ? "height" : "width";
-
+    doActionForBothAxis(internalConfig, ({dir, dimensionLong, isLeftOrTop}) => {
       if (data.rail[dir].isStartingPointHover) {
         data.rail[dir].isStartingPointHover = true;
       } else {
-        //2 condifition extract to method same in hover
         data.rail[dir].isStartingPointHover = data.rail[dir].isHovered;
       }
 
       if (data.rail[dir].isStartingPointHover) {
         prevent && event.preventDefault();
 
-        if (data.scrollbar[dir].isGrabbed) {
-          data.scrollbar[dir].isGrabbed = true;
-        } else {
+        if (data.scrollbar[dir].isGrabbed) data.scrollbar[dir].isGrabbed = true;
+        else {
           data.scrollbar[dir].isGrabbed = data.scrollbar[dir].isHovered;
           if (data.scrollbar[dir].isGrabbed) {
-            data.scrollbar[dir].dragDiff =
-              data.scrollbar[dir].gap.toContainer.pixel - data.mouse[dir];
+            data.scrollbar[dir].dragDiff = data.scrollbar[dir].gap.toContainer.pixel - data.mouse[dir];
           } else {
             data.scrollbar[dir].dragDiff = -data.scrollbar[dir].long.pixel / 2;
           }
         }
 
-        wrapper.classList.toggle(
-          `active-${dir}`,
-          data.scrollbar[dir].isGrabbed
-        );
+        wrapper.classList.toggle(`active-${dir}`, data.scrollbar[dir].isGrabbed);
 
-        const perc =
-          (data.mouse[dir] + data.scrollbar[dir].dragDiff) /
-          data.container[percWidthOrHeight];
-        data.scrollbar[dir].gap.toContent.pixel =
-          data.content[percWidthOrHeight] * perc;
-        const leftOrTop = dir === "y" ? "scrollTop" : "scrollLeft";
-        containerElement[leftOrTop] = data.scrollbar[dir].gap.toContent.pixel;
+        const perc = (data.mouse[dir] + data.scrollbar[dir].dragDiff) / data.container[dimensionLong];
+        data.scrollbar[dir].gap.toContent.pixel = data.content[dimensionLong] * perc;
+        containerElement[isLeftOrTop] = data.scrollbar[dir].gap.toContent.pixel;
       }
     });
   };
 
   const calculateScrollbars = () => {
-    calculateHeightOfScrollbars();
-    calculateTopOfScrollbar();
+    updateContainerDimensions();
+    doActionForBothAxis(internalConfig, (data) =>{
+      calculateHeightOfScrollbars(data);
+      calculateTopOfScrollbar(void 0, data);
+    });
   };
 
   const mouseDownHandler = (e: MouseEvent) => {
     updateMousePosition(e);
     data.mouse.isHold = true;
-    hoverScrollbar();
+    doActionForBothAxis(internalConfig, hoverScrollbar);
   };
   window[addEventListener]("mousedown", mouseDownHandler, { passive: true });
   const mouseUpHandler = (e: MouseEvent) => {
     updateMousePosition(e);
     data.mouse.isHold = false;
-    data.rail.y.isStartingPointHover = false;
-    data.rail.x.isStartingPointHover = false;
-    data.scrollbar.y.isStartingPointHover = false;
-    data.scrollbar.x.isStartingPointHover = false;
-    data.scrollbar.y.isGrabbed = false;
-    data.scrollbar.x.isGrabbed = false;
-    wrapper.classList.remove("active-x");
-    wrapper.classList.remove("active-y");
 
-    hoverScrollbar();
+    doActionForBothAxis(internalConfig, (callbackData) => {
+      data.rail[callbackData.dir].isStartingPointHover = false;
+      data.scrollbar[callbackData.dir].isStartingPointHover = false;
+      data.scrollbar[callbackData.dir].isGrabbed = false;
+      wrapper.classList.remove(`active-${callbackData.dir}`);
+      hoverScrollbar(callbackData);
+    });
   };
   window[addEventListener]("mouseup", mouseUpHandler, { passive: true });
 
@@ -301,24 +318,16 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
       data.scrollbar.x.isStartingPointHover = false;
       containerElement.classList.remove("no-smooth");
     }
-    hoverScrollbar();
+    doActionForBothAxis(internalConfig, hoverScrollbar);
   };
   window[addEventListener]("mousemove", mouseMoveHandler, { passive: true });
 
   const onHoverRails = () => {
-    (["x", "y"] as ("x" | "y")[]).forEach((dir) => {
-      const reverse = dir === "y" ? "x" : "y";
-      const scrollbarWidthOrHeight =
-        dir === "y" ? "scrollBarYWidth" : "scrollBarXHeight";
-      const widthOrHeight = dir === "y" ? "width" : "height";
-      const percWidthOrHeight = dir === "y" ? "height" : "width";
-
+    doActionForBothAxis(internalConfig, ({dir, reverseDir, dimensionLong, dimensionShort, scrollbarShort}) => {
       data.rail[dir].isHovered =
-        data.mouse[reverse] <= data.container[widthOrHeight] &&
-        data.mouse[reverse] >=
-          data.container[widthOrHeight] -
-            internalConfig[scrollbarWidthOrHeight] &&
-        data.mouse[dir] < data.container[percWidthOrHeight] &&
+        data.mouse[reverseDir] <= data.container[dimensionShort] &&
+        data.mouse[reverseDir] >= data.container[dimensionShort] - scrollbarShort &&
+        data.mouse[dir] < data.container[dimensionLong] &&
         data.mouse[dir] > 0;
     });
   };
@@ -347,7 +356,9 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   };
   wrapper.addEventListener("focus", focusHandler);
 
-  const scrollHandler = (e: Event) => calculateTopOfScrollbar(e);
+  const scrollHandler = (e: Event) =>
+    doActionForBothAxis(internalConfig,
+      callbackData => calculateTopOfScrollbar(e, callbackData));
   containerElement.addEventListener("scroll", scrollHandler, { passive: true });
 
   const resizeObserver = new ResizeObserver(calculateScrollbars);
@@ -364,10 +375,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     observer.disconnect();
     containerElement.removeEventListener("scroll", scrollHandler);
     containerElement.removeEventListener("click", clickHandler);
-    containerElement.removeEventListener(
-      "mousemove",
-      containerMouseMoveHandler
-    );
+    containerElement.removeEventListener("mousemove", containerMouseMoveHandler);
     wrapper.removeEventListener("focus", focusHandler);
     window.removeEventListener("mousedown", mouseDownHandler);
     window.removeEventListener("mouseup", mouseUpHandler);
@@ -380,3 +388,4 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     detach,
   };
 };
+//replace-this-end
