@@ -10,7 +10,7 @@ import "./index.scss";
 // TODO: wrapper inside/outside their own wrapper element
 // TODO: offset to edges
 // TODO: show only on hover
-
+type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>;
 export type config = {
   bar?: {
     y: {
@@ -42,7 +42,7 @@ const defaultName = "light-scrollbar";
 const isDirY = (dir: Axis) => dir === "y";
 const reverseDir = (dir: Axis) => (isDirY(dir) ? "x" : "y");
 const isHeightOrWidth = (is: boolean) => (is ? "height" : "width");
-const isLeftOrTop = (dir: Axis) => isDirY(dir) ? "scrollTop" : "scrollLeft";
+const isLeftOrTop = (dir: Axis) => (isDirY(dir) ? "scrollTop" : "scrollLeft");
 const dimensionLong = (dir: Axis) => isHeightOrWidth(isDirY(dir));
 //when direction 'y', dimension long is 'height'
 const dimensionShort = (dir: Axis) => isHeightOrWidth(!isDirY(dir));
@@ -53,7 +53,7 @@ const scrollbarShort = (dir: Axis, internalConfig: Required<config>) =>
 type DoActionForBothAxis = {
   dir: Axis;
   isDirY: boolean;
-  isLeftOrTop: 'scrollTop' | 'scrollLeft',
+  isLeftOrTop: "scrollTop" | "scrollLeft";
   reverseDir: Axis;
   dimensionLong: Dimension;
   dimensionShort: Dimension;
@@ -97,7 +97,7 @@ const setupWidthAndHeightForScrollbars = (internalConfig: Required<config>, wrap
   });
 };
 
-const deepMergeConfig = (defaultConfig: Required<config>,config: config ) => {
+const deepMergeConfig = (defaultConfig: Required<config>, config: config) => {
   return {
     ...defaultConfig,
     ...config,
@@ -105,8 +105,8 @@ const deepMergeConfig = (defaultConfig: Required<config>,config: config ) => {
       y: { ...defaultConfig.bar.y, ...config?.bar?.y },
       x: { ...defaultConfig.bar.x, ...config?.bar?.x },
     },
-  }
-}
+  };
+};
 //replace-this-start
 export const attach = (containerElement: HTMLElement, config: config = {}) => {
   if (!containerElement) return;
@@ -192,8 +192,8 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   };
 
   const updateMousePosition = (e: MouseEvent) => {
-    data.mouse.x = e.clientX - containerRect.left - 1;
-    data.mouse.y = e.clientY - containerRect.top - 2; //Browser render wrong position of mouse
+    data.mouse.x = e.clientX - containerRect.left;
+    data.mouse.y = e.clientY - containerRect.top; //Browser render wrong position of mouse
   };
 
   const updateContainerDimensions = () => {
@@ -201,12 +201,22 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     data.container.width = containerElement.clientWidth;
     data.content.height = containerElement.scrollHeight;
     data.content.width = containerElement.scrollWidth;
-  }
+  };
+
+  type IsRailHoveredParameters = RequireField<
+    Partial<DoActionForBothAxis>,
+    "reverseDir" | "dimensionShort" | "scrollbarShort"
+  >;
+  const isRailHoveredShort = ({ reverseDir, dimensionShort, scrollbarShort }: IsRailHoveredParameters) => {
+    return (
+      data.mouse[reverseDir] < data.container[dimensionShort] &&
+      data.mouse[reverseDir] >= data.container[dimensionShort] - scrollbarShort - 10
+    );
+  };
 
   const hoverScrollbar = ({ dir, reverseDir, scrollbarShort, dimensionShort }: DoActionForBothAxis) => {
     data.scrollbar[dir].isHovered =
-      data.mouse[reverseDir] <= data.container[dimensionShort] &&
-      data.mouse[reverseDir] >= data.container[dimensionShort] - scrollbarShort &&
+      isRailHoveredShort({ reverseDir, scrollbarShort, dimensionShort }) &&
       data.mouse[dir] >= data.scrollbar[dir].gap.toContainer.pixel &&
       data.mouse[dir] <= data.scrollbar[dir].gap.toContainer.pixel + data.scrollbar[dir].long.pixel;
 
@@ -218,7 +228,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     wrapper.classList.toggle(`hover-${dir}`, data.scrollbar[dir].isStartingPointHover);
   };
 
-  const calculateHeightOfScrollbars = ({dir, dimensionLong}: DoActionForBothAxis) => {
+  const calculateHeightOfScrollbars = ({ dir, dimensionLong }: DoActionForBothAxis) => {
     data.scrollbar[dir].long.realPercent = (data.container[dimensionLong] / data.content[dimensionLong]) * 100;
     const realPerc = data.scrollbar[dir].long.realPercent;
     data.scrollbar[dir].long.percent = realPerc >= data.minLongPercent ? realPerc : data.minLongPercent;
@@ -228,7 +238,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     wrapper.style.setProperty(`--${defaultName}-${dir}-${dimensionLong}`, `${perc >= 100 ? 0 : perc}%`);
   };
 
-  const calculateTopOfScrollbar = (e: Event | undefined, {dir, dimensionLong, isLeftOrTop}: DoActionForBothAxis) => {
+  const calculateTopOfScrollbar = (e: Event | undefined, { dir, dimensionLong, isLeftOrTop }: DoActionForBothAxis) => {
     const isTop = dir === "y" ? "top" : "left";
     const scrollTopLeft = (e?.target as HTMLElement)?.[isLeftOrTop] || containerElement[isLeftOrTop];
 
@@ -249,7 +259,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   };
 
   const scrollOnDrag = (event: MouseEvent, prevent = false) => {
-    doActionForBothAxis(internalConfig, ({dir, dimensionLong, isLeftOrTop}) => {
+    doActionForBothAxis(internalConfig, ({ dir, dimensionLong, isLeftOrTop }) => {
       if (data.rail[dir].isStartingPointHover) {
         data.rail[dir].isStartingPointHover = true;
       } else {
@@ -280,7 +290,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
 
   const calculateScrollbars = () => {
     updateContainerDimensions();
-    doActionForBothAxis(internalConfig, (data) =>{
+    doActionForBothAxis(internalConfig, (data) => {
       calculateHeightOfScrollbars(data);
       calculateTopOfScrollbar(void 0, data);
     });
@@ -323,12 +333,11 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   window[addEventListener]("mousemove", mouseMoveHandler, { passive: true });
 
   const onHoverRails = () => {
-    doActionForBothAxis(internalConfig, ({dir, reverseDir, dimensionLong, dimensionShort, scrollbarShort}) => {
+    doActionForBothAxis(internalConfig, ({ dir, reverseDir, dimensionLong, dimensionShort, scrollbarShort }) => {
       data.rail[dir].isHovered =
-        data.mouse[reverseDir] <= data.container[dimensionShort] &&
-        data.mouse[reverseDir] >= data.container[dimensionShort] - scrollbarShort &&
-        data.mouse[dir] < data.container[dimensionLong] &&
-        data.mouse[dir] > 0;
+        isRailHoveredShort({ reverseDir, scrollbarShort, dimensionShort }) &&
+        data.mouse[dir] <= data.container[dimensionLong] &&
+        data.mouse[dir] >= 0;
     });
   };
 
@@ -357,8 +366,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   wrapper.addEventListener("focus", focusHandler);
 
   const scrollHandler = (e: Event) =>
-    doActionForBothAxis(internalConfig,
-      callbackData => calculateTopOfScrollbar(e, callbackData));
+    doActionForBothAxis(internalConfig, (callbackData) => calculateTopOfScrollbar(e, callbackData));
   containerElement.addEventListener("scroll", scrollHandler, { passive: true });
 
   const resizeObserver = new ResizeObserver(calculateScrollbars);
