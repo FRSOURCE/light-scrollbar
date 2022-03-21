@@ -1,3 +1,11 @@
+## [1.1.1](https://github.com/FRSOURCE/light-scrollbar/compare/v1.1.0...v1.1.1) (2022-03-21)
+
+
+### Bug Fixes
+
+* better support outer wrapper for flex containers ([83a5ae1](https://github.com/FRSOURCE/light-scrollbar/commit/83a5ae1eac5692c75789baea0b9957e4e3b157a8))
+* prettify code ([d17d1cf](https://github.com/FRSOURCE/light-scrollbar/commit/d17d1cf28d3679d1a8b19bb2b8a70588a47cfadd))
+
 # [1.1.0](https://github.com/FRSOURCE/light-scrollbar/compare/v1.0.1...v1.1.0) (2022-03-17)
 
 

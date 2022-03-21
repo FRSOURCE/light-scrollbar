@@ -98,7 +98,10 @@ const defaultConfig = {
 const setupWidthAndHeightForScrollbars = (internalConfig: Required<config>, wrapper: HTMLElement) => {
   doActionForBothAxis(internalConfig, ({ dir, dimensionShort, scrollbarShort, scrollbarOffsetShort }) => {
     wrapper.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionShort}`, `${scrollbarShort}px`);
-    wrapper.style.setProperty(`--${defaultCssVarName}-bar-${dir}-offset-${reverseDir(dir)}`, `${scrollbarOffsetShort}px`);
+    wrapper.style.setProperty(
+      `--${defaultCssVarName}-bar-${dir}-offset-${reverseDir(dir)}`,
+      `${scrollbarOffsetShort}px`
+    );
   });
 };
 
