@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/FRSOURCE/light-scrollbar/compare/v1.1.1...v1.2.0) (2022-03-21)
+
+
+### Features
+
+* support short offset for bar ([d666b04](https://github.com/FRSOURCE/light-scrollbar/commit/d666b04d2ab7bde66e13404cafe2af530590eeac))
+
 ## [1.1.1](https://github.com/FRSOURCE/light-scrollbar/compare/v1.1.0...v1.1.1) (2022-03-21)
 
 
