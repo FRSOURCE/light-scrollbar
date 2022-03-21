@@ -36,7 +36,7 @@ function wrap(el: HTMLElement, wrapper: HTMLElement) {
 const unwrap = (el: Element) => {
   el.replaceWith(el.children[0]);
 };
-const defaultName = "light-scrollbar";
+const defaultCssVarName = "ls";
 
 //UTILS
 const isDirY = (dir: Axis) => dir === "y";
@@ -58,6 +58,8 @@ type DoActionForBothAxis = {
   dimensionLong: Dimension;
   dimensionShort: Dimension;
   scrollbarShort: number;
+  scrollbarOffsetLong: number;
+  scrollbarOffsetShort: number;
 };
 const doActionForBothAxis = (
   internalConfig: Required<config>,
@@ -72,6 +74,8 @@ const doActionForBothAxis = (
       dimensionLong: dimensionLong(dir),
       dimensionShort: dimensionShort(dir),
       scrollbarShort: scrollbarShort(dir, internalConfig),
+      scrollbarOffsetLong: internalConfig.bar[dir].offset[~~isDirY(dir)],
+      scrollbarOffsetShort: internalConfig.bar[dir].offset[~~!isDirY(dir)],
     });
   });
 };
@@ -87,13 +91,14 @@ const defaultConfig = {
       offset: [0, 0] as [number, number],
     },
   },
-  className: defaultName,
+  className: "light-scrollbar",
   enableFocusPrevent: true,
 };
 
 const setupWidthAndHeightForScrollbars = (internalConfig: Required<config>, wrapper: HTMLElement) => {
-  doActionForBothAxis(internalConfig, ({ dir, dimensionShort, scrollbarShort }) => {
-    wrapper.style.setProperty(`--${defaultName}-${dir}-${dimensionShort}`, `${scrollbarShort}px`);
+  doActionForBothAxis(internalConfig, ({ dir, dimensionShort, scrollbarShort, scrollbarOffsetShort }) => {
+    wrapper.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionShort}`, `${scrollbarShort}px`);
+    wrapper.style.setProperty(`--${defaultCssVarName}-bar-${dir}-offset-${reverseDir(dir)}`, `${scrollbarOffsetShort}px`);
   });
 };
 
@@ -205,18 +210,29 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
 
   type IsRailHoveredParameters = RequireField<
     Partial<DoActionForBothAxis>,
-    "reverseDir" | "dimensionShort" | "scrollbarShort"
+    "reverseDir" | "dimensionShort" | "scrollbarShort" | "scrollbarOffsetShort"
   >;
-  const isRailHoveredShort = ({ reverseDir, dimensionShort, scrollbarShort }: IsRailHoveredParameters) => {
+  const isRailHoveredShort = ({
+    reverseDir,
+    dimensionShort,
+    scrollbarShort,
+    scrollbarOffsetShort,
+  }: IsRailHoveredParameters) => {
     return (
-      data.mouse[reverseDir] < data.container[dimensionShort] &&
-      data.mouse[reverseDir] >= data.container[dimensionShort] - scrollbarShort - 10
+      data.mouse[reverseDir] >= data.container[dimensionShort] - scrollbarShort - scrollbarOffsetShort &&
+      data.mouse[reverseDir] < data.container[dimensionShort] - scrollbarOffsetShort
     );
   };
 
-  const hoverScrollbar = ({ dir, reverseDir, scrollbarShort, dimensionShort }: DoActionForBothAxis) => {
+  const hoverScrollbar = ({
+    dir,
+    reverseDir,
+    scrollbarShort,
+    dimensionShort,
+    scrollbarOffsetShort,
+  }: DoActionForBothAxis) => {
     data.scrollbar[dir].isHovered =
-      isRailHoveredShort({ reverseDir, scrollbarShort, dimensionShort }) &&
+      isRailHoveredShort({ dir, reverseDir, scrollbarShort, dimensionShort, scrollbarOffsetShort }) &&
       data.mouse[dir] >= data.scrollbar[dir].gap.toContainer.pixel &&
       data.mouse[dir] <= data.scrollbar[dir].gap.toContainer.pixel + data.scrollbar[dir].long.pixel;
 
@@ -235,7 +251,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     data.scrollbar[dir].long.pixel = (data.scrollbar[dir].long.percent / 100) * data.container[dimensionLong];
 
     const perc = data.scrollbar[dir].long.percent;
-    wrapper.style.setProperty(`--${defaultName}-${dir}-${dimensionLong}`, `${perc >= 100 ? 0 : perc}%`);
+    wrapper.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionLong}`, `${perc >= 100 ? 0 : perc}%`);
   };
 
   const calculateTopOfScrollbar = (e: Event | undefined, { dir, dimensionLong, isLeftOrTop }: DoActionForBothAxis) => {
@@ -255,7 +271,10 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
         (data.container[dimensionLong] - diffPixels) -
       (data.scrollbar[dir].long.pixel - diffPixels);
 
-    wrapper.style.setProperty(`--${defaultName}-${dir}-${isTop}`, `${data.scrollbar[dir].gap.toContainer.pixel}px`);
+    wrapper.style.setProperty(
+      `--${defaultCssVarName}-bar-${dir}-${isTop}`,
+      `${data.scrollbar[dir].gap.toContainer.pixel}px`
+    );
   };
 
   const scrollOnDrag = (event: MouseEvent, prevent = false) => {
@@ -333,12 +352,15 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   window[addEventListener]("mousemove", mouseMoveHandler, { passive: true });
 
   const onHoverRails = () => {
-    doActionForBothAxis(internalConfig, ({ dir, reverseDir, dimensionLong, dimensionShort, scrollbarShort }) => {
-      data.rail[dir].isHovered =
-        isRailHoveredShort({ reverseDir, scrollbarShort, dimensionShort }) &&
-        data.mouse[dir] <= data.container[dimensionLong] &&
-        data.mouse[dir] >= 0;
-    });
+    doActionForBothAxis(
+      internalConfig,
+      ({ dir, reverseDir, dimensionLong, dimensionShort, scrollbarShort, scrollbarOffsetShort }) => {
+        data.rail[dir].isHovered =
+          isRailHoveredShort({ dir, reverseDir, scrollbarShort, dimensionShort, scrollbarOffsetShort }) &&
+          data.mouse[dir] <= data.container[dimensionLong] &&
+          data.mouse[dir] >= 0;
+      }
+    );
   };
 
   const containerMouseMoveHandler = () => {

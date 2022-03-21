@@ -29,18 +29,18 @@ $disable-default-theme: false;
 
     &::after {
       top: 0;
-      right: 0;
-      height: var(--light-scrollbar-y-height);
-      width: var(--light-scrollbar-y-width);
-      transform: translate3d(0, var(--light-scrollbar-y-top), 0);
+      right: var(--ls-bar-y-offset-x);
+      height: var(--ls-bar-y-height);
+      width: var(--ls-bar-y-width);
+      transform: translate3d(0, var(--ls-bar-y-top), 0);
     }
 
     &::before {
       left: 0;
-      bottom: 0;
-      height: var(--light-scrollbar-x-height);
-      width: var(--light-scrollbar-x-width);
-      transform: translate3d(var(--light-scrollbar-x-left), 0, 0);
+      bottom: var(--ls-bar-x-offset-y);
+      height: var(--ls-bar-x-height);
+      width: var(--ls-bar-x-width);
+      transform: translate3d(var(--ls-bar-x-left), 0, 0);
     }
 
     &.no-smooth {
