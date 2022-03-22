@@ -1,5 +1,7 @@
 import "./index.scss";
-import type { DeepRequired } from "ts-essentials";
+import { removeAllStylesWithPrefix, removeAllClassesWithPrefix, restoreTabIndex } from '../utils/domUtils';
+import { config, DoActionForBothAxis, InternalConfig, OriginalState, RequireField, WrapperPlacement } from "../utils/types";
+import { deepMergeConfig, doActionForBothAxis, reverseDir } from "../utils/utils";
 // TODO: increase dragging area for y, e.g 5px to left
 // TODO: intersection of x/y scrollbars in corner should be excluded
 // TODO: add rail
@@ -7,84 +9,70 @@ import type { DeepRequired } from "ts-essentials";
 // TODO: sub pixel diff on min 10% scrollbar
 // TODO: when  paginated list recalculate grab
 // TODO: increase bar once hovered
-// TODO: wrapper inside/outside their own wrapper element
 // TODO: offset to edges
 // TODO: show only on hover
 // TODO: hide when overflow:hidden?
 // TODO: create update() method with hidden(maybe or check mutation) and changing width/height
 
-//BUG when hover x scrollbar, y have class
 
-type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>;
-export type config = {
-  bar?: {
-    y?: {
-      width?: number;
-      offset?: [number, number];
-    };
-    x?: {
-      height?: number;
-      offset?: [number, number];
-    };
-  };
-  className?: string;
-  enableFocusPrevent?: boolean;
-};
-
-type Axis = "x" | "y";
-type Dimension = "height" | "width";
-
-const addEventListener = "addEventListener";
-function wrap(el: HTMLElement, wrapper: HTMLElement) {
-  el?.parentNode?.insertBefore(wrapper, el);
-  wrapper.appendChild(el);
-}
-const unwrap = (el: Element) => {
-  el.replaceWith(el.children[0]);
-};
+let originalState: OriginalState;
+let outerHadTabIndex: string | null = null;
+let innerHadTabIndex: string | null = null;
 const defaultCssVarName = "ls";
 
-//UTILS
-const isDirY = (dir: Axis) => dir === "y";
-const reverseDir = (dir: Axis) => (isDirY(dir) ? "x" : "y");
-const isHeightOrWidth = (is: boolean) => (is ? "height" : "width");
-const isLeftOrTop = (dir: Axis) => (isDirY(dir) ? "scrollTop" : "scrollLeft");
-const dimensionLong = (dir: Axis) => isHeightOrWidth(isDirY(dir));
-//when direction 'y', dimension long is 'height'
-const dimensionShort = (dir: Axis) => isHeightOrWidth(!isDirY(dir));
-//when direction 'y', dimension short is 'width'
-const scrollbarShort = (dir: Axis, internalConfig: InternalConfig) =>
-  isDirY(dir) ? internalConfig.bar.y.width : internalConfig.bar.x.height;
+function wrap(el: HTMLElement, wrapper: HTMLElement, config: InternalConfig) {
+  outerHadTabIndex = wrapper.getAttribute("tabindex");
+  innerHadTabIndex = el.getAttribute("tabindex");
+  if (config.wrapperPlacement === "outside") {
+    if (wrapper.children[0] === el) {
+      originalState = OriginalState.OuterParent;
+      return;
+    } else {
+      originalState = OriginalState.OuterGenerated;
+    }
+    el?.parentNode?.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+  } else {
+    if (wrapper.children[0] === el) {
+      el?.parentNode?.parentNode?.insertBefore(el, wrapper);
+      originalState = OriginalState.InnerParent;
+    } else {
+      originalState = OriginalState.InnerGenerated;
+    }
+    while (el.firstChild) wrapper.appendChild(el.firstChild);
+    el.appendChild(wrapper);
+  }
+}
 
-type DoActionForBothAxis = {
-  dir: Axis;
-  isDirY: boolean;
-  isLeftOrTop: "scrollTop" | "scrollLeft";
-  reverseDir: Axis;
-  dimensionLong: Dimension;
-  dimensionShort: Dimension;
-  scrollbarShort: number;
-  scrollbarOffsetLong: number;
-  scrollbarOffsetShort: number;
-};
-const doActionForBothAxis = (internalConfig: InternalConfig, callback: (callbackData: DoActionForBothAxis) => void) => {
-  (["x", "y"] as Axis[]).forEach((dir) => {
-    callback({
-      dir,
-      isDirY: isDirY(dir),
-      isLeftOrTop: isLeftOrTop(dir),
-      reverseDir: reverseDir(dir),
-      dimensionLong: dimensionLong(dir),
-      dimensionShort: dimensionShort(dir),
-      scrollbarShort: scrollbarShort(dir, internalConfig),
-      scrollbarOffsetLong: internalConfig.bar[dir].offset[~~isDirY(dir)],
-      scrollbarOffsetShort: internalConfig.bar[dir].offset[~~!isDirY(dir)],
-    });
-  });
+// TODO: cover standalone wrapper - right now only can wrap but unwrap
+const findChildAndAppendTo = (source: HTMLElement, target: HTMLElement | null) => {
+  if (!target) return;
+  while (source.firstChild) target.appendChild(source.firstChild);
 };
 
-type InternalConfig = DeepRequired<config>;
-const defaultConfig: InternalConfig = {
+const unwrap = (el: HTMLElement, wrapper: HTMLElement, className: string) => {
+  if (originalState === OriginalState.InnerGenerated) {
+    findChildAndAppendTo(wrapper, el);
+    wrapper.remove();
+  } else if (originalState === OriginalState.InnerParent) {
+    findChildAndAppendTo(wrapper, el);
+    el?.parentNode?.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+  } else if (originalState === OriginalState.OuterGenerated) {
+    el.replaceWith(el.children[0]);
+  }
+
+  removeAllClassesWithPrefix(el, className);
+  removeAllClassesWithPrefix(wrapper, className);
+  removeAllStylesWithPrefix(el, defaultCssVarName);
+  removeAllStylesWithPrefix(wrapper, defaultCssVarName);
+  restoreTabIndex(el, innerHadTabIndex);
+  restoreTabIndex(wrapper, outerHadTabIndex);
+  el.removeAttribute("data-ls-created");
+  wrapper.removeAttribute("data-ls-created");
+};
+
+const defaultConfig: config = {
   bar: {
     y: {
       width: 6,
@@ -97,6 +85,7 @@ const defaultConfig: InternalConfig = {
   },
   className: "light-scrollbar",
   enableFocusPrevent: true,
+  wrapperPlacement: WrapperPlacement.inside,
 };
 
 const setupWidthAndHeightForScrollbars = (internalConfig: InternalConfig, wrapper: HTMLElement) => {
@@ -109,29 +98,28 @@ const setupWidthAndHeightForScrollbars = (internalConfig: InternalConfig, wrappe
   });
 };
 
-const deepMergeConfig = (defaultConfig: InternalConfig, config: config) => {
-  return {
-    ...defaultConfig,
-    ...config,
-    bar: {
-      y: { ...defaultConfig.bar.y, ...config?.bar?.y },
-      x: { ...defaultConfig.bar.x, ...config?.bar?.x },
-    },
-  };
-};
+export { config, WrapperPlacement };
 //replace-this-start
 export const attach = (containerElement: HTMLElement, config: config = {}) => {
   if (!containerElement) return;
-  const internalConfig = deepMergeConfig(defaultConfig, config);
-  const wrapper = document.createElement("div");
-  containerElement.classList.add(internalConfig.className);
-  wrapper.classList.add(`${internalConfig.className}-wrapper`);
-  wrapper.setAttribute("tabindex", "-1");
-  wrap(containerElement, wrapper);
+  const internalConfig = deepMergeConfig(defaultConfig, config) as InternalConfig;
+  const wrapper = (internalConfig.wrapperElement as HTMLElement) || document.createElement("div");
+  wrap(containerElement, wrapper, internalConfig);
 
-  setupWidthAndHeightForScrollbars(internalConfig, wrapper);
+  const isOutside = internalConfig.wrapperPlacement === "outside";
+  const innerElement = isOutside ? containerElement : wrapper;
+  const outerElement = isOutside ? wrapper : containerElement;
 
-  let containerRect = containerElement.getBoundingClientRect();
+  innerElement.classList.add(internalConfig.className);
+  innerElement.classList.add(`${internalConfig.className}-wrapper-${WrapperPlacement.inside}`);
+  if (!isOutside) innerElement.dataset.lsCreated = "";
+  outerElement.classList.add(internalConfig.className);
+  outerElement.classList.add(`${internalConfig.className}-wrapper-${WrapperPlacement.outside}`);
+  outerElement.setAttribute("tabindex", "-1");
+
+  setupWidthAndHeightForScrollbars(internalConfig, outerElement);
+
+  let containerRect = innerElement.getBoundingClientRect();
   const data = {
     mouse: {
       x: 0,
@@ -209,15 +197,15 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   };
 
   const updateContainerDimensions = () => {
-    data.container.height = containerElement.clientHeight;
-    data.container.width = containerElement.clientWidth;
-    data.content.height = containerElement.scrollHeight;
-    data.content.width = containerElement.scrollWidth;
+    data.container.height = innerElement.clientHeight;
+    data.container.width = innerElement.clientWidth;
+    data.content.height = innerElement.scrollHeight;
+    data.content.width = innerElement.scrollWidth;
   };
 
   type IsRailHoveredParameters = RequireField<
-    Partial<DoActionForBothAxis>,
-    "reverseDir" | "dimensionShort" | "scrollbarShort" | "scrollbarOffsetShort"
+  Partial<DoActionForBothAxis>,
+  "reverseDir" | "dimensionShort" | "scrollbarShort" | "scrollbarOffsetShort"
   >;
   const isRailHoveredShort = ({
     reverseDir,
@@ -248,7 +236,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     } else {
       data.scrollbar[dir].isStartingPointHover = data.scrollbar[dir].isHovered;
     }
-    wrapper.classList.toggle(`hover-${dir}`, data.scrollbar[dir].isStartingPointHover);
+    outerElement.classList.toggle(`hover-${dir}`, data.scrollbar[dir].isStartingPointHover);
   };
 
   const calculateHeightOfScrollbars = ({ dir, dimensionLong }: DoActionForBothAxis) => {
@@ -258,12 +246,12 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     data.scrollbar[dir].long.pixel = (data.scrollbar[dir].long.percent / 100) * data.container[dimensionLong];
 
     const perc = data.scrollbar[dir].long.percent;
-    wrapper.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionLong}`, `${perc >= 100 ? 0 : perc}%`);
+    outerElement.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionLong}`, `${perc >= 100 ? 0 : perc}%`);
   };
 
   const calculateTopOfScrollbar = (e: Event | undefined, { dir, dimensionLong, isLeftOrTop }: DoActionForBothAxis) => {
     const isTop = dir === "y" ? "top" : "left";
-    const scrollTopLeft = (e?.target as HTMLElement)?.[isLeftOrTop] || containerElement[isLeftOrTop];
+    const scrollTopLeft = (e?.target as HTMLElement)?.[isLeftOrTop] || innerElement[isLeftOrTop];
 
     let diffPercent = 0;
     let diffPixels = 0;
@@ -273,12 +261,13 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
       diffPixels = (data.container[dimensionLong] * diffPercent) / 100;
     }
     data.scrollbar[dir].gap.toContent.percent = scrollTopLeft / data.content[dimensionLong];
+    const longestScrollPosition = scrollTopLeft + data.container[dimensionLong] - diffPixels;
     data.scrollbar[dir].gap.toContainer.pixel =
-      ((scrollTopLeft + data.container[dimensionLong] - diffPixels) / data.content[dimensionLong]) *
-        (data.container[dimensionLong] - diffPixels) -
-      (data.scrollbar[dir].long.pixel - diffPixels);
+      (longestScrollPosition / data.content[dimensionLong]) * data.container[dimensionLong] -
+      data.scrollbar[dir].long.pixel -
+      2 * diffPixels;
 
-    wrapper.style.setProperty(
+    outerElement.style.setProperty(
       `--${defaultCssVarName}-bar-${dir}-${isTop}`,
       `${data.scrollbar[dir].gap.toContainer.pixel}px`
     );
@@ -305,11 +294,11 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
           }
         }
 
-        wrapper.classList.toggle(`active-${dir}`, data.scrollbar[dir].isGrabbed);
+        outerElement.classList.toggle(`active-${dir}`, data.scrollbar[dir].isGrabbed);
 
         const perc = (data.mouse[dir] + data.scrollbar[dir].dragDiff) / data.container[dimensionLong];
         data.scrollbar[dir].gap.toContent.pixel = data.content[dimensionLong] * perc;
-        containerElement[isLeftOrTop] = data.scrollbar[dir].gap.toContent.pixel;
+        innerElement[isLeftOrTop] = data.scrollbar[dir].gap.toContent.pixel;
       }
     });
   };
@@ -327,7 +316,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     data.mouse.isHold = true;
     doActionForBothAxis(internalConfig, hoverScrollbar);
   };
-  window[addEventListener]("mousedown", mouseDownHandler, { passive: true });
+  window.addEventListener("mousedown", mouseDownHandler, { passive: true });
   const mouseUpHandler = (e: MouseEvent) => {
     updateMousePosition(e);
     data.mouse.isHold = false;
@@ -336,27 +325,27 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
       data.rail[callbackData.dir].isStartingPointHover = false;
       data.scrollbar[callbackData.dir].isStartingPointHover = false;
       data.scrollbar[callbackData.dir].isGrabbed = false;
-      wrapper.classList.remove(`active-${callbackData.dir}`);
+      outerElement.classList.remove(`active-${callbackData.dir}`);
       hoverScrollbar(callbackData);
     });
   };
-  window[addEventListener]("mouseup", mouseUpHandler, { passive: true });
+  window.addEventListener("mouseup", mouseUpHandler, { passive: true });
 
   const mouseMoveHandler = (e: MouseEvent) => {
     updateMousePosition(e);
-    containerRect = containerElement.getBoundingClientRect();
+    containerRect = innerElement.getBoundingClientRect();
 
     if (data.mouse.isHold) {
       scrollOnDrag(e);
-      containerElement.classList.add("no-smooth");
+      innerElement.classList.add("no-smooth");
     } else {
       data.scrollbar.y.isStartingPointHover = false;
       data.scrollbar.x.isStartingPointHover = false;
-      containerElement.classList.remove("no-smooth");
+      innerElement.classList.remove("no-smooth");
     }
     doActionForBothAxis(internalConfig, hoverScrollbar);
   };
-  window[addEventListener]("mousemove", mouseMoveHandler, { passive: true });
+  window.addEventListener("mousemove", mouseMoveHandler, { passive: true });
 
   const onHoverRails = () => {
     doActionForBothAxis(
@@ -374,7 +363,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     onHoverRails();
     calculateScrollbars();
   };
-  wrapper.addEventListener("mousemove", containerMouseMoveHandler, {
+  outerElement.addEventListener("mousemove", containerMouseMoveHandler, {
     passive: true,
   });
 
@@ -382,7 +371,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
     updateMousePosition(e);
     scrollOnDrag(e, true);
   };
-  wrapper.addEventListener("click", clickHandler);
+  outerElement.addEventListener("click", clickHandler);
 
   const focusHandler = (e: Event) => {
     if (!internalConfig.enableFocusPrevent) return;
@@ -392,16 +381,16 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
       e.stopPropagation();
     }
   };
-  wrapper.addEventListener("focus", focusHandler);
+  outerElement.addEventListener("focus", focusHandler);
 
   const scrollHandler = (e: Event) =>
     doActionForBothAxis(internalConfig, (callbackData) => calculateTopOfScrollbar(e, callbackData));
-  containerElement.addEventListener("scroll", scrollHandler, { passive: true });
+  innerElement.addEventListener("scroll", scrollHandler, { passive: true });
 
   const resizeObserver = new ResizeObserver(calculateScrollbars);
-  resizeObserver.observe(containerElement);
+  resizeObserver.observe(innerElement);
   const observer = new MutationObserver(calculateScrollbars);
-  observer.observe(containerElement, {
+  observer.observe(innerElement, {
     childList: true,
     subtree: true,
     characterData: true,
@@ -410,19 +399,20 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   const detach = () => {
     resizeObserver.disconnect();
     observer.disconnect();
-    containerElement.removeEventListener("scroll", scrollHandler);
-    containerElement.removeEventListener("click", clickHandler);
-    containerElement.removeEventListener("mousemove", containerMouseMoveHandler);
-    wrapper.removeEventListener("focus", focusHandler);
+    innerElement.removeEventListener("scroll", scrollHandler);
+    innerElement.removeEventListener("click", clickHandler);
+    outerElement.removeEventListener("mousemove", containerMouseMoveHandler);
+    outerElement.removeEventListener("focus", focusHandler);
     window.removeEventListener("mousedown", mouseDownHandler);
     window.removeEventListener("mouseup", mouseUpHandler);
     window.removeEventListener("mousemove", mouseMoveHandler);
-    unwrap(wrapper);
-    containerElement.classList.remove(internalConfig.className);
+    unwrap(outerElement, innerElement, internalConfig.className);
   };
 
   return {
     detach,
+    innerElement,
+    outerElement,
   };
 };
 //replace-this-end

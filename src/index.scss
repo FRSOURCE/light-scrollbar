@@ -6,21 +6,38 @@ $disable-default-theme: false;
 
 //TODO: export in package scss file
 .#{$light-scrollbar-classname} {
+  position: relative;
+
   &,
   &-wrapper {
     max-height: inherit;
-    min-width: 0; // deep flex fix
-    min-height: 0; // deep flex fix
+    min-width: 0;
+    min-height: 0;
   }
 
   &-wrapper {
-    position: relative;
-    scroll-behavior: smooth;
+    &-inside,
+    &-outside {
+      scroll-behavior: smooth;
+    }
+    &-inside[data-ls-created] {
+      position: absolute;
+      inset: 0;
+      overflow: auto;
+      padding: inherit;
+    }
+  }
 
+  &-wrapper-outside {
+    position: relative;
+  }
+
+  &-wrapper-outside {
     &::after,
     &::before {
       content: "";
       position: absolute;
+      z-index: 1;
       @if ($disable-default-theme != true) {
         background-color: #cbd5e1;
         border-radius: 12px;
