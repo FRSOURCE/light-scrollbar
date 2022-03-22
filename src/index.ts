@@ -1,5 +1,5 @@
 import "./index.scss";
-
+import type { DeepRequired } from "ts-essentials";
 // TODO: increase dragging area for y, e.g 5px to left
 // TODO: intersection of x/y scrollbars in corner should be excluded
 // TODO: add rail
@@ -10,21 +10,27 @@ import "./index.scss";
 // TODO: wrapper inside/outside their own wrapper element
 // TODO: offset to edges
 // TODO: show only on hover
+// TODO: hide when overflow:hidden?
+// TODO: create update() method with hidden(maybe or check mutation) and changing width/height
+
+//BUG when hover x scrollbar, y have class
+
 type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>;
 export type config = {
   bar?: {
-    y: {
-      width: number;
-      offset: [number, number];
+    y?: {
+      width?: number;
+      offset?: [number, number];
     };
-    x: {
-      height: number;
-      offset: [number, number];
+    x?: {
+      height?: number;
+      offset?: [number, number];
     };
   };
   className?: string;
   enableFocusPrevent?: boolean;
 };
+
 type Axis = "x" | "y";
 type Dimension = "height" | "width";
 
@@ -47,7 +53,7 @@ const dimensionLong = (dir: Axis) => isHeightOrWidth(isDirY(dir));
 //when direction 'y', dimension long is 'height'
 const dimensionShort = (dir: Axis) => isHeightOrWidth(!isDirY(dir));
 //when direction 'y', dimension short is 'width'
-const scrollbarShort = (dir: Axis, internalConfig: Required<config>) =>
+const scrollbarShort = (dir: Axis, internalConfig: InternalConfig) =>
   isDirY(dir) ? internalConfig.bar.y.width : internalConfig.bar.x.height;
 
 type DoActionForBothAxis = {
@@ -61,10 +67,7 @@ type DoActionForBothAxis = {
   scrollbarOffsetLong: number;
   scrollbarOffsetShort: number;
 };
-const doActionForBothAxis = (
-  internalConfig: Required<config>,
-  callback: (callbackData: DoActionForBothAxis) => void
-) => {
+const doActionForBothAxis = (internalConfig: InternalConfig, callback: (callbackData: DoActionForBothAxis) => void) => {
   (["x", "y"] as Axis[]).forEach((dir) => {
     callback({
       dir,
@@ -80,7 +83,8 @@ const doActionForBothAxis = (
   });
 };
 
-const defaultConfig = {
+type InternalConfig = DeepRequired<config>;
+const defaultConfig: InternalConfig = {
   bar: {
     y: {
       width: 6,
@@ -95,7 +99,7 @@ const defaultConfig = {
   enableFocusPrevent: true,
 };
 
-const setupWidthAndHeightForScrollbars = (internalConfig: Required<config>, wrapper: HTMLElement) => {
+const setupWidthAndHeightForScrollbars = (internalConfig: InternalConfig, wrapper: HTMLElement) => {
   doActionForBothAxis(internalConfig, ({ dir, dimensionShort, scrollbarShort, scrollbarOffsetShort }) => {
     wrapper.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionShort}`, `${scrollbarShort}px`);
     wrapper.style.setProperty(
@@ -105,7 +109,7 @@ const setupWidthAndHeightForScrollbars = (internalConfig: Required<config>, wrap
   });
 };
 
-const deepMergeConfig = (defaultConfig: Required<config>, config: config) => {
+const deepMergeConfig = (defaultConfig: InternalConfig, config: config) => {
   return {
     ...defaultConfig,
     ...config,
