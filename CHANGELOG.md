@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/FRSOURCE/light-scrollbar/compare/v1.2.0...v1.2.1) (2022-03-22)
+
+
+### Bug Fixes
+
+* make all config options optional ([699567a](https://github.com/FRSOURCE/light-scrollbar/commit/699567a1770ecd2fd0e9bfb95b3b1941a989961e))
+
 # [1.2.0](https://github.com/FRSOURCE/light-scrollbar/compare/v1.1.1...v1.2.0) (2022-03-21)
 
 
