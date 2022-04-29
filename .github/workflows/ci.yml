@@ -54,9 +54,7 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
       - name: Lint
-        run: yarn lint:ci
-      - name: Prettify
-        run: yarn prettify:ci
+        run: yarn lint.ci
 
   build-and-release:
     name: build and release
@@ -96,7 +94,7 @@ jobs:
         run: yarn build
       - name: release package
         if: ${{ success() && github.actor != 'dependabot[bot]' && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-        run: yarn release:ci
+        run: yarn release.ci
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org/

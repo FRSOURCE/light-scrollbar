@@ -1,0 +1,10 @@
+node_modules
+dist
+cypress/plugins
+cypress/support
+cypress/fixtures
+scripts
+release.config.js
+docs
+prettier.config.js
+.eslintrc.js

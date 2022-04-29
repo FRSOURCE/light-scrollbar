@@ -22,7 +22,7 @@
   <a href="#quick-start">Getting Started</a>
   ·
   <!-- <a href="https://www.frsource.org/light-scrollbar" target="_blank">Demo</a> -->
-  ·
+  <!-- · -->
   <a href="https://github.com/FRSOURCE/light-scrollbar/issues">File an Issue</a>
   ·
   <a href="#questions">Have a question or an idea?</a>

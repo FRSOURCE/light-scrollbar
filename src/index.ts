@@ -1,7 +1,14 @@
 import "./index.scss";
-import { removeAllStylesWithPrefix, removeAllClassesWithPrefix, restoreTabIndex } from '../utils/domUtils';
-import { config, DoActionForBothAxis, InternalConfig, OriginalState, RequireField, WrapperPlacement } from "../utils/types";
-import { deepMergeConfig, doActionForBothAxis, reverseDir } from "../utils/utils";
+import { removeAllStylesWithPrefix, removeAllClassesWithPrefix, restoreTabIndex } from "./utils/domUtils";
+import {
+  config,
+  DoActionForBothAxis,
+  InternalConfig,
+  OriginalState,
+  RequireField,
+  WrapperPlacement,
+} from "./utils/types";
+import { deepMergeConfig, doActionForBothAxis, reverseDir } from "./utils/utils";
 // TODO: increase dragging area for y, e.g 5px to left
 // TODO: intersection of x/y scrollbars in corner should be excluded
 // TODO: add rail
@@ -13,7 +20,6 @@ import { deepMergeConfig, doActionForBothAxis, reverseDir } from "../utils/utils
 // TODO: show only on hover
 // TODO: hide when overflow:hidden?
 // TODO: create update() method with hidden(maybe or check mutation) and changing width/height
-
 
 let originalState: OriginalState;
 let outerHadTabIndex: string | null = null;

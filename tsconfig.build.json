@@ -2,7 +2,5 @@
   "extends": "./tsconfig.base.json",
   "include": [
     "src/**/*.ts",
-    "src/utils/**/*.ts",
-    "cypress/**/*.ts",
-  ],
+  ]
 }
