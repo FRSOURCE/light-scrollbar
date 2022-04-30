@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/FRSOURCE/light-scrollbar/compare/v1.2.1...v1.3.0) (2022-04-30)
+
+
+### Features
+
+* add support for inside and outside wrappers ([8a9a687](https://github.com/FRSOURCE/light-scrollbar/commit/8a9a687d314c8e5643b52510d6e0fed2e7577882))
+
 ## [1.2.1](https://github.com/FRSOURCE/light-scrollbar/compare/v1.2.0...v1.2.1) (2022-03-22)
 
 
