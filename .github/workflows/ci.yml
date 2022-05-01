@@ -56,6 +56,47 @@ jobs:
       - name: Lint
         run: yarn lint.ci
 
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [cache, lint]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure Yarn cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ needs.cache.outputs.yarn-cache-key }}
+          path: |
+            ~/.cache/Cypress
+            .yarn
+            node_modules
+
+      - name: Install dependencies
+        run: yarn --immutable
+
+      - name: build
+        run: yarn build
+
+      - name: Run cypress tests
+        uses: cypress-io/github-action@2113e5bc19c45979ba123df6e07256d2aaba9a33
+        with:
+          install: true
+          command: yarn cy.ci
+
+      - name: Upload Cypress artifacts
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-report
+          path: |
+            cypress/report
+            cypress/screenshots
+            cypress/snapshots
+            cypress/logs
+
   build-depandabot:
     name: build dependabot
     if: ${{ github.actor == 'dependabot[bot]' }}
