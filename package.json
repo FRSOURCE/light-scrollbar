@@ -9,7 +9,7 @@
   "sass": "src/index.scss",
   "styles": "dist/index.css",
   "scripts": {
-    "start": "yarn clean && microbundle --no-compress --no-sourcemap --format=esm watch",
+    "start": "yarn clean && microbundle --no-compress --no-sourcemap --format=umd watch --tsconfig tsconfig.build.json",
     "build": "yarn clean && yarn minify-data && microbundle --compress --tsconfig tsconfig.build.json && yarn copy-tmp-to-src && yarn clean:tmp && yarn restore-index",
     "build-backup": "yarn clean && microbundle --compress --tsconfig tsconfig.build.json",
     "lint": "yarn lint.script",
