@@ -81,7 +81,7 @@ jobs:
         run: yarn build
 
       - name: Run cypress tests
-        uses: cypress-io/github-action@2113e5bc19c45979ba123df6e07256d2aaba9a33
+        uses: cypress-io/github-action@53cc3178f59cc99b5519c29c14a182fb98ea4f31
         with:
           install: true
           command: yarn cy.ci
