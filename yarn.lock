@@ -7524,10 +7524,10 @@ trim-newlines@^4.0.2:
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-4.0.2.tgz#d6aaaf6a0df1b4b536d183879a6b939489808c7c"
   integrity sha512-GJtWyq9InR/2HRiLZgpIKv+ufIKrVrvjQWEj7PxAXNc5dwbNJkqhAUoAGgzRmULAnoOM5EIpveYd3J2VeSAIew==
 
-ts-essentials@9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-9.2.0.tgz#a6ec69b43d111f107b3e63e27b200d2d22542b55"
-  integrity sha512-HLl+am6q+ulOWcjUFghpIQXXyaH0hVTnFTVWNqwz1iDxyN+t+lwDfqPB5FmPUTFw3J+y26UR3hNGmK/1jehokA==
+ts-essentials@9.3.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-9.3.0.tgz#7e639c1a76b1805c3c60d6e1b5178da2e70aea02"
+  integrity sha512-XeiCboEyBG8UqXZtXl59bWEi4ZgOqRsogFDI6WDGIF1LmzbYiAkIwjkXN6zZWWl4re/lsOqMlYfe8KA0XiiEPw==
 
 tslib@2.0.1:
   version "2.0.1"
