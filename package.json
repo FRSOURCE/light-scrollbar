@@ -67,7 +67,7 @@
     "eslint-plugin-eslint-comments": "3.2.0",
     "http-server": "14.1.1",
     "incstr": "1.2.3",
-    "microbundle": "0.15.0",
+    "microbundle": "0.15.1",
     "prettier": "2.7.1",
     "renamer": "4.0.0",
     "sass": "1.54.5",
