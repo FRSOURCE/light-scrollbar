@@ -71,7 +71,7 @@
     "prettier": "2.7.1",
     "renamer": "4.0.0",
     "sass": "1.54.5",
-    "semantic-release": "19.0.3",
+    "semantic-release": "19.0.5",
     "ts-essentials": "9.3.0",
     "typescript": "4.7.4"
   },
