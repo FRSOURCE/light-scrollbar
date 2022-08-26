@@ -12,26 +12,31 @@ jobs:
     name: CI cache
     runs-on: ubuntu-latest
     outputs:
-      yarn-cache-key: ${{ steps.yarn-cache-key.outputs.key }}
+      pnpm-cache-key: ${{ steps.pnpm-cache-key.outputs.key }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        with:
+          version: 7.5.0
+          run_install: false
       - name: Remove git auth
         run: git config --unset http.https://github.com/.extraheader
-      - name: Generate yarn cache-key
-        id: yarn-cache-key
-        run: echo "::set-output name=key::${{ runner.os }}-yarn-ci-cache-v3-${{ hashFiles('./yarn.lock') }}-${{ hashFiles('**/yarn.lock') }}"
-      - name: Configure Yarn cache
+      - name: Generate pnpm cache-key
+        id: pnpm-cache-key
+        run: echo "::set-output name=key::${{ runner.os }}-pnpm-ci-cache-${{ hashFiles('./pnpm-lock.yaml') }}"
+      - name: Configure PNPM cache
         uses: actions/cache@v3
         with:
-          key: ${{ steps.yarn-cache-key.outputs.key }}
+          key: ${{ steps.pnpm-cache-key.outputs.key }}
           path: |
-            .yarn
             node_modules
       - name: Install dependencies
-        run: yarn --immutable
+        run: pnpm i --frozen-lockfile
 
   lint:
     name: lint
@@ -42,19 +47,23 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        with:
+          version: 7.5.0
+          run_install: false
       - name: remove git auth
         run: git config --unset http.https://github.com/.extraheader
-      - name: Configure Yarn cache
+      - name: Configure PNPM cache
         uses: actions/cache@v3
         with:
-          key: ${{ needs.cache.outputs.yarn-cache-key }}
+          key: ${{ needs.cache.outputs.pnpm-cache-key }}
           path: |
-            .yarn
             node_modules
       - name: Install dependencies
-        run: yarn --immutable
+        run: pnpm i --frozen-lockfile
       - name: Lint
-        run: yarn lint.ci
+        run: pnpm lint.ci
 
   test:
     name: Run tests
@@ -64,28 +73,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Configure Yarn cache
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        with:
+          version: 7.5.0
+      - name: Install rimraf
+        run: npm i -g rimraf
+      - name: Configure PNPM cache
         uses: actions/cache@v3
         with:
-          key: ${{ needs.cache.outputs.yarn-cache-key }}
+          key: ${{ needs.cache.outputs.pnpm-cache-key }}
           path: |
             ~/.cache/Cypress
-            .yarn
             node_modules
-
       - name: Install dependencies
-        run: yarn --immutable
-
+        run: pnpm i --frozen-lockfile
       - name: build
-        run: yarn build
-
+        run: pnpm build
       - name: Run cypress tests
         uses: cypress-io/github-action@30008f1458a5a2c97054bfe118fe33d75976c482
         with:
           install: true
-          command: yarn cy.ci
-
+          command: pnpm cy.ci
       - name: Upload Cypress artifacts
         uses: actions/upload-artifact@v3
         if: failure()
@@ -107,19 +116,23 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        with:
+          version: 7.5.0
+          run_install: false
       - name: remove git auth
         run: git config --unset http.https://github.com/.extraheader
-      - name: Configure Yarn cache
+      - name: Configure PNPM cache
         uses: actions/cache@v3
         with:
-          key: ${{ needs.cache.outputs.yarn-cache-key }}
+          key: ${{ needs.cache.outputs.pnpm-cache-key }}
           path: |
-            .yarn
             node_modules
       - name: Install dependencies
-        run: yarn --immutable
+        run: pnpm i --frozen-lockfile
       - name: build
-        run: yarn build
+        run: pnpm build
 
   build-and-release:
     if: ${{ github.actor != 'dependabot[bot]' }}
@@ -138,17 +151,22 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - name: Install rimraf
+        run: npm i -g rimraf
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        with:
+          version: 7.5.0
       - name: remove git auth
         run: git config --unset http.https://github.com/.extraheader
-      - name: Configure Yarn cache
+      - name: Configure PNPM cache
         uses: actions/cache@v3
         with:
-          key: ${{ needs.cache.outputs.yarn-cache-key }}
+          key: ${{ needs.cache.outputs.pnpm-cache-key }}
           path: |
-            .yarn
             node_modules
       - name: Install dependencies
-        run: yarn --immutable
+        run: pnpm i --frozen-lockfile
       - name: Authenticate with Registry
         run: |
           echo "registry=http://registry.npmjs.org/" >> .npmrc
@@ -157,10 +175,10 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: build
-        run: yarn build
+        run: pnpm build
       - name: release package
         if: ${{ success() && github.actor != 'dependabot[bot]' && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-        run: yarn release.ci
+        run: pnpm release.ci
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
