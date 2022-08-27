@@ -36,7 +36,7 @@ jobs:
           path: |
             node_modules
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: pnpm i
 
   lint:
     name: lint
@@ -61,7 +61,7 @@ jobs:
           path: |
             node_modules
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: pnpm i
       - name: Lint
         run: pnpm lint.ci
 
@@ -88,7 +88,7 @@ jobs:
             ~/.cache/Cypress
             node_modules
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: pnpm i
       - name: build
         run: pnpm build
       - name: Run cypress tests
@@ -140,7 +140,7 @@ jobs:
           path: |
             node_modules
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: pnpm i
       - name: Authenticate with Registry
         run: |
           echo "registry=http://registry.npmjs.org/" >> .npmrc
