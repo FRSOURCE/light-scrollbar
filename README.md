@@ -33,7 +33,8 @@
   <br>
   <i>Light, small library that allows create custom scrollbar.
     <br>Mobile &amp; desktop-friendly
-    <br>Performant & with small bundle size (less than 1400B!)
+    <br>Not rebuilding scrolling experience, just visually represent browser scrollbar
+    <br>Performant & with small bundle size (less than 2500B!)
     <br>Possibility to use `scroll-behavior: smooth`
     <br>Published as separate bundles for JS ES5 or modern browsers thanks to <a href="https://www.npmjs.com/package/microbundle">microbundle</a>
     <br>Written completely in <a href="https://www.typescriptlang.org">typescript</a></i>
