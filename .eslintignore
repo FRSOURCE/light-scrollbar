@@ -3,6 +3,7 @@ dist
 cypress/plugins
 cypress/support
 cypress/fixtures
+cypress.config.ts
 scripts
 release.config.js
 docs
