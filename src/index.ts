@@ -1,12 +1,13 @@
 import "./index.scss";
 import { removeAllStylesWithPrefix, removeAllClassesWithPrefix, restoreTabIndex } from "./utils/domUtils";
 import {
-  config,
+  Config,
   DoActionForBothAxis,
   InternalConfig,
   OriginalState,
   RequireField,
   WrapperPlacement,
+  LightScrollbarReturns,
 } from "./utils/types";
 import { deepMergeConfig, doActionForBothAxis, reverseDir } from "./utils/utils";
 // TODO: increase dragging area for y, e.g 5px to left
@@ -78,20 +79,28 @@ const unwrap = (el: HTMLElement, wrapper: HTMLElement, className: string) => {
   wrapper.removeAttribute("data-ls-created");
 };
 
-const defaultConfig: config = {
+const defaultConfig: Config = {
+  // #region bar
   bar: {
     y: {
       width: 6,
-      offset: [0, 0] as [number, number],
+      offset: [0, 0],
     },
     x: {
       height: 6,
-      offset: [0, 0] as [number, number],
+      offset: [0, 0],
     },
   },
+  // #endregion bar
+  // #region className
   className: "light-scrollbar",
-  enableFocusPrevent: true,
+  // #endregion className
+  // #region disableFocusPrevent
+  disableFocusPrevent: true,
+  // #endregion disableFocusPrevent
+  // #region wrapperPlacement
   wrapperPlacement: WrapperPlacement.inside,
+  // #endregion wrapperPlacement
 };
 
 const setupWidthAndHeightForScrollbars = (internalConfig: InternalConfig, wrapper: HTMLElement) => {
@@ -104,9 +113,9 @@ const setupWidthAndHeightForScrollbars = (internalConfig: InternalConfig, wrappe
   });
 };
 
-export { config, WrapperPlacement };
+export { Config, WrapperPlacement, LightScrollbarReturns };
 //replace-this-start
-export const attach = (containerElement: HTMLElement, config: config = {}) => {
+export const attach = (containerElement: HTMLElement, config: Config = {}): LightScrollbarReturns => {
   if (!containerElement) return;
   const internalConfig = deepMergeConfig(defaultConfig, config) as InternalConfig;
   const wrapper = (internalConfig.wrapperElement as HTMLElement) || document.createElement("div");
@@ -380,7 +389,7 @@ export const attach = (containerElement: HTMLElement, config: config = {}) => {
   outerElement.addEventListener("click", clickHandler);
 
   const focusHandler = (e: Event) => {
-    if (!internalConfig.enableFocusPrevent) return;
+    if (!internalConfig.disableFocusPrevent) return;
     if (data.rail.x.isHovered || data.rail.y.isHovered) {
       e.preventDefault();
       e.stopImmediatePropagation();

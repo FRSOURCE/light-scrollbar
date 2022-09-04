@@ -1,0 +1,25 @@
+.my-scrollbar {
+  overflow: auto;
+  height: 200px;
+  border: 1px solid grey;
+  padding: 20px;
+
+  & .item {
+    border: 1px solid green;
+    width: 100vw;
+
+    &:hover {
+      height: 100px;
+    }
+  }
+}
+
+.add-item {
+  background-color: rgb(15, 82, 15);
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+

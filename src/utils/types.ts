@@ -1,11 +1,15 @@
 import { DeepRequired } from "ts-essentials";
 
 export type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>;
+// #region WrapperPlacement
 export enum WrapperPlacement {
   "inside" = "inside",
   "outside" = "outside",
 }
-export type config = {
+// #endregion WrapperPlacement
+
+// #region Config
+export type Config = {
   bar?: {
     y?: {
       width?: number;
@@ -17,10 +21,19 @@ export type config = {
     };
   };
   className?: string;
-  enableFocusPrevent?: boolean;
+  disableFocusPrevent?: boolean;
   wrapperPlacement?: WrapperPlacement;
   wrapperElement?: HTMLElement;
 };
+// #endregion Config
+
+// #region LightScrollbarReturns
+export type LightScrollbarReturns = {
+  innerElement: HTMLElement;
+  outerElement: HTMLElement;
+  detach: () => void
+} | undefined;
+// #endregion LightScrollbarReturns
 
 export type Axis = "x" | "y";
 export type Dimension = "height" | "width";
@@ -32,7 +45,7 @@ export enum OriginalState {
   "OuterParent", //plaement outer, outerElement is wrapper, innerElement is el
 }
 
-export type InternalConfig = DeepRequired<config>;
+export type InternalConfig = DeepRequired<Config>;
 
 export type DoActionForBothAxis = {
   dir: Axis;

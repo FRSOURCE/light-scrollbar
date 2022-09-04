@@ -1,4 +1,5 @@
 {
+  "version": "1.3.18",
   "name": "@frsource/light-scrollbar",
   "description": "Minimalistic plugin to create custom scrollbars! 💪",
   "source": "./src/index.ts",
@@ -29,7 +30,10 @@
     "copy-tmp-to-src": "cpy index_tmp.ts src",
     "restore-index": "renamer --find index_tmp.ts --replace index.ts 'src/**'",
     "clean:tmp": "rimraf src/index.ts && rimraf index_tmp.ts",
-    "dev-server": "http-server -p 3000"
+    "dev-server": "http-server -p 3000",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "homepage": "https://github.com/FRSOURCE/light-scrollbar/",
   "repository": {
@@ -49,6 +53,7 @@
   "author": "Szymon Dziewoński <szymondziewonski@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@algolia/client-search": "^4.14.2",
     "@frsource/frs-replace": "3.0.3",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
@@ -73,7 +78,12 @@
     "sass": "1.54.5",
     "semantic-release": "19.0.5",
     "ts-essentials": "9.3.0",
-    "typescript": "4.8.2"
+    "typescript": "4.8.2",
+    "vitepress": "1.0.0-alpha.12",
+    "vue": "^3.2.37"
+  },
+  "dependencies": {
+    "@frsource/frs-hide-scrollbar": "^2.0.7"
   },
   "publishConfig": {
     "access": "public"
@@ -83,9 +93,5 @@
     "package.json",
     "README.md",
     "LICENSE"
-  ],
-  "dependencies": {
-    "@frsource/frs-hide-scrollbar": "^2.0.7"
-  },
-  "version": "1.3.18"
+  ]
 }
