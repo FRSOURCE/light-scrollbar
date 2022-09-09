@@ -1,4 +1,4 @@
-import { Axis, config, DoActionForBothAxis, InternalConfig } from "./types";
+import { Axis, Config, DoActionForBothAxis, InternalConfig } from "./types";
 
 export const isDirY = (dir: Axis) => dir === "y";
 export const reverseDir = (dir: Axis) => (isDirY(dir) ? "x" : "y");
@@ -27,7 +27,7 @@ export const doActionForBothAxis = (internalConfig: InternalConfig, callback: (c
   });
 };
 
-export const deepMergeConfig = (defaultConfig: config, config: config) => {
+export const deepMergeConfig = (defaultConfig: Config, config: Config) => {
   return {
     ...defaultConfig,
     ...config,
