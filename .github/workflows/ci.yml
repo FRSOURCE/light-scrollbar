@@ -180,6 +180,8 @@ jobs:
             node_modules
       - name: Install dependencies
         run: pnpm i
+      - name: Build
+        run: pnpm docs:build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
