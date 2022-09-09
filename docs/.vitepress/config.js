@@ -4,7 +4,7 @@ export default {
     title: 'Light-scrollbar docs',
     description: '@frsource/light-scrollbar minimalistic light plugin to create custom scrollbar',
     lastUpdated: true,
-    cleanUrls: "with-subfolders",
+    base: '/light-scrollbar/',
     themeConfig: {
         editLink: {
             pattern: 'https://github.com/FRSOURCE/vitepress/edit/main/docs/:path',

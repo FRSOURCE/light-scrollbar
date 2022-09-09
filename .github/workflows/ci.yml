@@ -181,6 +181,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i
       - name: Build
+        run: pnpm build
+      - name: Build docs
         run: pnpm docs:build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

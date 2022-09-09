@@ -5,7 +5,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { attach } from "../../dist/index.modern.mjs";
+import { attach } from "../assets/dist/index.modern.mjs";
 import AddItem from './addItem.vue';
 import ScrollbarTemplate from './scrollbarTemplate.vue';
 
