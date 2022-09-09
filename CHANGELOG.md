@@ -1,3 +1,10 @@
+## [1.3.18](https://github.com/FRSOURCE/light-scrollbar/compare/v1.3.17...v1.3.18) (2022-09-09)
+
+
+### Bug Fixes
+
+* when dragged remove smoothness ([dce8206](https://github.com/FRSOURCE/light-scrollbar/commit/dce82065f1c076ccf806d34eea6065de60b2691e))
+
 ## [1.3.17](https://github.com/FRSOURCE/light-scrollbar/compare/v1.3.16...v1.3.17) (2022-08-27)
 
 ## [1.3.16](https://github.com/FRSOURCE/light-scrollbar/compare/v1.3.15...v1.3.16) (2022-08-27)
