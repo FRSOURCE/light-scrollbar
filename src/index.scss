@@ -28,11 +28,16 @@ $disable-default-theme: false;
     }
   }
 
-  &-wrapper-outside {
-    position: relative;
+  &-wrapper-inside {
+    &.no-smooth {
+      scroll-behavior: auto;
+    }
   }
 
   &-wrapper-outside {
+    overflow: initial;
+    position: relative;
+
     &::after,
     &::before {
       content: "";
@@ -58,10 +63,6 @@ $disable-default-theme: false;
       height: var(--ls-bar-x-height);
       width: var(--ls-bar-x-width);
       transform: translate3d(var(--ls-bar-x-left), 0, 0);
-    }
-
-    &.no-smooth {
-      scroll-behavior: auto;
     }
 
     &.hover-x,
