@@ -21,8 +21,8 @@
 <p align="center">
   <a href="#quick-start">Getting Started</a>
   ·
-  <!-- <a href="https://www.frsource.org/light-scrollbar" target="_blank">Demo</a> -->
-  <!-- · -->
+  <a href="https://www.frsource.org/light-scrollbar/">Documentation</a>
+  ·
   <a href="https://github.com/FRSOURCE/light-scrollbar/issues">File an Issue</a>
   ·
   <a href="#questions">Have a question or an idea?</a>
@@ -41,6 +41,10 @@
     <br>Published under <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a> license</i>
   <br>
   <br>
+</p>
+
+<p align="center">
+  <a href="https://www.frsource.org/light-scrollbar/"><strong>https://www.frsource.org/light-scrollbar</strong></a>
 </p>
 
 ## Quick start
@@ -70,7 +74,16 @@ const scrollingElement = document.querySelector("element-width-overflow-auto");
 window.lightScrollbar.attach(scrollingElement);
 ```
 
-<!-- For working example, check out [our demo](https://www.frsource.org/light-scrollbar). -->
+## Documentation
+
+For docs, please visit [frsource.org/light-scrollbar](https://www.frsource.org/light-scrollbar/)
+
+- [Getting Started](https://www.frsource.org/light-scrollbar/instalation.html)
+- [API Reference](https://www.frsource.org/light-scrollbar/api/options.html)
+
+## Demo examples
+
+[Check our examples to see how its working!](https://www.frsource.org/light-scrollbar/examples.html)
 
 ## Questions
 
