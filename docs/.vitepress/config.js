@@ -12,11 +12,14 @@ export default {
         },
         socialLinks: [
             { icon: 'github', link: 'https://github.com/FRSOURCE' },
-            { icon: 'facebook', link: 'https://facebook.com/FRSOURCE' }
+            { icon: 'facebook', link: 'https://facebook.com/FRSOURCE' },
+            { icon: 'instagram', link: 'https://instagram.com/frsource' },
+            { icon: 'linkedin', link: 'https://linkedin.com/in/jakub-freisler-03a32138/' },
+            { icon: 'twitter', link: 'https://twitter.com/frsource1' }
         ],
         footer: {
             message: 'Released under the MIT License.',
-            copyright: 'Copyright © 2022-present Szymon Dziewoński'
+            copyright: 'Copyright © 2022-present FRSOURCE - Szymon Dziewoński'
         },
         nav: [
             apiNav().items[0],
