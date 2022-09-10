@@ -6,8 +6,13 @@ export default {
     lastUpdated: true,
     base: '/light-scrollbar/',
     themeConfig: {
+        algolia: {
+            appId: 'C2EN7GBGOH',
+            apiKey: '24b8e8ebee2865fb7fb47a21f76dc075',
+            indexName: 'prod_light-scrollbar'
+        },
         editLink: {
-            pattern: 'https://github.com/FRSOURCE/vitepress/edit/main/docs/:path',
+            pattern: 'https://github.com/FRSOURCE/light-scrollbar/edit/main/docs/:path',
             text: 'Edit this page on GitHub'
         },
         socialLinks: [
