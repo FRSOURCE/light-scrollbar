@@ -94,7 +94,7 @@ jobs:
     if: ${{ github.actor != 'dependabot[bot]' }}
     name: build and release
     runs-on: ubuntu-latest
-    needs: [cache, lint]
+    needs: [cache, lint, test]
     steps:
       - uses: actions/checkout@v3
         with:
