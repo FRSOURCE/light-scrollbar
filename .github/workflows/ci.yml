@@ -11,30 +11,20 @@ jobs:
   cache:
     name: CI cache
     runs-on: ubuntu-latest
-    outputs:
-      pnpm-cache-key: ${{ steps.pnpm-cache-key.outputs.key }}
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        with:
+          version: 7.11.0
+          run_install: false
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-      - uses: pnpm/action-setup@v2.2.2
-        name: Install pnpm
-        with:
-          version: 7.5.0
-          run_install: false
+          cache: 'pnpm'
       - name: Remove git auth
         run: git config --unset http.https://github.com/.extraheader
-      - name: Generate pnpm cache-key
-        id: pnpm-cache-key
-        run: echo "::set-output name=key::${{ runner.os }}-pnpm-ci-cache-${{ hashFiles('./pnpm-lock.yaml') }}"
-      - name: Configure PNPM cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ steps.pnpm-cache-key.outputs.key }}
-          path: |
-            node_modules
       - name: Install dependencies
         run: pnpm i
 
@@ -44,22 +34,17 @@ jobs:
     needs: cache
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
       - uses: pnpm/action-setup@v2.2.2
         name: Install pnpm
         with:
-          version: 7.5.0
+          version: 7.11.0
           run_install: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'pnpm'
       - name: remove git auth
         run: git config --unset http.https://github.com/.extraheader
-      - name: Configure PNPM cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ needs.cache.outputs.pnpm-cache-key }}
-          path: |
-            node_modules
       - name: Install dependencies
         run: pnpm i
       - name: Lint
@@ -71,22 +56,18 @@ jobs:
     timeout-minutes: 15
     needs: [cache, lint]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2.2.2
         name: Install pnpm
         with:
-          version: 7.5.0
+          version: 7.11.0
           run_install: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'pnpm'
       - name: Install rimraf
         run: npm i -g rimraf
-      - name: Configure PNPM cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ needs.cache.outputs.pnpm-cache-key }}
-          path: |
-            ~/.cache/Cypress
-            node_modules
       - name: Install dependencies
         run: pnpm i
       - name: build
@@ -121,24 +102,19 @@ jobs:
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-      - name: Install rimraf
-        run: npm i -g rimraf
       - uses: pnpm/action-setup@v2.2.2
         name: Install pnpm
         with:
-          version: 7.5.0
+          version: 7.11.0
           run_install: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'pnpm'
+      - name: Install rimraf
+        run: npm i -g rimraf
       - name: remove git auth
         run: git config --unset http.https://github.com/.extraheader
-      - name: Configure PNPM cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ needs.cache.outputs.pnpm-cache-key }}
-          path: |
-            node_modules
       - name: Install dependencies
         run: pnpm i
       - name: Authenticate with Registry
@@ -167,24 +143,21 @@ jobs:
       - uses: pnpm/action-setup@v2.2.2
         name: Install pnpm
         with:
-          version: 7.5.0
+          version: 7.11.0
           run_install: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'pnpm'
       - name: Install rimraf
         run: npm i -g rimraf
-      - name: Configure PNPM cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ needs.cache.outputs.pnpm-cache-key }}
-          path: |
-            ~/.cache/Cypress
-            node_modules
       - name: Install dependencies
         run: pnpm i
       - name: Build
         run: pnpm build
       - name: Build docs
         run: pnpm docs:build
-      - name: Deploy
+      - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

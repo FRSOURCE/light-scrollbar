@@ -47,8 +47,6 @@
   <a href="https://www.frsource.org/light-scrollbar/"><strong>https://www.frsource.org/light-scrollbar</strong></a>
 </p>
 
-## Quick start
-
 ### Installation
 
 ```bash
