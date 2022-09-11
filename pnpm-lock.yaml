@@ -24,7 +24,7 @@ specifiers:
   microbundle: 0.15.1
   prettier: 2.7.1
   renamer: 4.0.0
-  sass: 1.54.5
+  sass: 1.54.9
   semantic-release: 19.0.5
   ts-essentials: 9.3.0
   typescript: 4.8.2
@@ -57,7 +57,7 @@ devDependencies:
   microbundle: 0.15.1
   prettier: 2.7.1
   renamer: 4.0.0
-  sass: 1.54.5
+  sass: 1.54.9
   semantic-release: 19.0.5
   ts-essentials: 9.3.0_typescript@4.8.2
   typescript: 4.8.2
@@ -6826,8 +6826,8 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
 
-  /sass/1.54.5:
-    resolution: {integrity: sha512-p7DTOzxkUPa/63FU0R3KApkRHwcVZYC0PLnLm5iyZACyp15qSi32x7zVUhRdABAATmkALqgGrjCJAcWvobmhHw==}
+  /sass/1.54.9:
+    resolution: {integrity: sha512-xb1hjASzEH+0L0WI9oFjqhRi51t/gagWnxLiwUNMltA0Ab6jIDkAacgKiGYKM9Jhy109osM7woEEai6SXeJo5Q==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
