@@ -53,7 +53,7 @@
   "author": "Szymon Dziewoński <szymondziewonski@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@algolia/client-search": "^4.14.2",
+    "@algolia/client-search": "4.14.2",
     "@frsource/frs-replace": "3.0.3",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
@@ -80,7 +80,7 @@
     "ts-essentials": "9.3.0",
     "typescript": "4.8.2",
     "vitepress": "1.0.0-alpha.12",
-    "vue": "^3.2.37"
+    "vue": "3.2.39"
   },
   "dependencies": {
     "@frsource/frs-hide-scrollbar": "^2.0.7"
