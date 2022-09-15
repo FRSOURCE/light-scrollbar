@@ -55,20 +55,23 @@ npm install @frsource/light-scrollbar
 
 # Yarn
 yarn add @frsource/light-scrollbar
+
+# Pnpm
+pnpm add @frsource/light-scrollbar
 ```
 
 ### Modern JS/Typescript
 
 ```ts
 import { attach } from "@frsource/light-scrollbar";
-const scrollingElement = document.querySelector("element-width-overflow-auto");
+const scrollingElement = document.querySelector("element-with-overflow-auto");
 attach(scrollingElement);
 ```
 
 ### UMD
 
 ```js
-const scrollingElement = document.querySelector("element-width-overflow-auto");
+const scrollingElement = document.querySelector("element-with-overflow-auto");
 window.lightScrollbar.attach(scrollingElement);
 ```
 
