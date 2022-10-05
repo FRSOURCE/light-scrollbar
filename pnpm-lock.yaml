@@ -14,7 +14,7 @@ specifiers:
   '@typescript-eslint/parser': 5.39.0
   concurrently: 7.4.0
   cpy-cli: 4.2.0
-  cypress: 10.8.0
+  cypress: 10.9.0
   eslint: 8.24.0
   eslint-config-prettier: 8.5.0
   eslint-plugin-cypress: 2.12.1
@@ -47,7 +47,7 @@ devDependencies:
   '@typescript-eslint/parser': 5.39.0_7ilbxdl5iguzcjriqqcg2m5cku
   concurrently: 7.4.0
   cpy-cli: 4.2.0
-  cypress: 10.8.0
+  cypress: 10.9.0
   eslint: 8.24.0
   eslint-config-prettier: 8.5.0_eslint@8.24.0
   eslint-plugin-cypress: 2.12.1_eslint@8.24.0
@@ -3312,8 +3312,8 @@ packages:
     engines: {node: '>=12.17'}
     dev: true
 
-  /cypress/10.8.0:
-    resolution: {integrity: sha512-QVse0dnLm018hgti2enKMVZR9qbIO488YGX06nH5j3Dg1isL38DwrBtyrax02CANU6y8F4EJUuyW6HJKw1jsFA==}
+  /cypress/10.9.0:
+    resolution: {integrity: sha512-MjIWrRpc+bQM9U4kSSdATZWZ2hUqHGFEQTF7dfeZRa4MnalMtc88FIE49USWP2ZVtfy5WPBcgfBX+YorFqGElA==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     requiresBuild: true
