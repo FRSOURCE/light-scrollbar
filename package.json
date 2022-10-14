@@ -80,7 +80,7 @@
     "ts-essentials": "9.3.0",
     "typescript": "4.8.3",
     "vitepress": "1.0.0-alpha.19",
-    "vue": "3.2.39"
+    "vue": "3.2.41"
   },
   "dependencies": {
     "@frsource/frs-hide-scrollbar": "^2.0.7"
