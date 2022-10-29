@@ -12,7 +12,7 @@ specifiers:
   '@semantic-release/release-notes-generator': 10.0.3
   '@typescript-eslint/eslint-plugin': 5.40.1
   '@typescript-eslint/parser': 5.40.1
-  concurrently: 7.4.0
+  concurrently: 7.5.0
   cpy-cli: 4.2.0
   cypress: 10.10.0
   eslint: 8.26.0
@@ -45,7 +45,7 @@ devDependencies:
   '@semantic-release/release-notes-generator': 10.0.3_semantic-release@19.0.5
   '@typescript-eslint/eslint-plugin': 5.40.1_c4zyna56jjjrggqkyejnaxjxfu
   '@typescript-eslint/parser': 5.40.1_wyqvi574yv7oiwfeinomdzmc3m
-  concurrently: 7.4.0
+  concurrently: 7.5.0
   cpy-cli: 4.2.0
   cypress: 10.10.0
   eslint: 8.26.0
@@ -2982,8 +2982,8 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /concurrently/7.4.0:
-    resolution: {integrity: sha512-M6AfrueDt/GEna/Vg9BqQ+93yuvzkSKmoTixnwEJkH0LlcGrRC2eCmjeG1tLLHIYfpYJABokqSGyMcXjm96AFA==}
+  /concurrently/7.5.0:
+    resolution: {integrity: sha512-5E3mwiS+i2JYBzr5BpXkFxOnleZTMsG+WnE/dCG4/P+oiVXrbmrBwJ2ozn4SxwB2EZDrKR568X+puVohxz3/Mg==}
     engines: {node: ^12.20.0 || ^14.13.0 || >=16.0.0}
     hasBin: true
     dependencies:
