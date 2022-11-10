@@ -1,5 +1,5 @@
 {
-  "version": "1.3.43",
+  "version": "1.3.44",
   "name": "@frsource/light-scrollbar",
   "description": "Minimalistic plugin to create custom scrollbars! 💪",
   "source": "./src/index.ts",
