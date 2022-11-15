@@ -1,0 +1,1 @@
+import{_ as s,o as n,c as a,d as p}from"./app.92f1387c.js";const i=JSON.parse('{"title":"Typings","description":"","frontmatter":{},"headers":[],"relativePath":"api/typings.md","lastUpdated":1668542386000}'),l={name:"api/typings.md"},o=p("",4),e=[o];function t(c,r,D,y,F,C){return n(),a("div",null,e)}const d=s(l,[["render",t]]);export{i as __pageData,d as default};
