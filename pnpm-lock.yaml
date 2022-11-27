@@ -28,7 +28,7 @@ specifiers:
   semantic-release: 19.0.5
   ts-essentials: 9.3.0
   typescript: 4.8.4
-  vitepress: 1.0.0-alpha.28
+  vitepress: 1.0.0-alpha.29
   vue: 3.2.44
 
 dependencies:
@@ -61,7 +61,7 @@ devDependencies:
   semantic-release: 19.0.5
   ts-essentials: 9.3.0_typescript@4.8.4
   typescript: 4.8.4
-  vitepress: 1.0.0-alpha.28_ywl2mhc3pxwv4zt3sq26gbqum4
+  vitepress: 1.0.0-alpha.29_ywl2mhc3pxwv4zt3sq26gbqum4
   vue: 3.2.44
 
 packages:
@@ -7658,8 +7658,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitepress/1.0.0-alpha.28_ywl2mhc3pxwv4zt3sq26gbqum4:
-    resolution: {integrity: sha512-pvbLssDMgLUN1terajmPlFBxHSDGO4DqwexKbjFyr7LeELerVuwGrG6F2J1hxmwOlbpLd1kHXEDqGm9JX/kTDQ==}
+  /vitepress/1.0.0-alpha.29_ywl2mhc3pxwv4zt3sq26gbqum4:
+    resolution: {integrity: sha512-oaRaeMLcN9M3Bxz97fFVF6Gzm3Aqtb0CijTt5TOW0XPzNPuKA0YpFnsmS97gdKmA+VztM6itRJ8K7JJuU0VS3g==}
     hasBin: true
     dependencies:
       '@docsearch/css': 3.3.0
