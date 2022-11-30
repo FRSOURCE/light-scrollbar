@@ -1,15 +1,15 @@
 import { DeepRequired } from "ts-essentials";
 
 export type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>;
-// #region WrapperPlacement
+// #region wrapperPlacementDef
 export enum WrapperPlacement {
   "inside" = "inside",
   "outside" = "outside",
 }
-// #endregion WrapperPlacement
+// #endregion wrapperPlacementDef
 
-// #region Config
 export type Config = {
+  // #region bar
   bar?: {
     y?: {
       width?: number;
@@ -20,20 +20,35 @@ export type Config = {
       offset?: [number, number];
     };
   };
+  // #endregion bar
+  // #region className
   className?: string;
+  // #endregion className
+  // #region disableFocusPrevent
   disableFocusPrevent?: boolean;
+  // #endregion disableFocusPrevent
+  // #region wrapperPlacement
   wrapperPlacement?: WrapperPlacement;
+  // #endregion wrapperPlacement
+  // #region wrapperElement
   wrapperElement?: HTMLElement;
+  // #endregion wrapperElement
+  // #region showOnHover
+  showOnHover?: number | false
+  // #endregion showOnHover
 };
-// #endregion Config
 
-// #region LightScrollbarReturns
 export type LightScrollbarReturns = {
+  // #region AttachInnerElement
   innerElement: HTMLElement;
+  // #endregion AttachInnerElement
+  // #region AttachOuterElement
   outerElement: HTMLElement;
+  // #endregion AttachOuterElement
+  // #region AttachReturn
   detach: () => void
+  // #endregion AttachReturn
 } | undefined;
-// #endregion LightScrollbarReturns
 
 export type Axis = "x" | "y";
 export type Dimension = "height" | "width";
@@ -44,6 +59,7 @@ export enum OriginalState {
   "OuterGenerated", //placement outer, outer el is generated, innerElement is el
   "OuterParent", //plaement outer, outerElement is wrapper, innerElement is el
 }
+
 
 export type InternalConfig = DeepRequired<Config>;
 

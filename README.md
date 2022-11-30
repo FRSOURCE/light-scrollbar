@@ -94,6 +94,11 @@ Don’t hesitate to ask a question directly on the [discussions board](https://g
 
 Changes for every release are documented in the [release notes](https://github.com/FRSOURCE/light-scrollbar/releases) and [CHANGELOG file](https://github.com/FRSOURCE/light-scrollbar/tree/master/CHANGELOG.md).
 
+## Contribute
+
+Development happens in docs, so run `pnpm docs:dev` which runs microbundle and vitepress docs.
+Tests can be done in cypress running `pnpm cy` which runs microbundle and cypress
+
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)

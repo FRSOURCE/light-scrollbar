@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
+import { LightScrollbarReturns } from '../../dist/utils/types';
 import { attach, WrapperPlacement } from '../../dist/index.js';
 import type { config } from '../../dist/src/index';
-import { BasePage } from './BasePage.pageObject';
+import { ScrollbarBaseObject } from './Scrollbar.pageObject';
 
 type Elements = {
   mountingElement?: HTMLElement,
@@ -9,14 +10,18 @@ type Elements = {
   wrapperParentElement?: HTMLElement
 };
 
-let instance: ReturnType<typeof attach>;
-const elements: Elements  = {
+let instance: LightScrollbarReturns;
+const elements: Elements = {
   mountingElement: undefined,
   wrapperStandaloneElement: undefined,
   wrapperParentElement: undefined
 };
 
-const page = () => new BasePage();
+const page = () => new ScrollbarBaseObject({
+  outerElement: instance?.outerElement as HTMLElement,
+  innerElement: instance?.innerElement as HTMLElement
+});
+
 const loadPage = () =>
   cy.visit('http://localhost:3000/cypress/fixtures/index.html').then(() => {
     cy.get('.my-wrapper-standalone').then(el => elements.wrapperStandaloneElement = el[0]);
@@ -39,13 +44,13 @@ afterEach(() => {
   );
 });
 
-const checkConfigOffset = (mount: keyof Elements, parentOptions: config = {}) => {
+const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) => {
   describe('offset', () => {
     it('is default', () => {
       initializePlugin(elements[mount] as HTMLElement, parentOptions);
       page()
-        .hasScrollbarYShortGap(instance?.outerElement, 0)
-        .hasScrollbarXShortGap(instance?.outerElement, 0);
+        .hasScrollbarYShortGap(0)
+        .hasScrollbarXShortGap(0);
     });
 
     it('when set, should be correct', () => {
@@ -58,12 +63,38 @@ const checkConfigOffset = (mount: keyof Elements, parentOptions: config = {}) =>
       };
       initializePlugin(elements[mount] as HTMLElement, options);
       page()
-        .hasScrollbarYShortGap(instance?.outerElement, options.bar.y.offset[0])
-        .hasScrollbarXShortGap(instance?.outerElement, options.bar.x.offset[1]);
+        .hasScrollbarYShortGap(options.bar.y.offset[0])
+        .hasScrollbarXShortGap(options.bar.x.offset[1]);
+    });
+  });
+
+  describe('when showOnHover', () => {
+    describe('when is set to false/disable', () => {
+      it('scrollbar should be visible all the time', () => {
+        initializePlugin(elements[mount] as HTMLElement, parentOptions);
+
+        page().hasVisibleScrollbar();
+      });
+    });
+
+    describe('when is set to 20 ms', () => {
+      afterEach(() => {
+        page().hoverBottomOfBody();
+      });
+
+      it('should show scrollbar on hover after 20ms', () => {
+        initializePlugin(elements[mount] as HTMLElement, {...parentOptions, showOnHover: 20});
+
+        page()
+          .hasNotVisibleScrollbar()
+          .hoverOverOuterElement();
+
+        cy.wait(100);
+        page().hasVisibleScrollbar();
+      });
     });
   });
 };
-
 
 describe('light-scrollbar', () => {
   describe('when wrapper inside', () => {
@@ -74,7 +105,7 @@ describe('light-scrollbar', () => {
         // innerElement is generated
       });
 
-      checkConfigOffset('mountingElement');
+      checkConfigDescribe('mountingElement');
     });
 
     // describe.only('when given wrapper - standalone', () => {
@@ -98,7 +129,7 @@ describe('light-scrollbar', () => {
         expect(instance?.innerElement).to.equal(elements.wrapperParentElement as HTMLElement);
       });
 
-      checkConfigOffset('mountingElement');
+      checkConfigDescribe('mountingElement');
     });
   });
 
@@ -112,7 +143,7 @@ describe('light-scrollbar', () => {
         // outerElement is generated
       });
 
-      checkConfigOffset('mountingElement', {
+      checkConfigDescribe('mountingElement', {
         wrapperPlacement: WrapperPlacement.outside,
       });
     });
@@ -126,7 +157,7 @@ describe('light-scrollbar', () => {
         expect(instance?.outerElement).to.equal(elements.wrapperParentElement as HTMLElement);
         expect(instance?.innerElement).to.equal(elements.mountingElement as HTMLElement);
       });
-      checkConfigOffset('mountingElement', {
+      checkConfigDescribe('mountingElement', {
         wrapperPlacement: WrapperPlacement.outside,
         wrapperElement: elements.wrapperParentElement as HTMLElement
       });
