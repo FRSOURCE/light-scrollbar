@@ -35,14 +35,25 @@ $disable-default-theme: false;
   }
 
   &-wrapper-outside {
+    $selfWrapperOutside: &;
+
     overflow: initial;
     position: relative;
+
+    &#{$selfWrapperOutside}--show-on-hover:not(:hover){
+      &::after,
+      &::before {
+        background-color: transparent;
+      }
+    }
 
     &::after,
     &::before {
       content: "";
       position: absolute;
       z-index: 1;
+      transition: background var(--ls-show-on-hover);
+
       @if ($disable-default-theme != true) {
         background-color: #cbd5e1;
         border-radius: 12px;

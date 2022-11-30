@@ -101,6 +101,9 @@ const defaultConfig: Config = {
   // #region wrapperPlacement
   wrapperPlacement: WrapperPlacement.inside,
   // #endregion wrapperPlacement
+  // #region showOnHover
+  showOnHover: false
+  // #endregion showOnHover
 };
 
 const setupWidthAndHeightForScrollbars = (internalConfig: InternalConfig, wrapper: HTMLElement) => {
@@ -130,6 +133,10 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   if (!isOutside) innerElement.dataset.lsCreated = "";
   outerElement.classList.add(internalConfig.className);
   outerElement.classList.add(`${internalConfig.className}-wrapper-${WrapperPlacement.outside}`);
+  if (internalConfig.showOnHover !== false) {
+    outerElement.classList.add(`${internalConfig.className}-wrapper-${WrapperPlacement.outside}--show-on-hover`);
+    outerElement.style.setProperty(`--${defaultCssVarName}-show-on-hover`, `${internalConfig.showOnHover}ms`);
+  }
   outerElement.setAttribute("tabindex", "-1");
 
   setupWidthAndHeightForScrollbars(internalConfig, outerElement);
