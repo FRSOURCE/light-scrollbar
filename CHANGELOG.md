@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/FRSOURCE/light-scrollbar/compare/v1.3.49...v1.4.0) (2022-11-30)
+
+
+### Features
+
+* add showOnHover option ([#128](https://github.com/FRSOURCE/light-scrollbar/issues/128)) ([e09728c](https://github.com/FRSOURCE/light-scrollbar/commit/e09728cab38d401a155ac8b7ed43a722871c3485))
+
 ## [1.3.49](https://github.com/FRSOURCE/light-scrollbar/compare/v1.3.48...v1.3.49) (2022-11-29)
 
 ## [1.3.48](https://github.com/FRSOURCE/light-scrollbar/compare/v1.3.47...v1.3.48) (2022-11-27)
