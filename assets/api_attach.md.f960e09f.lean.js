@@ -1,0 +1,1 @@
+import{_ as s,o as a,c as n,a as l}from"./app.0ff85f59.js";const C=JSON.parse('{"title":"attach","description":"","frontmatter":{},"headers":[],"relativePath":"api/attach.md","lastUpdated":1670776095000}'),o={name:"api/attach.md"},t=l("",6),p=[t];function e(c,r,D,y,F,i){return a(),n("div",null,p)}const h=s(o,[["render",e]]);export{C as __pageData,h as default};
