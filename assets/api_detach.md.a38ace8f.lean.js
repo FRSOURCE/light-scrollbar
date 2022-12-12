@@ -1,1 +1,0 @@
-import{_ as s,o as a,c as n,a as l}from"./app.d5d1a9b6.js";const i=JSON.parse('{"title":"detach","description":"","frontmatter":{},"headers":[],"relativePath":"api/detach.md","lastUpdated":1670777237000}'),o={name:"api/detach.md"},p=l("",6),e=[p];function t(c,r,D,y,F,A){return a(),n("div",null,e)}const d=s(o,[["render",t]]);export{i as __pageData,d as default};
