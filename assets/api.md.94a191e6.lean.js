@@ -1,0 +1,1 @@
+import{_ as a,o as t,c as e,a as r}from"./app.1c11bc1d.js";const u=JSON.parse('{"title":"Api","description":"","frontmatter":{},"headers":[],"relativePath":"api.md","lastUpdated":1671129648000}'),i={name:"api.md"},l=r("",2),c=[l];function s(h,o,_,n,p,d){return t(),e("div",null,c)}const f=a(i,[["render",s]]);export{u as __pageData,f as default};
