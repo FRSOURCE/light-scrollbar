@@ -75,7 +75,7 @@
     "incstr": "1.2.3",
     "lodash-es": "^4.17.21",
     "microbundle": "0.15.1",
-    "prettier": "2.8.2",
+    "prettier": "2.8.3",
     "renamer": "4.0.0",
     "sass": "1.57.1",
     "semantic-release": "20.0.2",
