@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@algolia/client-search': 4.14.3
   '@frsource/frs-hide-scrollbar': ^2.0.7
-  '@frsource/frs-replace': 4.0.0
+  '@frsource/frs-replace': 4.1.0
   '@semantic-release/changelog': 6.0.2
   '@semantic-release/commit-analyzer': 9.0.2
   '@semantic-release/git': 10.0.1
@@ -38,7 +38,7 @@ dependencies:
 
 devDependencies:
   '@algolia/client-search': 4.14.3
-  '@frsource/frs-replace': 4.0.0
+  '@frsource/frs-replace': 4.1.0
   '@semantic-release/changelog': 6.0.2_semantic-release@20.1.0
   '@semantic-release/commit-analyzer': 9.0.2_semantic-release@20.1.0
   '@semantic-release/git': 10.0.1_semantic-release@20.1.0
@@ -1764,8 +1764,8 @@ packages:
     resolution: {integrity: sha512-bTmseGaLgklCi7mBWI+h27fbnGd160BQ0aobiWYmf+BITor6p5B5fMBo7Qh24RpOIgHn/gxR23wkaO80PN4SCw==}
     dev: false
 
-  /@frsource/frs-replace/4.0.0:
-    resolution: {integrity: sha512-FxF0T9lvpQfCt2qtolaTe3gVH28womNaBazMr8EOzFtKVrbS2GB4fcrkruvnueNnGei4R0cGeCt9i7+lD/eHbA==}
+  /@frsource/frs-replace/4.1.0:
+    resolution: {integrity: sha512-NWeVxBN9HA8Jylvh3hz/HPLRAf1bEDRbyW3VVUjeVfa8CJ6H0qA6tW/QjzsIijN5NoRQ04RSE2zzlaLsgoTrbQ==}
     hasBin: true
     dependencies:
       fast-glob: 3.2.11
