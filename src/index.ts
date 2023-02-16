@@ -18,7 +18,6 @@ import { deepMergeConfig, doActionForBothAxis, reverseDir } from "./utils/utils"
 // TODO: when  paginated list recalculate grab
 // TODO: increase bar once hovered
 // TODO: offset to edges
-// TODO: show only on hover
 // TODO: hide when overflow:hidden?
 // TODO: create update() method with hidden(maybe or check mutation) and changing width/height
 
@@ -102,7 +101,7 @@ const defaultConfig: Config = {
   wrapperPlacement: WrapperPlacement.inside,
   // #endregion wrapperPlacement
   // #region showOnHover
-  showOnHover: false
+  showOnHover: false,
   // #endregion showOnHover
 };
 
@@ -132,7 +131,8 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   innerElement.classList.add(`${internalConfig.className}-wrapper-${WrapperPlacement.inside}`);
   if (!isOutside) innerElement.dataset.lsCreated = "";
   outerElement.classList.add(internalConfig.className);
-  outerElement.classList.add(`${internalConfig.className}-wrapper-${WrapperPlacement.outside}`);
+  const outerElementClassname = `${internalConfig.className}-wrapper-${WrapperPlacement.outside}`;
+  outerElement.classList.add(outerElementClassname);
   if (internalConfig.showOnHover !== false) {
     outerElement.classList.add(`${internalConfig.className}-wrapper-${WrapperPlacement.outside}--show-on-hover`);
     outerElement.style.setProperty(`--${defaultCssVarName}-show-on-hover`, `${internalConfig.showOnHover}ms`);
@@ -146,7 +146,8 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     mouse: {
       x: 0,
       y: 0,
-      isHold: false,
+      isHoldInsideScrollbar: false,
+      isHoldRail: false,
     },
     minLongPercent: 10,
     container: {
@@ -261,7 +262,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     outerElement.classList.toggle(`hover-${dir}`, data.scrollbar[dir].isStartingPointHover);
   };
 
-  const calculateHeightOfScrollbars = ({ dir, dimensionLong }: DoActionForBothAxis) => {
+  const calculateLongDimensionOfScrollbars = ({ dir, dimensionLong }: DoActionForBothAxis) => {
     data.scrollbar[dir].long.realPercent = (data.container[dimensionLong] / data.content[dimensionLong]) * 100;
     const realPerc = data.scrollbar[dir].long.realPercent;
     data.scrollbar[dir].long.percent = realPerc >= data.minLongPercent ? realPerc : data.minLongPercent;
@@ -302,8 +303,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
       } else {
         data.rail[dir].isStartingPointHover = data.rail[dir].isHovered;
       }
-
-      if (data.rail[dir].isStartingPointHover) {
+      if (data.rail[dir].isStartingPointHover && data.mouse.isHoldRail) {
         prevent && event.preventDefault();
 
         if (data.scrollbar[dir].isGrabbed) data.scrollbar[dir].isGrabbed = true;
@@ -325,23 +325,29 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     });
   };
 
-  const calculateScrollbars = () => {
+  const calculateScrollbars = (calculate = false) => {
+    if (!calculate) return;
     updateContainerDimensions();
     doActionForBothAxis(internalConfig, (data) => {
-      calculateHeightOfScrollbars(data);
+      calculateLongDimensionOfScrollbars(data);
       calculateTopOfScrollbar(void 0, data);
     });
   };
 
-  const mouseDownHandler = (e: MouseEvent) => {
+  const windowMouseDownHandler = (e: MouseEvent) => {
+    const isInScrollbar = (e.target as HTMLElement)?.closest(`.${outerElementClassname}`);
+    if (!isInScrollbar) return;
     updateMousePosition(e);
-    data.mouse.isHold = true;
+    data.mouse.isHoldInsideScrollbar = true;
+    data.mouse.isHoldRail = data.rail.x.isHovered || data.rail.y.isHovered;
+
     doActionForBothAxis(internalConfig, hoverScrollbar);
   };
-  window.addEventListener("mousedown", mouseDownHandler, { passive: true });
-  const mouseUpHandler = (e: MouseEvent) => {
+
+  const windowMouseUpHandler = (e: MouseEvent) => {
     updateMousePosition(e);
-    data.mouse.isHold = false;
+    data.mouse.isHoldInsideScrollbar = false;
+    data.mouse.isHoldRail = false;
 
     doActionForBothAxis(internalConfig, (callbackData) => {
       data.rail[callbackData.dir].isStartingPointHover = false;
@@ -351,15 +357,14 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
       hoverScrollbar(callbackData);
     });
   };
-  window.addEventListener("mouseup", mouseUpHandler, { passive: true });
 
-  const mouseMoveHandler = (e: MouseEvent) => {
+  const windowMouseMoveHandler = (e: MouseEvent) => {
     updateMousePosition(e);
     containerRect = innerElement.getBoundingClientRect();
 
-    if (data.mouse.isHold) {
-      scrollOnDrag(e);
+    if (data.mouse.isHoldInsideScrollbar) {
       innerElement.classList.add("no-smooth");
+      scrollOnDrag(e);
     } else {
       data.scrollbar.y.isStartingPointHover = false;
       data.scrollbar.x.isStartingPointHover = false;
@@ -367,9 +372,9 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     }
     doActionForBothAxis(internalConfig, hoverScrollbar);
   };
-  window.addEventListener("mousemove", mouseMoveHandler, { passive: true });
 
-  const onHoverRails = () => {
+  const onHoverRails = (calculate = false) => {
+    if (!calculate) return;
     doActionForBothAxis(
       internalConfig,
       ({ dir, reverseDir, dimensionLong, dimensionShort, scrollbarShort, scrollbarOffsetShort }) => {
@@ -382,18 +387,14 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   };
 
   const containerMouseMoveHandler = () => {
-    onHoverRails();
-    calculateScrollbars();
+    onHoverRails(true);
+    calculateScrollbars(true);
   };
-  outerElement.addEventListener("mousemove", containerMouseMoveHandler, {
-    passive: true,
-  });
 
   const clickHandler = (e: MouseEvent) => {
     updateMousePosition(e);
     scrollOnDrag(e, true);
   };
-  outerElement.addEventListener("click", clickHandler);
 
   const focusHandler = (e: Event) => {
     if (!internalConfig.disableFocusPrevent) return;
@@ -403,31 +404,41 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
       e.stopPropagation();
     }
   };
-  outerElement.addEventListener("focus", focusHandler);
 
   const scrollHandler = (e: Event) =>
     doActionForBothAxis(internalConfig, (callbackData) => calculateTopOfScrollbar(e, callbackData));
-  innerElement.addEventListener("scroll", scrollHandler, { passive: true });
 
-  const resizeObserver = new ResizeObserver(calculateScrollbars);
+  const resizeObserver = new ResizeObserver(() => calculateScrollbars(true));
   resizeObserver.observe(innerElement);
-  const observer = new MutationObserver(calculateScrollbars);
+  const observer = new MutationObserver(() => calculateScrollbars(true));
   observer.observe(innerElement, {
     childList: true,
     subtree: true,
     characterData: true,
   });
 
+  calculateScrollbars(true);
+
+  innerElement.addEventListener("scroll", scrollHandler, { passive: true });
+  outerElement.addEventListener("click", clickHandler);
+  outerElement.addEventListener("mousemove", containerMouseMoveHandler, {
+    passive: true,
+  });
+  outerElement.addEventListener("focus", focusHandler);
+  window.addEventListener("mousedown", windowMouseDownHandler, { passive: true });
+  window.addEventListener("mouseup", windowMouseUpHandler, { passive: true });
+  window.addEventListener("mousemove", windowMouseMoveHandler, { passive: true });
+
   const detach = () => {
     resizeObserver.disconnect();
     observer.disconnect();
     innerElement.removeEventListener("scroll", scrollHandler);
-    innerElement.removeEventListener("click", clickHandler);
+    outerElement.removeEventListener("click", clickHandler);
     outerElement.removeEventListener("mousemove", containerMouseMoveHandler);
     outerElement.removeEventListener("focus", focusHandler);
-    window.removeEventListener("mousedown", mouseDownHandler);
-    window.removeEventListener("mouseup", mouseUpHandler);
-    window.removeEventListener("mousemove", mouseMoveHandler);
+    window.removeEventListener("mousedown", windowMouseDownHandler);
+    window.removeEventListener("mouseup", windowMouseUpHandler);
+    window.removeEventListener("mousemove", windowMouseMoveHandler);
     unwrap(outerElement, innerElement, internalConfig.className);
   };
 
