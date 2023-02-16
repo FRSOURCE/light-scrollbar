@@ -1,3 +1,10 @@
+## [1.4.17](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.16...v1.4.17) (2023-02-16)
+
+
+### Bug Fixes
+
+* user select behave as expected ([#200](https://github.com/FRSOURCE/light-scrollbar/issues/200)) ([e1771c6](https://github.com/FRSOURCE/light-scrollbar/commit/e1771c6f42c860dd8e94402f2befe59793e4a3e1))
+
 ## [1.4.16](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.15...v1.4.16) (2023-02-16)
 
 ## [1.4.15](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.14...v1.4.15) (2023-02-15)
