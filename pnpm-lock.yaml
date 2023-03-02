@@ -28,7 +28,7 @@ specifiers:
   renamer: 4.0.0
   sass: 1.58.3
   semantic-release: 20.1.1
-  ts-essentials: 9.3.0
+  ts-essentials: 9.3.1
   typescript: 4.9.5
   vitepress: 1.0.0-alpha.49
   vue: 3.2.47
@@ -63,7 +63,7 @@ devDependencies:
   renamer: 4.0.0
   sass: 1.58.3
   semantic-release: 20.1.1
-  ts-essentials: 9.3.0_typescript@4.9.5
+  ts-essentials: 9.3.1_typescript@4.9.5
   typescript: 4.9.5
   vitepress: 1.0.0-alpha.49_mq2yidvv33ga2lshvrisjmzale
   vue: 3.2.47
@@ -7692,8 +7692,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /ts-essentials/9.3.0_typescript@4.9.5:
-    resolution: {integrity: sha512-XeiCboEyBG8UqXZtXl59bWEi4ZgOqRsogFDI6WDGIF1LmzbYiAkIwjkXN6zZWWl4re/lsOqMlYfe8KA0XiiEPw==}
+  /ts-essentials/9.3.1_typescript@4.9.5:
+    resolution: {integrity: sha512-9CChSvQMyVRo29Vb1A2jbs+LKo3d/bAf+ndSaX0T8cEiy/HChVaRN/HY5DqUryZ8hZ6uol9bEgCnGmnDbwBR9Q==}
     peerDependencies:
       typescript: '>=4.1.0'
     dependencies:
