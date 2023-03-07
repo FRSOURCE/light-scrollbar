@@ -75,7 +75,7 @@ jobs:
       - name: Install Cypress
         run: pnpm cypress install
       - name: Run cypress tests
-        uses: cypress-io/github-action@9e537519c800b1aba1f3d5596364f41d9a32bcd5
+        uses: cypress-io/github-action@7eaec0de61cd50fc2e0db8423d7f0698222ee20d
         with:
           install: true
           command: pnpm cy.ci
