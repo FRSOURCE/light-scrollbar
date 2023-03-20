@@ -24,7 +24,7 @@ specifiers:
   incstr: 1.2.3
   lodash-es: ^4.17.21
   microbundle: 0.15.1
-  prettier: 2.8.4
+  prettier: 2.8.5
   renamer: 4.0.0
   sass: 1.59.2
   semantic-release: 20.1.1
@@ -59,7 +59,7 @@ devDependencies:
   incstr: 1.2.3
   lodash-es: 4.17.21
   microbundle: 0.15.1
-  prettier: 2.8.4
+  prettier: 2.8.5
   renamer: 4.0.0
   sass: 1.59.2
   semantic-release: 20.1.1
@@ -6625,8 +6625,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier/2.8.4:
-    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
+  /prettier/2.8.5:
+    resolution: {integrity: sha512-3gzuxrHbKUePRBB4ZeU08VNkUcqEHaUaouNt0m7LGP4Hti/NuB07C7PPTM/LkWqXoJYJn2McEo5+kxPNrtQkLQ==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
