@@ -1,3 +1,10 @@
+## [1.4.31](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.30...v1.4.31) (2023-03-20)
+
+
+### Reverts
+
+* Revert "chore: add renovate config (#229)" (#232) ([ee0d7f8](https://github.com/FRSOURCE/light-scrollbar/commit/ee0d7f866cb099754198f313f7f54305208b8ff6)), closes [#229](https://github.com/FRSOURCE/light-scrollbar/issues/229) [#232](https://github.com/FRSOURCE/light-scrollbar/issues/232)
+
 ## [1.4.30](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.29...v1.4.30) (2023-03-14)
 
 ## [1.4.29](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.28...v1.4.29) (2023-03-09)
