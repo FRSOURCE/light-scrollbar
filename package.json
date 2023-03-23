@@ -21,7 +21,7 @@
     "prettify": "prettier --write src",
     "prettify.ci": "prettier --check src",
     "cy": "concurrently \"pnpm dev-server\" \"pnpm start\" \"cypress open --e2e\"",
-    "cy.ci": "concurrently --kill-others --success first \"pnpm dev-server\" \"pnpm cypress run --headless\"",
+    "cy.ci": "concurrently --kill-others --success first \"pnpm dev-server\" \"wait-on ./dist/index.js && pnpm cypress run --headless\"",
     "release": "semantic-release",
     "release.ci": "pnpm release --yes",
     "release.test": "pnpm release --no-git-tag-version --no-push --skip-npm",
@@ -80,9 +80,10 @@
     "sass": "1.59.3",
     "semantic-release": "20.1.3",
     "ts-essentials": "9.3.1",
-    "typescript": "4.9.5",
+    "typescript": "5.0.2",
     "vitepress": "1.0.0-alpha.61",
-    "vue": "3.2.47"
+    "vue": "3.2.47",
+    "wait-on": "^7.0.1"
   },
   "dependencies": {
     "@frsource/frs-hide-scrollbar": "^2.0.7"
