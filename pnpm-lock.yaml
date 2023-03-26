@@ -4,7 +4,7 @@ specifiers:
   '@algolia/client-search': 4.14.3
   '@frsource/frs-hide-scrollbar': ^2.0.7
   '@frsource/frs-replace': 4.1.0
-  '@semantic-release/changelog': 6.0.2
+  '@semantic-release/changelog': 6.0.3
   '@semantic-release/commit-analyzer': 9.0.2
   '@semantic-release/git': 10.0.1
   '@semantic-release/github': 8.0.7
@@ -30,7 +30,7 @@ specifiers:
   semantic-release: 20.1.3
   ts-essentials: 9.3.1
   typescript: 5.0.2
-  vitepress: 1.0.0-alpha.61
+  vitepress: 1.0.0-alpha.63
   vue: 3.2.47
   wait-on: ^7.0.1
 
@@ -40,7 +40,7 @@ dependencies:
 devDependencies:
   '@algolia/client-search': 4.14.3
   '@frsource/frs-replace': 4.1.0
-  '@semantic-release/changelog': 6.0.2_semantic-release@20.1.3
+  '@semantic-release/changelog': 6.0.3_semantic-release@20.1.3
   '@semantic-release/commit-analyzer': 9.0.2_semantic-release@20.1.3
   '@semantic-release/git': 10.0.1_semantic-release@20.1.3
   '@semantic-release/github': 8.0.7_semantic-release@20.1.3
@@ -66,7 +66,7 @@ devDependencies:
   semantic-release: 20.1.3
   ts-essentials: 9.3.1_typescript@5.0.2
   typescript: 5.0.2
-  vitepress: 1.0.0-alpha.61_wr4hmx4y73coweh3feejyk42em
+  vitepress: 1.0.0-alpha.63_wr4hmx4y73coweh3feejyk42em
   vue: 3.2.47
   wait-on: 7.0.1
 
@@ -2094,8 +2094,8 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@semantic-release/changelog/6.0.2_semantic-release@20.1.3:
-    resolution: {integrity: sha512-jHqfTkoPbDEOAgAP18mGP53IxeMwxTISN+GwTRy9uLu58UjARoZU8ScCgWGeO2WPkEsm57H8AkyY02W2ntIlIw==}
+  /@semantic-release/changelog/6.0.3_semantic-release@20.1.3:
+    resolution: {integrity: sha512-dZuR5qByyfe3Y03TpmCvAxCyTnp7r5XwtHRf/8vD9EAn4ZWbavUX8adMtXYzE86EVh0gyLA7lm5yW4IV30XUag==}
     engines: {node: '>=14.17'}
     peerDependencies:
       semantic-release: '>=18.0.0'
@@ -8122,8 +8122,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitepress/1.0.0-alpha.61_wr4hmx4y73coweh3feejyk42em:
-    resolution: {integrity: sha512-NvzERVS3/TU9YkYcaiK7yNSe0zY9UcSV58tx3mxbvVLCuwRykzO4OWbl6vQT6Ut6YGuZU1y3Z5WcSS+fHfaxJA==}
+  /vitepress/1.0.0-alpha.63_wr4hmx4y73coweh3feejyk42em:
+    resolution: {integrity: sha512-7QMwjT9888S64SkmJqSmRlP417yniCj4IqawIpzYSQMnlJ5CjBWOTbzXKvmzRZkjOJGTcaYr2C88+1/z8ERG+g==}
     hasBin: true
     dependencies:
       '@docsearch/css': 3.3.3
