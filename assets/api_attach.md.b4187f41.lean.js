@@ -1,1 +1,0 @@
-import{_ as s,o as a,c as l,O as n}from"./chunks/framework.4c9b9756.js";const C=JSON.parse('{"title":"attach","description":"","frontmatter":{},"headers":[],"relativePath":"api/attach.md","lastUpdated":1682307337000}'),t={name:"api/attach.md"},o=n("",6),p=[o];function e(c,r,D,y,i,F){return a(),l("div",null,p)}const h=s(t,[["render",e]]);export{C as __pageData,h as default};
