@@ -1,3 +1,10 @@
+## [1.4.51](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.50...v1.4.51) (2023-05-15)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependency bump ([#267](https://github.com/FRSOURCE/light-scrollbar/issues/267)) ([f714513](https://github.com/FRSOURCE/light-scrollbar/commit/f714513eba8ec6a71876bb7e623fd319ec209fb5))
+
 ## [1.4.50](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.49...v1.4.50) (2023-05-15)
 
 ## [1.4.49](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.48...v1.4.49) (2023-05-08)
