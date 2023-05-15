@@ -43,11 +43,11 @@ devDependencies:
     specifier: 4.2.0
     version: 4.2.0
   cypress:
-    specifier: 12.11.0
-    version: 12.11.0
+    specifier: 12.12.0
+    version: 12.12.0
   cypress-real-events:
     specifier: ^1.7.4
-    version: 1.7.4(cypress@12.11.0)
+    version: 1.7.4(cypress@12.12.0)
   eslint:
     specifier: 8.40.0
     version: 8.40.0
@@ -3593,16 +3593,16 @@ packages:
     engines: {node: '>=12.17'}
     dev: true
 
-  /cypress-real-events@1.7.4(cypress@12.11.0):
+  /cypress-real-events@1.7.4(cypress@12.12.0):
     resolution: {integrity: sha512-bAlIf3w6uJa72hcbLFpQIl/hBoNGYnSVzFMgohefWcooyZz2WbFZdFAEDOl5qOPATtAU01o92sWvc2QW9eT8aA==}
     peerDependencies:
       cypress: ^4.x || ^5.x || ^6.x || ^7.x || ^8.x || ^9.x || ^10.x || ^11.x
     dependencies:
-      cypress: 12.11.0
+      cypress: 12.12.0
     dev: true
 
-  /cypress@12.11.0:
-    resolution: {integrity: sha512-TJE+CCWI26Hwr5Msb9GpQhFLubdYooW0fmlPwTsfiyxmngqc7+SZGLPeIkj2dTSSZSEtpQVzOzvcnzH0o8G7Vw==}
+  /cypress@12.12.0:
+    resolution: {integrity: sha512-UU5wFQ7SMVCR/hyKok/KmzG6fpZgBHHfrXcHzDmPHWrT+UUetxFzQgt7cxCszlwfozckzwkd22dxMwl/vNkWRw==}
     engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     hasBin: true
     requiresBuild: true
