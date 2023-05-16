@@ -1,21 +1,21 @@
 <template>
-  <AddItem :instance="innerElementRef"></AddItem>
-  <ScrollbarTemplate/>
+  <AddItem @click="numberOfAdditionalElements += $event"></AddItem>
+  <ScrollbarTemplate :additional-elements-number="numberOfAdditionalElements"/>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { attach, WrapperPlacement } from "../assets/dist/index.modern.mjs";
 import AddItem from './addItem.vue';
 import ScrollbarTemplate from './scrollbarTemplate.vue';
 
-const innerElementRef = ref();
+const numberOfAdditionalElements = ref(0);
+
 onMounted(() => {
   const scrollbarContainerElement = document.querySelector(".my-scrollbar");
-  const { innerElement } = attach(scrollbarContainerElement, {
+  attach(scrollbarContainerElement, {
     wrapperPlacement: WrapperPlacement.outside
   });
-  innerElementRef.value = innerElement;
 })
 </script>
 

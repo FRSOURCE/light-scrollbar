@@ -21,8 +21,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          cache: 'pnpm'
+          node-version: "18.x"
+          cache: "pnpm"
       - name: Remove git auth
         run: git config --unset http.https://github.com/.extraheader
       - name: Install dependencies
@@ -41,8 +41,8 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          cache: 'pnpm'
+          node-version: "18.x"
+          cache: "pnpm"
       - name: remove git auth
         run: git config --unset http.https://github.com/.extraheader
       - name: Install dependencies
@@ -64,8 +64,8 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          cache: 'pnpm'
+          node-version: "18.x"
+          cache: "pnpm"
       - name: Install rimraf
         run: npm i -g rimraf
       - name: Install dependencies
@@ -78,7 +78,7 @@ jobs:
         uses: cypress-io/github-action@da4b0339d78f7f5ff37719b5ebab5bb57fdeefb9
         with:
           install: true
-          command: pnpm cy.ci
+          command: pnpm test.ci
       - name: Upload Cypress artifacts
         uses: actions/upload-artifact@v3
         if: failure()
@@ -111,8 +111,8 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          cache: 'pnpm'
+          node-version: "18.x"
+          cache: "pnpm"
       - name: Install rimraf
         run: npm i -g rimraf
       - name: remove git auth
@@ -149,8 +149,8 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          cache: 'pnpm'
+          node-version: "18.x"
+          cache: "pnpm"
       - name: Install rimraf
         run: npm i -g rimraf
       - name: Install dependencies

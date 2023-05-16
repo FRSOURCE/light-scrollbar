@@ -1,6 +1,6 @@
 <template>
-  <AddItem :instance="innerElementRef"></AddItem>
-  <ScrollbarTemplate/>
+  <AddItem @click="numberOfAdditionalElements += $event"></AddItem>
+  <ScrollbarTemplate :additional-elements-number="numberOfAdditionalElements"/>
 </template>
 
 <script setup lang="ts">
@@ -17,19 +17,14 @@ const props = defineProps({
 });
 const { showOnHover } = toRefs(props);
 
-const innerElementRef = ref();
+const numberOfAdditionalElements = ref(0);
+
 onMounted(() => {
   let instance: ReturnType<typeof attach>;
   watch(showOnHover, showOnHover => {
-    if(innerElementRef.value) {
-      instance?.detach();
-      innerElementRef.value = null;
-    }
-    if(!innerElementRef.value) {
-      const scrollbarContainerElement = document.querySelector(".my-scrollbar");
-      instance = attach(scrollbarContainerElement, { showOnHover });
-      innerElementRef.value = instance?.innerElement;
-    }
+    instance?.detach();
+    const scrollbarContainerElement = document.querySelector(".my-scrollbar");
+    instance = attach(scrollbarContainerElement, { showOnHover });
   }, { immediate: true });
 });
 </script>
