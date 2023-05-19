@@ -1,3 +1,10 @@
+## [1.4.53](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.52...v1.4.53) (2023-05-19)
+
+
+### Bug Fixes
+
+* wrong scrollbar position with many items ([#269](https://github.com/FRSOURCE/light-scrollbar/issues/269)) ([9844331](https://github.com/FRSOURCE/light-scrollbar/commit/9844331084c8765dd94c1906651b3d1b6f7091f0))
+
 ## [1.4.52](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.51...v1.4.52) (2023-05-15)
 
 ## [1.4.51](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.50...v1.4.51) (2023-05-15)
