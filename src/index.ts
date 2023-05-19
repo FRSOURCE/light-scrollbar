@@ -276,19 +276,12 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     const isTop = dir === "y" ? "top" : "left";
     const scrollTopLeft = (e?.target as HTMLElement)?.[isLeftOrTop] || innerElement[isLeftOrTop];
 
-    let diffPercent = 0;
-    let diffPixels = 0;
-    const isScrollbarTooSmall = data.scrollbar[dir].long.realPercent <= data.minLongPercent;
-    if (isScrollbarTooSmall) {
-      diffPercent = data.minLongPercent - data.scrollbar[dir].long.realPercent;
-      diffPixels = (data.container[dimensionLong] * diffPercent) / 100;
-    }
     data.scrollbar[dir].gap.toContent.percent = scrollTopLeft / data.content[dimensionLong];
-    const longestScrollPosition = scrollTopLeft + data.container[dimensionLong] - diffPixels;
-    data.scrollbar[dir].gap.toContainer.pixel =
-      (longestScrollPosition / data.content[dimensionLong]) * data.container[dimensionLong] -
-      data.scrollbar[dir].long.pixel -
-      2 * diffPixels;
+
+    const containerPlusScrollbarLong = data.content[dimensionLong] - data.content[dimensionLong] * data.scrollbar[dir].long.realPercent / 100;
+    const percScrollbarPosition = (scrollTopLeft / containerPlusScrollbarLong) * 100;
+
+    data.scrollbar[dir].gap.toContainer.pixel = percScrollbarPosition / 100 * (data.container[dimensionLong]  - data.scrollbar[dir].long.pixel);
 
     outerElement.style.setProperty(
       `--${defaultCssVarName}-bar-${dir}-${isTop}`,
