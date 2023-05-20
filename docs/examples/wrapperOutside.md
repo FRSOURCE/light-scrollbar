@@ -1,4 +1,4 @@
-# wrapper outside example
+# Wrapper outside example
 
 Example with settings, `wrapperPlacement: 'outside'`
 
