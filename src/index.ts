@@ -14,8 +14,7 @@ import { deepMergeConfig, doActionForBothAxis, reverseDir } from "./utils/utils"
 // TODO: intersection of x/y scrollbars in corner should be excluded
 // TODO: add rail
 // TODO: min height should be fixed e.g 30px? maybe prop and possibility to use px and %?
-// TODO: sub pixel diff on min 10% scrollbar
-// TODO: when  paginated list recalculate grab
+// TODO: when paginated list recalculate grab
 // TODO: increase bar once hovered
 // TODO: offset to edges
 // TODO: hide when overflow:hidden?
@@ -278,10 +277,12 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
 
     data.scrollbar[dir].gap.toContent.percent = scrollTopLeft / data.content[dimensionLong];
 
-    const containerPlusScrollbarLong = data.content[dimensionLong] - data.content[dimensionLong] * data.scrollbar[dir].long.realPercent / 100;
+    const containerPlusScrollbarLong =
+      data.content[dimensionLong] - (data.content[dimensionLong] * data.scrollbar[dir].long.realPercent) / 100;
     const percScrollbarPosition = (scrollTopLeft / containerPlusScrollbarLong) * 100;
 
-    data.scrollbar[dir].gap.toContainer.pixel = percScrollbarPosition / 100 * (data.container[dimensionLong]  - data.scrollbar[dir].long.pixel);
+    data.scrollbar[dir].gap.toContainer.pixel =
+      (percScrollbarPosition / 100) * (data.container[dimensionLong] - data.scrollbar[dir].long.pixel);
 
     outerElement.style.setProperty(
       `--${defaultCssVarName}-bar-${dir}-${isTop}`,
