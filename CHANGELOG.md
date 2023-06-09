@@ -1,3 +1,10 @@
+## [1.4.63](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.62...v1.4.63) (2023-06-09)
+
+
+### Bug Fixes
+
+* ignore algolia peer dependency ([#283](https://github.com/FRSOURCE/light-scrollbar/issues/283)) ([33cb3f9](https://github.com/FRSOURCE/light-scrollbar/commit/33cb3f91ba1851a2e73558a5a8bc53febf5f17c6))
+
 ## [1.4.62](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.61...v1.4.62) (2023-06-07)
 
 ## [1.4.61](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.60...v1.4.61) (2023-06-05)
