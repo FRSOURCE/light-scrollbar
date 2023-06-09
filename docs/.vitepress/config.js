@@ -7,7 +7,7 @@ export default {
     base: '/light-scrollbar/',
     themeConfig: {
         editLink: {
-            pattern: 'https://github.com/FRSOURCE/vitepress/edit/main/docs/:path',
+            pattern: 'https://github.com/FRSOURCE/light-scrollbar/tree/main/docs/:path',
             text: 'Edit this page on GitHub'
         },
         socialLinks: [
