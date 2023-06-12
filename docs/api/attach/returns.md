@@ -8,7 +8,7 @@ Inner element of wrapped scrollable container, see example output code in [examp
 
 <sup><sub>**Type**</sub></sup>
 
-<<< src/utils/types.ts#AttachInnerElement
+<<< ../../../src/utils/types.ts#AttachInnerElement
 
 ## `outerElement`
 
@@ -16,7 +16,7 @@ Outer element of wrapped scrollable container, see example output code in [examp
 
 <sup><sub>**Type**</sub></sup>
 
-<<< src/utils/types.ts#AttachOuterElement
+<<< ../../../src/utils/types.ts#AttachOuterElement
 
 ## `detach`
 
@@ -24,4 +24,4 @@ Method that can be used to destroy/detach light-scrollbar from your element
 
 <sup><sub>**Type**</sub></sup>
 
-<<< src/utils/types.ts#AttachReturn
+<<< ../../../src/utils/types.ts#AttachReturn
