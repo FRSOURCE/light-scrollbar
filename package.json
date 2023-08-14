@@ -76,7 +76,7 @@
     "microbundle": "0.15.1",
     "prettier": "3.0.0",
     "renamer": "4.0.0",
-    "sass": "1.64.2",
+    "sass": "1.65.1",
     "semantic-release": "21.0.7",
     "ts-essentials": "9.3.2",
     "typescript": "5.1.6",
