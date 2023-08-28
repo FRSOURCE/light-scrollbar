@@ -15,28 +15,28 @@ devDependencies:
     version: 4.1.1
   '@semantic-release/changelog':
     specifier: 6.0.3
-    version: 6.0.3(semantic-release@21.0.9)
+    version: 6.0.3(semantic-release@21.1.1)
   '@semantic-release/commit-analyzer':
     specifier: 10.0.3
-    version: 10.0.3(semantic-release@21.0.9)
+    version: 10.0.3(semantic-release@21.1.1)
   '@semantic-release/git':
     specifier: 10.0.1
-    version: 10.0.1(semantic-release@21.0.9)
+    version: 10.0.1(semantic-release@21.1.1)
   '@semantic-release/github':
     specifier: 9.0.4
-    version: 9.0.4(semantic-release@21.0.9)
+    version: 9.0.4(semantic-release@21.1.1)
   '@semantic-release/npm':
     specifier: 10.0.5
-    version: 10.0.5(semantic-release@21.0.9)
+    version: 10.0.5(semantic-release@21.1.1)
   '@semantic-release/release-notes-generator':
     specifier: 11.0.6
-    version: 11.0.6(semantic-release@21.0.9)
+    version: 11.0.6(semantic-release@21.1.1)
   '@typescript-eslint/eslint-plugin':
     specifier: 6.4.1
-    version: 6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.1.6)
+    version: 6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2)
   '@typescript-eslint/parser':
     specifier: 6.4.1
-    version: 6.4.1(eslint@8.48.0)(typescript@5.1.6)
+    version: 6.4.1(eslint@8.48.0)(typescript@5.2.2)
   concurrently:
     specifier: 8.2.1
     version: 8.2.1
@@ -83,14 +83,14 @@ devDependencies:
     specifier: 1.66.1
     version: 1.66.1
   semantic-release:
-    specifier: 21.0.9
-    version: 21.0.9
+    specifier: 21.1.1
+    version: 21.1.1
   ts-essentials:
-    specifier: 9.3.2
-    version: 9.3.2(typescript@5.1.6)
+    specifier: 9.4.0
+    version: 9.4.0(typescript@5.2.2)
   typescript:
-    specifier: 5.1.6
-    version: 5.1.6
+    specifier: 5.2.2
+    version: 5.2.2
   vitepress:
     specifier: 1.0.0-rc.8
     version: 1.0.0-rc.8(sass@1.66.1)
@@ -2111,7 +2111,7 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@semantic-release/changelog@6.0.3(semantic-release@21.0.9):
+  /@semantic-release/changelog@6.0.3(semantic-release@21.1.1):
     resolution: {integrity: sha512-dZuR5qByyfe3Y03TpmCvAxCyTnp7r5XwtHRf/8vD9EAn4ZWbavUX8adMtXYzE86EVh0gyLA7lm5yW4IV30XUag==}
     engines: {node: '>=14.17'}
     peerDependencies:
@@ -2121,10 +2121,10 @@ packages:
       aggregate-error: 3.1.0
       fs-extra: 11.0.0
       lodash: 4.17.21
-      semantic-release: 21.0.9
+      semantic-release: 21.1.1
     dev: true
 
-  /@semantic-release/commit-analyzer@10.0.3(semantic-release@21.0.9):
+  /@semantic-release/commit-analyzer@10.0.3(semantic-release@21.1.1):
     resolution: {integrity: sha512-pe45eTjaJBsZbJrT6AvcTzYYS9OJF3MGABTPFSpwmnfSXVmyfFuloO92pj6EVTbx6JGEUgpoipnITbWn+zyvaw==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -2137,7 +2137,7 @@ packages:
       import-from: 4.0.0
       lodash-es: 4.17.21
       micromatch: 4.0.5
-      semantic-release: 21.0.9
+      semantic-release: 21.1.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2152,7 +2152,7 @@ packages:
     engines: {node: '>=18'}
     dev: true
 
-  /@semantic-release/git@10.0.1(semantic-release@21.0.9):
+  /@semantic-release/git@10.0.1(semantic-release@21.1.1):
     resolution: {integrity: sha512-eWrx5KguUcU2wUPaO6sfvZI0wPafUKAMNC18aXY4EnNcrZL86dEmpNVnC9uMpGZkmZJ9EfCVJBQx4pV4EMGT1w==}
     engines: {node: '>=14.17'}
     peerDependencies:
@@ -2166,12 +2166,12 @@ packages:
       lodash: 4.17.21
       micromatch: 4.0.5
       p-reduce: 2.1.0
-      semantic-release: 21.0.9
+      semantic-release: 21.1.1
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@semantic-release/github@9.0.4(semantic-release@21.0.9):
+  /@semantic-release/github@9.0.4(semantic-release@21.1.1):
     resolution: {integrity: sha512-kQCGFAsBErvCR6hzNuzu63cj4erQN2krm9zQlg8vl4j5X0mL0d/Ras0wmL5Gkr1TuSS2lweME7M4J5zvtDDDSA==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -2192,13 +2192,13 @@ packages:
       lodash-es: 4.17.21
       mime: 3.0.0
       p-filter: 3.0.0
-      semantic-release: 21.0.9
+      semantic-release: 21.1.1
       url-join: 5.0.0
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@semantic-release/npm@10.0.5(semantic-release@21.0.9):
+  /@semantic-release/npm@10.0.5(semantic-release@21.1.1):
     resolution: {integrity: sha512-cJnQ2M5pxJRwZEkb0A/+U3TG4UNmjrrLwV2PxJKljn5OPT0yJB8GzGgWbbKACayvxrT06YdTa4Amtq/piJcOIA==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -2215,12 +2215,12 @@ packages:
       rc: 1.2.8
       read-pkg: 8.0.0
       registry-auth-token: 5.0.1
-      semantic-release: 21.0.9
+      semantic-release: 21.1.1
       semver: 7.5.4
       tempy: 3.0.0
     dev: true
 
-  /@semantic-release/release-notes-generator@11.0.6(semantic-release@21.0.9):
+  /@semantic-release/release-notes-generator@11.0.6(semantic-release@21.1.1):
     resolution: {integrity: sha512-Puuv/6AJosmep6pIu5tsLDYrNAVQr7a4oxGiKnOhW20TTYSWEGGCNAOXJI2NKSGFGXwXbxzy2tQWVC/TovxMIw==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -2236,7 +2236,7 @@ packages:
       into-stream: 7.0.0
       lodash-es: 4.17.21
       read-pkg-up: 10.0.0
-      semantic-release: 21.0.9
+      semantic-release: 21.1.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2331,7 +2331,7 @@ packages:
     dev: true
     optional: true
 
-  /@typescript-eslint/eslint-plugin@6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.1.6):
+  /@typescript-eslint/eslint-plugin@6.4.1(@typescript-eslint/parser@6.4.1)(eslint@8.48.0)(typescript@5.2.2):
     resolution: {integrity: sha512-3F5PtBzUW0dYlq77Lcqo13fv+58KDwUib3BddilE8ajPJT+faGgxmI9Sw+I8ZS22BYwoir9ZhNXcLi+S+I2bkw==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -2343,10 +2343,10 @@ packages:
         optional: true
     dependencies:
       '@eslint-community/regexpp': 4.6.2
-      '@typescript-eslint/parser': 6.4.1(eslint@8.48.0)(typescript@5.1.6)
+      '@typescript-eslint/parser': 6.4.1(eslint@8.48.0)(typescript@5.2.2)
       '@typescript-eslint/scope-manager': 6.4.1
-      '@typescript-eslint/type-utils': 6.4.1(eslint@8.48.0)(typescript@5.1.6)
-      '@typescript-eslint/utils': 6.4.1(eslint@8.48.0)(typescript@5.1.6)
+      '@typescript-eslint/type-utils': 6.4.1(eslint@8.48.0)(typescript@5.2.2)
+      '@typescript-eslint/utils': 6.4.1(eslint@8.48.0)(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.4.1
       debug: 4.3.4(supports-color@8.1.1)
       eslint: 8.48.0
@@ -2354,13 +2354,13 @@ packages:
       ignore: 5.2.4
       natural-compare: 1.4.0
       semver: 7.5.4
-      ts-api-utils: 1.0.1(typescript@5.1.6)
-      typescript: 5.1.6
+      ts-api-utils: 1.0.1(typescript@5.2.2)
+      typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@typescript-eslint/parser@6.4.1(eslint@8.48.0)(typescript@5.1.6):
+  /@typescript-eslint/parser@6.4.1(eslint@8.48.0)(typescript@5.2.2):
     resolution: {integrity: sha512-610G6KHymg9V7EqOaNBMtD1GgpAmGROsmfHJPXNLCU9bfIuLrkdOygltK784F6Crboyd5tBFayPB7Sf0McrQwg==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -2372,11 +2372,11 @@ packages:
     dependencies:
       '@typescript-eslint/scope-manager': 6.4.1
       '@typescript-eslint/types': 6.4.1
-      '@typescript-eslint/typescript-estree': 6.4.1(typescript@5.1.6)
+      '@typescript-eslint/typescript-estree': 6.4.1(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.4.1
       debug: 4.3.4(supports-color@8.1.1)
       eslint: 8.48.0
-      typescript: 5.1.6
+      typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2389,7 +2389,7 @@ packages:
       '@typescript-eslint/visitor-keys': 6.4.1
     dev: true
 
-  /@typescript-eslint/type-utils@6.4.1(eslint@8.48.0)(typescript@5.1.6):
+  /@typescript-eslint/type-utils@6.4.1(eslint@8.48.0)(typescript@5.2.2):
     resolution: {integrity: sha512-7ON8M8NXh73SGZ5XvIqWHjgX2f+vvaOarNliGhjrJnv1vdjG0LVIz+ToYfPirOoBi56jxAKLfsLm40+RvxVVXA==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -2399,12 +2399,12 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/typescript-estree': 6.4.1(typescript@5.1.6)
-      '@typescript-eslint/utils': 6.4.1(eslint@8.48.0)(typescript@5.1.6)
+      '@typescript-eslint/typescript-estree': 6.4.1(typescript@5.2.2)
+      '@typescript-eslint/utils': 6.4.1(eslint@8.48.0)(typescript@5.2.2)
       debug: 4.3.4(supports-color@8.1.1)
       eslint: 8.48.0
-      ts-api-utils: 1.0.1(typescript@5.1.6)
-      typescript: 5.1.6
+      ts-api-utils: 1.0.1(typescript@5.2.2)
+      typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2414,7 +2414,7 @@ packages:
     engines: {node: ^16.0.0 || >=18.0.0}
     dev: true
 
-  /@typescript-eslint/typescript-estree@6.4.1(typescript@5.1.6):
+  /@typescript-eslint/typescript-estree@6.4.1(typescript@5.2.2):
     resolution: {integrity: sha512-xF6Y7SatVE/OyV93h1xGgfOkHr2iXuo8ip0gbfzaKeGGuKiAnzS+HtVhSPx8Www243bwlW8IF7X0/B62SzFftg==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -2429,13 +2429,13 @@ packages:
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.5.4
-      ts-api-utils: 1.0.1(typescript@5.1.6)
-      typescript: 5.1.6
+      ts-api-utils: 1.0.1(typescript@5.2.2)
+      typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@typescript-eslint/utils@6.4.1(eslint@8.48.0)(typescript@5.1.6):
+  /@typescript-eslint/utils@6.4.1(eslint@8.48.0)(typescript@5.2.2):
     resolution: {integrity: sha512-F/6r2RieNeorU0zhqZNv89s9bDZSovv3bZQpUNOmmQK1L80/cV4KEu95YUJWi75u5PhboFoKUJBnZ4FQcoqhDw==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -2446,7 +2446,7 @@ packages:
       '@types/semver': 7.5.0
       '@typescript-eslint/scope-manager': 6.4.1
       '@typescript-eslint/types': 6.4.1
-      '@typescript-eslint/typescript-estree': 6.4.1(typescript@5.1.6)
+      '@typescript-eslint/typescript-estree': 6.4.1(typescript@5.2.2)
       eslint: 8.48.0
       semver: 7.5.4
     transitivePeerDependencies:
@@ -7241,16 +7241,16 @@ packages:
     resolution: {integrity: sha512-AckIIV90rPDcBcglUwXPF3kg0P0qmPsPXAj6BBEENQE1p5yA1xfmDJzfi1Tappj37Pv2mVbKpL3Z1T+Nn7k1Qw==}
     dev: true
 
-  /semantic-release@21.0.9:
-    resolution: {integrity: sha512-EnylO0+UcKbVFaHeMbCjJpxqpgJPnze4zoOwmj34Kv4GnuyTV9MkNKrwmdZPFbmom9PpMj+9JN/8eyZzKkKyZQ==}
+  /semantic-release@21.1.1:
+    resolution: {integrity: sha512-OCIazQnaCHdq1F6zfmKS0P7jZakYq0weiqW2mxUWo4H2CDnxelUoa/0Bs/dQatoHc6JFh6lG2HWpusdl93bFcw==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
-      '@semantic-release/commit-analyzer': 10.0.3(semantic-release@21.0.9)
+      '@semantic-release/commit-analyzer': 10.0.3(semantic-release@21.1.1)
       '@semantic-release/error': 4.0.0
-      '@semantic-release/github': 9.0.4(semantic-release@21.0.9)
-      '@semantic-release/npm': 10.0.5(semantic-release@21.0.9)
-      '@semantic-release/release-notes-generator': 11.0.6(semantic-release@21.0.9)
+      '@semantic-release/github': 9.0.4(semantic-release@21.1.1)
+      '@semantic-release/npm': 10.0.5(semantic-release@21.1.1)
+      '@semantic-release/release-notes-generator': 11.0.6(semantic-release@21.1.1)
       aggregate-error: 4.0.1
       cosmiconfig: 8.0.0
       debug: 4.3.4(supports-color@8.1.1)
@@ -7826,21 +7826,24 @@ packages:
     engines: {node: '>=14.16'}
     dev: true
 
-  /ts-api-utils@1.0.1(typescript@5.1.6):
+  /ts-api-utils@1.0.1(typescript@5.2.2):
     resolution: {integrity: sha512-lC/RGlPmwdrIBFTX59wwNzqh7aR2otPNPR/5brHZm/XKFYKsfqxihXUe9pU3JI+3vGkl+vyCoNNnPhJn3aLK1A==}
     engines: {node: '>=16.13.0'}
     peerDependencies:
       typescript: '>=4.2.0'
     dependencies:
-      typescript: 5.1.6
+      typescript: 5.2.2
     dev: true
 
-  /ts-essentials@9.3.2(typescript@5.1.6):
-    resolution: {integrity: sha512-JxKJzuWqH1MmH4ZFHtJzGEhkfN3QvVR3C3w+4BIoWeoY68UVVoA2Np/Bca9z0IPSErVCWhv439aT0We4Dks8kQ==}
+  /ts-essentials@9.4.0(typescript@5.2.2):
+    resolution: {integrity: sha512-s4BzWZmTh926caZO7XF7MMbwCn1BioT3s3r9hT8ARnwW//30OD0XioEsMyq3ORAHP/deN4Zkst2ZvxXmL+tG6g==}
     peerDependencies:
       typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     dependencies:
-      typescript: 5.1.6
+      typescript: 5.2.2
     dev: true
 
   /tslib@2.4.0:
@@ -7910,8 +7913,8 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript@5.1.6:
-    resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}
+  /typescript@5.2.2:
+    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
