@@ -57,7 +57,7 @@
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "10.0.4",
     "@semantic-release/git": "10.0.1",
-    "@semantic-release/github": "9.0.4",
+    "@semantic-release/github": "9.0.5",
     "@semantic-release/npm": "10.0.5",
     "@semantic-release/release-notes-generator": "11.0.7",
     "@typescript-eslint/eslint-plugin": "6.5.0",
@@ -80,7 +80,7 @@
     "semantic-release": "21.1.1",
     "ts-essentials": "9.4.0",
     "typescript": "5.2.2",
-    "vitepress": "1.0.0-rc.10",
+    "vitepress": "1.0.0-rc.12",
     "vue": "3.3.4",
     "wait-on": "^7.0.1"
   },
