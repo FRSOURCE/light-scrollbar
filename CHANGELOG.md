@@ -1,3 +1,5 @@
+## [1.4.120](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.119...v1.4.120) (2023-10-16)
+
 ## [1.4.119](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.118...v1.4.119) (2023-10-16)
 
 
