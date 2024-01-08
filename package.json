@@ -77,12 +77,12 @@
     "prettier": "3.1.1",
     "renamer": "4.0.0",
     "rimraf": "^5.0.1",
-    "sass": "1.69.6",
+    "sass": "1.69.7",
     "semantic-release": "21.1.2",
     "ts-essentials": "9.4.1",
     "typescript": "5.3.3",
-    "vitepress": "1.0.0-rc.34",
-    "vue": "3.4.3",
+    "vitepress": "1.0.0-rc.35",
+    "vue": "3.4.5",
     "wait-on": "^7.0.1"
   },
   "dependencies": {
