@@ -64,7 +64,7 @@
     "@typescript-eslint/parser": "6.19.1",
     "concurrently": "8.2.2",
     "cpy-cli": "5.0.0",
-    "cypress": "13.6.3",
+    "cypress": "13.6.4",
     "cypress-real-events": "^1.7.4",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
@@ -81,7 +81,7 @@
     "semantic-release": "21.1.2",
     "ts-essentials": "9.4.1",
     "typescript": "5.3.3",
-    "vitepress": "1.0.0-rc.39",
+    "vitepress": "1.0.0-rc.41",
     "vue": "3.4.15",
     "wait-on": "^7.0.1"
   },
