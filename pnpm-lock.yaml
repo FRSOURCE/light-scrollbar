@@ -95,8 +95,8 @@ devDependencies:
     specifier: 5.3.3
     version: 5.3.3
   vitepress:
-    specifier: 1.0.0-rc.44
-    version: 1.0.0-rc.44(postcss@8.4.13)(sass@1.71.1)(typescript@5.3.3)
+    specifier: 1.0.0-rc.45
+    version: 1.0.0-rc.45(postcss@8.4.13)(sass@1.71.1)(typescript@5.3.3)
   vue:
     specifier: 3.4.21
     version: 3.4.21(typescript@5.3.3)
@@ -8404,8 +8404,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitepress@1.0.0-rc.44(postcss@8.4.13)(sass@1.71.1)(typescript@5.3.3):
-    resolution: {integrity: sha512-tO5taxGI7fSpBK1D8zrZTyJJERlyU9nnt0jHSt3fywfq3VKn977Hg0wUuTkEmwXlFYwuW26+6+3xorf4nD3XvA==}
+  /vitepress@1.0.0-rc.45(postcss@8.4.13)(sass@1.71.1)(typescript@5.3.3):
+    resolution: {integrity: sha512-/OiYsu5UKpQKA2c0BAZkfyywjfauDjvXyv6Mo4Ra57m5n4Bxg1HgUGoth1CLH2vwUbR/BHvDA9zOM0RDvgeSVQ==}
     hasBin: true
     peerDependencies:
       markdown-it-mathjax3: ^4.3.2
