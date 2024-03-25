@@ -81,7 +81,7 @@
     "semantic-release": "21.1.2",
     "ts-essentials": "9.4.1",
     "typescript": "5.3.3",
-    "vitepress": "1.0.0-rc.45",
+    "vitepress": "1.0.1",
     "vue": "3.4.21",
     "wait-on": "^7.0.1"
   },
