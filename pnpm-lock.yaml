@@ -89,14 +89,14 @@ devDependencies:
     specifier: 21.1.2
     version: 21.1.2
   ts-essentials:
-    specifier: 9.4.1
-    version: 9.4.1(typescript@5.3.3)
+    specifier: 9.4.2
+    version: 9.4.2(typescript@5.3.3)
   typescript:
     specifier: 5.3.3
     version: 5.3.3
   vitepress:
-    specifier: 1.0.1
-    version: 1.0.1(postcss@8.4.13)(sass@1.71.1)(typescript@5.3.3)
+    specifier: 1.0.2
+    version: 1.0.2(postcss@8.4.13)(sass@1.71.1)(typescript@5.3.3)
   vue:
     specifier: 3.4.21
     version: 3.4.21(typescript@5.3.3)
@@ -8183,8 +8183,8 @@ packages:
       typescript: 5.3.3
     dev: true
 
-  /ts-essentials@9.4.1(typescript@5.3.3):
-    resolution: {integrity: sha512-oke0rI2EN9pzHsesdmrOrnqv1eQODmJpd/noJjwj2ZPC3Z4N2wbjrOEqnsEgmvlO2+4fBb0a794DCna2elEVIQ==}
+  /ts-essentials@9.4.2(typescript@5.3.3):
+    resolution: {integrity: sha512-mB/cDhOvD7pg3YCLk2rOtejHjjdSi9in/IBYE13S+8WA5FBSraYf4V/ws55uvs0IvQ/l0wBOlXy5yBNZ9Bl8ZQ==}
     peerDependencies:
       typescript: '>=4.1.0'
     peerDependenciesMeta:
@@ -8443,8 +8443,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitepress@1.0.1(postcss@8.4.13)(sass@1.71.1)(typescript@5.3.3):
-    resolution: {integrity: sha512-eNr5pOBppYUUjEhv8S0S2t9Tv95LQ6mMeHj6ivaGwfHxpov70Vduuwl/QQMDRznKDSaP0WKV7a82Pb4JVOaqEw==}
+  /vitepress@1.0.2(postcss@8.4.13)(sass@1.71.1)(typescript@5.3.3):
+    resolution: {integrity: sha512-bEj9yTEdWyewJFOhEREZF+mXuAgOq27etuJZT6DZSp+J3XpQstXMJc5piSVwhZBtuj8OfA0iXy+jdP1c71KMYQ==}
     hasBin: true
     peerDependencies:
       markdown-it-mathjax3: ^4

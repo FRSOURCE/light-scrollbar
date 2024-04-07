@@ -79,9 +79,9 @@
     "rimraf": "^5.0.1",
     "sass": "1.71.1",
     "semantic-release": "21.1.2",
-    "ts-essentials": "9.4.1",
+    "ts-essentials": "9.4.2",
     "typescript": "5.3.3",
-    "vitepress": "1.0.1",
+    "vitepress": "1.0.2",
     "vue": "3.4.21",
     "wait-on": "^7.0.1"
   },
