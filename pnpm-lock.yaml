@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@frsource/frs-hide-scrollbar':
     specifier: ^2.0.7
-    version: 2.0.15
+    version: 2.0.18
 
 devDependencies:
   '@frsource/frs-replace':
@@ -83,8 +83,8 @@ devDependencies:
     specifier: ^5.0.1
     version: 5.0.7
   sass:
-    specifier: 1.77.2
-    version: 1.77.2
+    specifier: 1.77.4
+    version: 1.77.4
   semantic-release:
     specifier: 21.1.2
     version: 21.1.2
@@ -96,7 +96,7 @@ devDependencies:
     version: 5.4.5
   vitepress:
     specifier: 1.1.4
-    version: 1.1.4(postcss@8.4.13)(sass@1.77.2)(typescript@5.4.5)
+    version: 1.1.4(postcss@8.4.13)(sass@1.77.4)(typescript@5.4.5)
   vue:
     specifier: 3.4.27
     version: 3.4.27(typescript@5.4.5)
@@ -1833,8 +1833,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@frsource/frs-hide-scrollbar@2.0.15:
-    resolution: {integrity: sha512-jlDAx3H5SmrSq7y6ZkG/JunMmwuiRVAycKpMSkWsCm0rXIP4IRZGg813JhgVOcm37SqyfPpxXJwGgsmPmMPxnQ==}
+  /@frsource/frs-hide-scrollbar@2.0.18:
+    resolution: {integrity: sha512-+PCKINW6f5FQkzy02FfH+lrLU4CfGz61PnJLNcl2L/Ug+JXPehPv9a+4SjkDcDGhdwAYoKAIwNgzrbyYRoYniQ==}
     engines: {node: '>=18'}
     dev: false
 
@@ -2638,7 +2638,7 @@ packages:
       vite: ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.2.11(sass@1.77.2)
+      vite: 5.2.11(sass@1.77.4)
       vue: 3.4.27(typescript@5.4.5)
     dev: true
 
@@ -7547,8 +7547,8 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
 
-  /sass@1.77.2:
-    resolution: {integrity: sha512-eb4GZt1C3avsX3heBNlrc7I09nyT00IUuo4eFhAbeXWU2fvA7oXI53SxODVAA+zgZCk9aunAZgO+losjR3fAwA==}
+  /sass@1.77.4:
+    resolution: {integrity: sha512-vcF3Ckow6g939GMA4PeU7b2K/9FALXk2KF9J87txdHzXbUF9XRQRwSxcAs/fGaTnJeBFd7UoV22j3lzMLdM0Pw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -8397,7 +8397,7 @@ packages:
       extsprintf: 1.3.0
     dev: true
 
-  /vite@5.2.11(sass@1.77.2):
+  /vite@5.2.11(sass@1.77.4):
     resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -8428,12 +8428,12 @@ packages:
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.13.0
-      sass: 1.77.2
+      sass: 1.77.4
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
 
-  /vitepress@1.1.4(postcss@8.4.13)(sass@1.77.2)(typescript@5.4.5):
+  /vitepress@1.1.4(postcss@8.4.13)(sass@1.77.4)(typescript@5.4.5):
     resolution: {integrity: sha512-bWIzFZXpPB6NIDBuWnS20aMADH+FcFKDfQNYFvbOWij03PR29eImTceQHIzCKordjXYBhM/TjE5VKFTUJ3EheA==}
     hasBin: true
     peerDependencies:
@@ -8459,7 +8459,7 @@ packages:
       minisearch: 6.3.0
       postcss: 8.4.13
       shiki: 1.4.0
-      vite: 5.2.11(sass@1.77.2)
+      vite: 5.2.11(sass@1.77.4)
       vue: 3.4.27(typescript@5.4.5)
     transitivePeerDependencies:
       - '@algolia/client-search'
