@@ -1,3 +1,10 @@
+## [1.4.197](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.196...v1.4.197) (2024-06-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @frsource/frs-hide-scrollbar to v2.0.20 ([#439](https://github.com/FRSOURCE/light-scrollbar/issues/439)) ([997b19e](https://github.com/FRSOURCE/light-scrollbar/commit/997b19ed30ea37ee87e7955fa92189c013a40bfe))
+
 ## [1.4.196](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.195...v1.4.196) (2024-06-03)
 
 
