@@ -75,7 +75,7 @@
     "lodash-es": "^4.17.21",
     "microbundle": "0.15.1",
     "prettier": "3.3.3",
-    "renamer": "4.0.0",
+    "renamer": "5.0.2",
     "rimraf": "^5.0.1",
     "sass": "1.77.8",
     "semantic-release": "21.1.2",
