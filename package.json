@@ -79,10 +79,10 @@
     "rimraf": "^5.0.1",
     "sass": "1.77.8",
     "semantic-release": "21.1.2",
-    "ts-essentials": "10.0.1",
+    "ts-essentials": "10.0.2",
     "typescript": "5.4.5",
     "vitepress": "1.1.4",
-    "vue": "3.4.37",
+    "vue": "3.4.38",
     "wait-on": "^7.0.1"
   },
   "dependencies": {
