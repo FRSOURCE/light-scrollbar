@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@frsource/frs-hide-scrollbar':
     specifier: ^2.0.7
-    version: 2.0.36
+    version: 2.0.37
 
 devDependencies:
   '@frsource/frs-replace':
@@ -1833,8 +1833,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@frsource/frs-hide-scrollbar@2.0.36:
-    resolution: {integrity: sha512-3GuNcSdf0vy2FuTdPXO6H9EU9/vvtKbmHEWOmFZAIKFEFaVSTBw095ZEHSGXriBVcebF7VXdr3PuNF9CRazgwQ==}
+  /@frsource/frs-hide-scrollbar@2.0.37:
+    resolution: {integrity: sha512-ANYqVGfwSq2ZGj9Vr47/DDl8EoF5s2fCTLDMvNatdWy4AKb24OieAzqpVRycKHo1ygc4Gv/fna8myfZvhj/15g==}
     engines: {node: '>=18'}
     dev: false
 
@@ -4943,7 +4943,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.19.2
+      uglify-js: 3.19.3
     dev: true
 
   /hard-rejection@2.1.0:
@@ -8276,8 +8276,8 @@ packages:
     engines: {node: '>=12.17'}
     dev: true
 
-  /uglify-js@3.19.2:
-    resolution: {integrity: sha512-S8KA6DDI47nQXJSi2ctQ629YzwOVs+bQML6DAtvy0wgNdpi+0ySpQK0g2pxBq2xfF2z3YCscu7NNA8nXT9PlIQ==}
+  /uglify-js@3.19.3:
+    resolution: {integrity: sha512-v3Xu+yuwBXisp6QYTcH4UbH+xYJXqnq2m/LtQVWKWzYc1iehYnLixoQDN9FH6/j9/oybfd6W9Ghwkl8+UMKTKQ==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true
