@@ -83,7 +83,7 @@
     "typescript": "5.4.5",
     "vitepress": "1.1.4",
     "vue": "3.4.38",
-    "wait-on": "^7.0.1"
+    "wait-on": "^8.0.0"
   },
   "dependencies": {
     "@frsource/frs-hide-scrollbar": "^2.0.7"
