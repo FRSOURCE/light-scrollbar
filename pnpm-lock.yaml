@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@frsource/frs-hide-scrollbar':
     specifier: ^2.0.7
-    version: 2.0.47
+    version: 2.0.111
 
 devDependencies:
   '@frsource/frs-replace':
@@ -23,8 +23,8 @@ devDependencies:
     specifier: 10.0.1
     version: 10.0.1(semantic-release@24.2.7)
   '@semantic-release/github':
-    specifier: 11.0.3
-    version: 11.0.3(semantic-release@24.2.7)
+    specifier: 11.0.4
+    version: 11.0.4(semantic-release@24.2.7)
   '@semantic-release/npm':
     specifier: 12.0.2
     version: 12.0.2(semantic-release@24.2.7)
@@ -95,8 +95,8 @@ devDependencies:
     specifier: 5.9.2
     version: 5.9.2
   vitepress:
-    specifier: 1.6.3
-    version: 1.6.3(postcss@8.4.13)(sass@1.89.2)(typescript@5.9.2)
+    specifier: 1.6.4
+    version: 1.6.4(postcss@8.4.13)(sass@1.89.2)(typescript@5.9.2)
   vue:
     specifier: 3.5.18
     version: 3.5.18(typescript@5.9.2)
@@ -1899,8 +1899,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@frsource/frs-hide-scrollbar@2.0.47:
-    resolution: {integrity: sha512-5B1lz5sIj4CdHOelsXLn27TwDtN/DhNVuFupnknNXogzSHoBf8IAlXJwXX2yQIVdvGOJCq3gdYu6vEXa10Vpjw==}
+  /@frsource/frs-hide-scrollbar@2.0.111:
+    resolution: {integrity: sha512-zi71AxukFaWpXt2VncjujaxIGFNe4nQ5HH53LqPrzKwFAIbigglVFWPdVYjQN2mmZr4wtCKBDCkePNpAyuDtfA==}
     engines: {node: '>=18'}
     dev: false
 
@@ -2595,8 +2595,8 @@ packages:
       - supports-color
     dev: true
 
-  /@semantic-release/github@11.0.3(semantic-release@24.2.7):
-    resolution: {integrity: sha512-T2fKUyFkHHkUNa5XNmcsEcDPuG23hwBKptfUVcFXDVG2cSjXXZYDOfVYwfouqbWo/8UefotLaoGfQeK+k3ep6A==}
+  /@semantic-release/github@11.0.4(semantic-release@24.2.7):
+    resolution: {integrity: sha512-fU/nLSjkp9DmB0h7FVO5imhhWJMvq2LjD4+3lz3ZAzpDLY9+KYwC+trJ+g7LbZeJv9y3L9fSFSg2DduUpiT6bw==}
     engines: {node: '>=20.8.1'}
     peerDependencies:
       semantic-release: '>=24.1.0'
@@ -3569,7 +3569,7 @@ packages:
       electron-to-chromium: 1.4.129
       escalade: 3.1.1
       node-releases: 2.0.4
-      picocolors: 1.0.1
+      picocolors: 1.1.1
     dev: true
 
   /buffer-crc32@0.2.13:
@@ -8187,7 +8187,7 @@ packages:
     dependencies:
       '@semantic-release/commit-analyzer': 13.0.1(semantic-release@24.2.7)
       '@semantic-release/error': 4.0.0
-      '@semantic-release/github': 11.0.3(semantic-release@24.2.7)
+      '@semantic-release/github': 11.0.4(semantic-release@24.2.7)
       '@semantic-release/npm': 12.0.2(semantic-release@24.2.7)
       '@semantic-release/release-notes-generator': 14.0.3(semantic-release@24.2.7)
       aggregate-error: 5.0.0
@@ -8707,7 +8707,7 @@ packages:
       css-select: 4.3.0
       css-tree: 1.1.3
       csso: 4.2.0
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       stable: 0.1.8
     dev: true
 
@@ -9160,8 +9160,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitepress@1.6.3(postcss@8.4.13)(sass@1.89.2)(typescript@5.9.2):
-    resolution: {integrity: sha512-fCkfdOk8yRZT8GD9BFqusW3+GggWYZ/rYncOfmgcDtP3ualNHCAg+Robxp2/6xfH1WwPHtGpPwv7mbA3qomtBw==}
+  /vitepress@1.6.4(postcss@8.4.13)(sass@1.89.2)(typescript@5.9.2):
+    resolution: {integrity: sha512-+2ym1/+0VVrbhNyRoFFesVvBvHAVMZMK0rw60E3X/5349M1GuVdKeazuksqopEdvkKwKGs21Q729jX81/bkBJg==}
     hasBin: true
     peerDependencies:
       markdown-it-mathjax3: ^4
