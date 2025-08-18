@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@frsource/frs-hide-scrollbar':
     specifier: ^2.0.7
-    version: 2.0.111
+    version: 2.0.112
 
 devDependencies:
   '@frsource/frs-replace':
@@ -1899,8 +1899,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@frsource/frs-hide-scrollbar@2.0.111:
-    resolution: {integrity: sha512-zi71AxukFaWpXt2VncjujaxIGFNe4nQ5HH53LqPrzKwFAIbigglVFWPdVYjQN2mmZr4wtCKBDCkePNpAyuDtfA==}
+  /@frsource/frs-hide-scrollbar@2.0.112:
+    resolution: {integrity: sha512-5Hc9v95uxB1TzGXPsSa6P9uUQnGSf0X2uBEsMSP3a+DRnk4p1QDqsDET9PNR8Ds2ccdv3gWIRRblGITdYKm3DA==}
     engines: {node: '>=18'}
     dev: false
 
