@@ -82,7 +82,7 @@
     "ts-essentials": "10.1.1",
     "typescript": "5.9.2",
     "vitepress": "1.6.4",
-    "vue": "3.5.18",
+    "vue": "3.5.19",
     "wait-on": "^8.0.0"
   },
   "dependencies": {
