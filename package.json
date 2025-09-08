@@ -57,12 +57,12 @@
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "13.0.1",
     "@semantic-release/git": "10.0.1",
-    "@semantic-release/github": "11.0.4",
+    "@semantic-release/github": "11.0.5",
     "@semantic-release/npm": "12.0.2",
     "@semantic-release/release-notes-generator": "14.0.3",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
-    "concurrently": "9.2.0",
+    "concurrently": "9.2.1",
     "cpy-cli": "5.0.0",
     "cypress": "13.17.0",
     "cypress-real-events": "^1.7.4",
@@ -82,7 +82,7 @@
     "ts-essentials": "10.1.1",
     "typescript": "5.9.2",
     "vitepress": "1.6.4",
-    "vue": "3.5.19",
+    "vue": "3.5.21",
     "wait-on": "^8.0.0"
   },
   "dependencies": {
