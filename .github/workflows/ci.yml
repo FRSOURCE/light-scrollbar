@@ -21,7 +21,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "22.x"
           cache: "pnpm"
       - name: Remove git auth
         run: git config --unset http.https://github.com/.extraheader
@@ -41,7 +41,7 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "22.x"
           cache: "pnpm"
       - name: remove git auth
         run: git config --unset http.https://github.com/.extraheader
@@ -64,7 +64,7 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "22.x"
           cache: "pnpm"
       - name: Install rimraf
         run: npm i -g rimraf
@@ -111,7 +111,7 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "22.x"
           cache: "pnpm"
       - name: Install rimraf
         run: npm i -g rimraf
@@ -149,7 +149,7 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "22.x"
           cache: "pnpm"
       - name: Install rimraf
         run: npm i -g rimraf
