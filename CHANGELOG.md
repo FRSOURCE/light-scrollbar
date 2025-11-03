@@ -1,3 +1,13 @@
+## [1.4.228](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.227...v1.4.228) (2025-11-03)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependency bump ([#473](https://github.com/FRSOURCE/light-scrollbar/issues/473)) ([a1f74fc](https://github.com/FRSOURCE/light-scrollbar/commit/a1f74fcd14c907b4e97c96ddc6279f9b38b1e147))
+* **deps:** update all non-major dependency bump ([#479](https://github.com/FRSOURCE/light-scrollbar/issues/479)) ([9904816](https://github.com/FRSOURCE/light-scrollbar/commit/990481617faa2957cb17704631d5b98be2c802c6))
+* **deps:** update all non-major dependency bump ([#484](https://github.com/FRSOURCE/light-scrollbar/issues/484)) ([c4c6abb](https://github.com/FRSOURCE/light-scrollbar/commit/c4c6abbbc4595e04992a9c7f03f1459b946fde91))
+* **deps:** update dependency @frsource/frs-hide-scrollbar to v2.0.112 ([#476](https://github.com/FRSOURCE/light-scrollbar/issues/476)) ([0a73882](https://github.com/FRSOURCE/light-scrollbar/commit/0a73882da3083740d69955b9c12424726de8b972))
+
 ## [1.4.227](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.226...v1.4.227) (2025-08-01)
 
 ## [1.4.226](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.225...v1.4.226) (2025-08-01)
