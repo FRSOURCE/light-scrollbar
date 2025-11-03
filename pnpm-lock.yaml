@@ -101,8 +101,8 @@ devDependencies:
     specifier: 3.5.22
     version: 3.5.22(typescript@5.9.3)
   wait-on:
-    specifier: ^8.0.0
-    version: 8.0.5
+    specifier: ^9.0.0
+    version: 9.0.1
 
 packages:
 
@@ -6036,7 +6036,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
     dev: true
 
   /jsprim@2.0.2:
@@ -6508,7 +6508,7 @@ packages:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
     dependencies:
-      minimist: 1.2.6
+      minimist: 1.2.8
     dev: true
 
   /mri@1.2.0:
@@ -9011,9 +9011,9 @@ packages:
       typescript: 5.9.3
     dev: true
 
-  /wait-on@8.0.5:
-    resolution: {integrity: sha512-J3WlS0txVHkhLRb2FsmRg3dkMTCV1+M6Xra3Ho7HzZDHpE7DCOnoSoCJsZotrmW3uRMhvIJGSKUKrh/MeF4iag==}
-    engines: {node: '>=12.0.0'}
+  /wait-on@9.0.1:
+    resolution: {integrity: sha512-noeCAI+XbqWMXY23sKril0BSURhuLYarkVXwJv1uUWwoojZJE7pmX3vJ7kh7SZaNgPGzfsCSQIZM/AGvu0Q9pA==}
+    engines: {node: '>=20.0.0'}
     hasBin: true
     dependencies:
       axios: 1.12.2
