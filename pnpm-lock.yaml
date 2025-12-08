@@ -11,8 +11,8 @@ dependencies:
 
 devDependencies:
   '@frsource/frs-replace':
-    specifier: 5.1.89
-    version: 5.1.89
+    specifier: 5.1.91
+    version: 5.1.91
   '@semantic-release/changelog':
     specifier: 6.0.3
     version: 6.0.3(semantic-release@24.2.9)
@@ -1867,8 +1867,8 @@ packages:
     engines: {node: '>=18'}
     dev: false
 
-  /@frsource/frs-replace@5.1.89:
-    resolution: {integrity: sha512-3juxZrBRQbxfyVSr1DnQmdZZmjNU7NF00iZIPhIrs93DAcpag/+HEKDUX+dV70rIH1OVfasXo91IISRYmxZhHg==}
+  /@frsource/frs-replace@5.1.91:
+    resolution: {integrity: sha512-WXcsGDEsCfh56AQG8rHHSP73WbODC2Kc0Hfrg+WafjAhszMKz10XJHKy8sbfNeVrYrRej7wC7yuD3Eyv80rRkQ==}
     engines: {node: '>=20.0.0'}
     hasBin: true
     dependencies:
@@ -5974,7 +5974,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
     dev: true
 
   /jsprim@2.0.2:
