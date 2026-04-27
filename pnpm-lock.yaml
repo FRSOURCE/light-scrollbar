@@ -69,7 +69,7 @@ devDependencies:
     version: 1.2.3
   lodash-es:
     specifier: ^4.17.21
-    version: 4.17.23
+    version: 4.18.1
   microbundle:
     specifier: 0.15.1
     version: 0.15.1
@@ -2519,7 +2519,7 @@ packages:
       conventional-commits-parser: 6.2.0
       debug: 4.3.4(supports-color@8.1.1)
       import-from-esm: 2.0.0
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       micromatch: 4.0.5
       semantic-release: 24.2.9(typescript@5.9.3)
     transitivePeerDependencies:
@@ -2572,7 +2572,7 @@ packages:
       http-proxy-agent: 7.0.0
       https-proxy-agent: 7.0.0
       issue-parser: 7.0.1
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       mime: 4.0.0
       p-filter: 4.0.0
       semantic-release: 24.2.9(typescript@5.9.3)
@@ -2592,7 +2592,7 @@ packages:
       aggregate-error: 5.0.0
       execa: 9.6.0
       fs-extra: 11.0.0
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       nerf-dart: 1.0.0
       normalize-url: 8.0.0
       npm: 10.9.3
@@ -2618,7 +2618,7 @@ packages:
       get-stream: 7.0.0
       import-from-esm: 2.0.0
       into-stream: 7.0.0
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       read-package-up: 11.0.0
       semantic-release: 24.2.9(typescript@5.9.3)
     transitivePeerDependencies:
@@ -5987,7 +5987,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
     dev: true
 
   /jsprim@2.0.2:
@@ -6091,8 +6091,8 @@ packages:
       p-locate: 5.0.0
     dev: true
 
-  /lodash-es@4.17.23:
-    resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
+  /lodash-es@4.18.1:
+    resolution: {integrity: sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==}
     dev: true
 
   /lodash.camelcase@4.3.0:
@@ -7952,7 +7952,7 @@ packages:
       hook-std: 4.0.0
       hosted-git-info: 8.1.0
       import-from-esm: 2.0.0
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       marked: 15.0.12
       marked-terminal: 7.3.0(marked@15.0.12)
       micromatch: 4.0.5
