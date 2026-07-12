@@ -10,6 +10,9 @@ dependencies:
     version: 2.0.131
 
 devDependencies:
+  '@eslint-community/eslint-plugin-eslint-comments':
+    specifier: 3.2.0
+    version: 3.2.0(eslint@8.57.1)
   '@frsource/frs-replace':
     specifier: 5.1.95
     version: 5.1.95
@@ -58,9 +61,6 @@ devDependencies:
   eslint-plugin-cypress:
     specifier: 2.15.2
     version: 2.15.2(eslint@8.57.1)
-  eslint-plugin-eslint-comments:
-    specifier: 3.2.0
-    version: 3.2.0(eslint@8.57.1)
   http-server:
     specifier: 14.1.1
     version: 14.1.1
@@ -1824,6 +1824,17 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@eslint-community/eslint-plugin-eslint-comments@3.2.0(eslint@8.57.1):
+    resolution: {integrity: sha512-BjyMKQRjkywhbkrtHzUITQTQQuysxbZk1/z5Cco7cMNxhw0odzWohDgVuxmuhS9LJRFWAkIXhnfuLXjChFmfoA==}
+    engines: {node: '>=6.5.0'}
+    peerDependencies:
+      eslint: '>=4.19.1'
+    dependencies:
+      escape-string-regexp: 1.0.5
+      eslint: 8.57.1
+      ignore: 5.3.1
+    dev: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.57.1):
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
@@ -4564,17 +4575,6 @@ packages:
       globals: 13.21.0
     dev: true
 
-  /eslint-plugin-eslint-comments@3.2.0(eslint@8.57.1):
-    resolution: {integrity: sha512-0jkOl0hfojIHHmEHgmNdqv4fmh7300NdpA9FFpF7zaoLvB/QeXOGNLIo86oAveJFrfB1p05kC8hpEMHM8DwWVQ==}
-    engines: {node: '>=6.5.0'}
-    peerDependencies:
-      eslint: '>=4.19.1'
-    dependencies:
-      escape-string-regexp: 1.0.5
-      eslint: 8.57.1
-      ignore: 5.2.0
-    dev: true
-
   /eslint-scope@7.2.2:
     resolution: {integrity: sha512-dOt21O7lTMhDM+X9mB4GX+DZrZtCUJPL/wlcTqxyrx5IvO0IYtILdtrQGQp+8n5S0gwSVmOf9NQrjMOgfQZlIg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -5562,11 +5562,6 @@ packages:
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
-    dev: true
-
-  /ignore@5.2.0:
-    resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
-    engines: {node: '>= 4'}
     dev: true
 
   /ignore@5.3.1:
