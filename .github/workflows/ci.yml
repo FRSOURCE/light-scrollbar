@@ -19,7 +19,7 @@ jobs:
           version: 10.20.0
           run_install: false
       - name: Install Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "24.x"
           cache: "pnpm"
@@ -39,7 +39,7 @@ jobs:
         with:
           version: 10.20.0
           run_install: false
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.x"
           cache: "pnpm"
@@ -62,7 +62,7 @@ jobs:
         with:
           version: 10.20.0
           run_install: false
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.x"
           cache: "pnpm"
@@ -95,6 +95,11 @@ jobs:
     name: build and release
     runs-on: ubuntu-latest
     needs: [cache, lint, test]
+    permissions:
+      contents: write # push release commit/tag, create GitHub release
+      issues: write # comment on released issues
+      pull-requests: write # comment on released PRs
+      id-token: write # npm trusted publishing (OIDC) + provenance
     steps:
       - uses: actions/checkout@v7
         with:
@@ -109,7 +114,7 @@ jobs:
         with:
           version: 10.20.0
           run_install: false
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.x"
           cache: "pnpm"
@@ -119,20 +124,12 @@ jobs:
         run: git config --unset http.https://github.com/.extraheader
       - name: Install dependencies
         run: pnpm i
-      - name: Authenticate with Registry
-        run: |
-          echo "registry=http://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-          npm whoami
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: build
         run: pnpm build
       - name: release package
         if: ${{ success() && github.actor != 'dependabot[bot]' && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
         run: pnpm release.ci
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -147,7 +144,7 @@ jobs:
         with:
           version: 10.20.0
           run_install: false
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.x"
           cache: "pnpm"

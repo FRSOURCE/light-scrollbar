@@ -1,3 +1,12 @@
+## [1.4.240](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.239...v1.4.240) (2026-10-01)
+
+## [1.4.239](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.238...v1.4.239) (2026-10-01)
+
+
+### Bug Fixes
+
+* **deps:** migrate to @frsource/semantic-release-config and npm trusted publishing ([#517](https://github.com/FRSOURCE/light-scrollbar/issues/517)) ([7c56e96](https://github.com/FRSOURCE/light-scrollbar/commit/7c56e9608de2bd221c358d5e295e2ae77c039f79))
+
 ## [1.4.238](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.237...v1.4.238) (2026-03-09)
 
 ## [1.4.237](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.236...v1.4.237) (2026-03-02)
