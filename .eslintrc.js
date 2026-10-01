@@ -6,13 +6,13 @@ module.exports = {
     },
     extends: [
         'eslint:recommended',
-        'plugin:eslint-comments/recommended',
+        'plugin:@eslint-community/eslint-comments/recommended',
         'plugin:@typescript-eslint/recommended',
         'prettier'
     ],
     plugins: [
         '@typescript-eslint',
-        'eslint-comments'
+        '@eslint-community/eslint-comments'
     ],
     parserOptions: {
         parser: '@typescript-eslint/parser',
