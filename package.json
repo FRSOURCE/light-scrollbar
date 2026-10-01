@@ -101,6 +101,9 @@
         "@algolia/client-search",
         "search-insights"
       ]
+    },
+    "patchedDependencies": {
+      "rollup-plugin-typescript2@0.32.1": "patches/rollup-plugin-typescript2@0.32.1.patch"
     }
   }
 }

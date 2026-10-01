@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  rollup-plugin-typescript2@0.32.1:
+    hash: 99e8e77a4e0cd3b11894e32a718af135219538d07f62bec56ceec88dd47a7471
+    path: patches/rollup-plugin-typescript2@0.32.1.patch
+
 importers:
 
   .:
@@ -8981,7 +8986,7 @@ snapshots:
       rollup-plugin-bundle-size: 1.0.3
       rollup-plugin-postcss: 4.0.2(postcss@8.5.28)
       rollup-plugin-terser: 7.0.2(rollup@2.80.0)
-      rollup-plugin-typescript2: 0.32.1(rollup@2.80.0)(typescript@4.9.5)
+      rollup-plugin-typescript2: 0.32.1(patch_hash=99e8e77a4e0cd3b11894e32a718af135219538d07f62bec56ceec88dd47a7471)(rollup@2.80.0)(typescript@4.9.5)
       rollup-plugin-visualizer: 5.14.0(rollup@2.80.0)
       sade: 1.8.1
       terser: 5.51.2
@@ -9780,7 +9785,7 @@ snapshots:
       serialize-javascript: 4.0.0
       terser: 5.51.2
 
-  rollup-plugin-typescript2@0.32.1(rollup@2.80.0)(typescript@4.9.5):
+  rollup-plugin-typescript2@0.32.1(patch_hash=99e8e77a4e0cd3b11894e32a718af135219538d07f62bec56ceec88dd47a7471)(rollup@2.80.0)(typescript@4.9.5):
     dependencies:
       '@rollup/pluginutils': 4.2.1
       find-cache-dir: 3.3.2
