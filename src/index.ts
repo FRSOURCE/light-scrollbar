@@ -298,7 +298,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
         data.rail[dir].isStartingPointHover = data.rail[dir].isHovered;
       }
       if (data.rail[dir].isStartingPointHover && data.mouse.isHoldRail) {
-        prevent && event.preventDefault();
+        if (prevent) event.preventDefault();
 
         if (data.scrollbar[dir].isGrabbed) data.scrollbar[dir].isGrabbed = true;
         else {

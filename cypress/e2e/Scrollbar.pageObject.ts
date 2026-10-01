@@ -15,11 +15,11 @@ export class ScrollbarBaseObject extends BasePage {
     cy.get(".my-scrollbar")
       .should("have.attr", "style", "border-color: red;")
       .then((element) => {
-        expect(element[0] === el).to.be.true;
+        expect(element[0]).to.equal(el);
       });
     cy.get(".my-wrapper")
       .then((element) => {
-        expect(element[0] === wrapper).to.be.true;
+        expect(element[0]).to.equal(wrapper);
         return element;
       })
       .should("have.attr", "style", "border: 1px solid green;")
@@ -29,7 +29,7 @@ export class ScrollbarBaseObject extends BasePage {
     cy.get(".my-wrapper-standalone")
       .should("have.attr", "style", "border: 1px solid teal;")
       .then((element) => {
-        expect(element[0] === standaloneWrapper).to.be.true;
+        expect(element[0]).to.equal(standaloneWrapper);
       });
     return this;
   };
