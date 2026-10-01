@@ -36,8 +36,8 @@ importers:
         specifier: 9.2.4
         version: 9.2.4
       cpy-cli:
-        specifier: 6.0.0
-        version: 6.0.0
+        specifier: 7.0.0
+        version: 7.0.0
       cypress:
         specifier: 15.6.0
         version: 15.6.0
@@ -2150,13 +2150,13 @@ packages:
       typescript:
         optional: true
 
-  cpy-cli@6.0.0:
-    resolution: {integrity: sha512-q7GUqTDnRymCbScJ4Ph1IUM86wWdKG8JbgrvKLgvvehH4wrbRcVN+jRwOTlxJdwm7ykdXMKSp6IESksFeHa0eA==}
+  cpy-cli@7.0.0:
+    resolution: {integrity: sha512-uGCdhIxGfZcPXidCuT8w1jBknVXFx0un7NLjzqBZcdnkIWtLUnWMPk5TC37ceoVjwASLSNsRtTXXNTuFIyE2ng==}
     engines: {node: '>=20'}
     hasBin: true
 
-  cpy@12.1.0:
-    resolution: {integrity: sha512-3z9tP1rPBLG7pQYn9iRgl7JOSew0SMPuWmakaRfzhXpmFBHmRbp7JekpuqPkXbbWOdSeKSbInYEcdIZjov2fNQ==}
+  cpy@13.2.3:
+    resolution: {integrity: sha512-N+jPR8ODTJIzAKmCtUglRSCQzMuDkB/saH1ZJfY1MDfXYMZbfsuih3GhpUEYeuTCDQLBr4GvKyHDwV0Y2Sd0gQ==}
     engines: {node: '>=20'}
 
   cross-spawn@7.0.6:
@@ -2800,8 +2800,8 @@ packages:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
     engines: {node: '>=10'}
 
-  globby@15.0.0:
-    resolution: {integrity: sha512-oB4vkQGqlMl682wL1IlWd02tXCbquGWM4voPEI85QmNKCaw8zGTm1f1rubFgkg3Eli2PtKlFgrnmUqasbQWlkw==}
+  globby@16.2.4:
+    resolution: {integrity: sha512-c8B/VNLmxRcmqqenRA9t+9IyOjf9+V6lTxPaUJLqOCONdQkWZ0ETYgX0qbtJqPsgCNusT9MZ5Jeidw8Eb9tn2g==}
     engines: {node: '>=20'}
 
   globrex@0.1.2:
@@ -3126,6 +3126,10 @@ packages:
     resolution: {integrity: sha512-Fd4gABb+ycGAmKou8eMftCupSir5lRxqf4aD/vd0cD2qc4HL07OjCeuHMr8Ro4CoMaeCKDB0/ECBOVWjTwUvPQ==}
     engines: {node: '>=8'}
 
+  is-path-inside@4.0.0:
+    resolution: {integrity: sha512-lJJV/5dYS+RcL8uQdBDW9c9uWFLLBNRyFhnAKXw5tVqLlKZ4RMGZKv+YQ/IA3OhD+RpbJa1LLFM1FQPGyIXvOA==}
+    engines: {node: '>=12'}
+
   is-plain-obj@4.1.0:
     resolution: {integrity: sha512-+Pgi+vMuUNkJyExiMBt5IlFoMyKnr5zhJ4Uspz58WOhBF5QoIZkFyNHIbBAtHwzVAgk5RtndVNsDRN61/mmDqg==}
     engines: {node: '>=12'}
@@ -3437,6 +3441,10 @@ packages:
   meow@13.2.0:
     resolution: {integrity: sha512-pxQJQzB6djGPXh08dacEloMFopsOqGVRKFPYvPOt9XDZ1HasbgDZA74CJGreSU4G3Ak7EFJGoiH2auq+yXISgA==}
     engines: {node: '>=18'}
+
+  meow@14.1.0:
+    resolution: {integrity: sha512-EDYo6VlmtnumlcBCbh1gLJ//9jvM/ndXHfVXIFrZVr6fGcwTUyCTFNTLCKuY3ffbK8L/+3Mzqnd58RojiZqHVw==}
+    engines: {node: '>=20'}
 
   merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
@@ -3846,10 +3854,6 @@ packages:
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
-
-  path-type@6.0.0:
-    resolution: {integrity: sha512-Vj7sf++t5pBD637NSfkxpHSMfWaeig5+DKWLhcqIYx6mWQz5hdJTGDVMQiJcw1ZYkhs7AazKDGpRVji1LJCZUQ==}
-    engines: {node: '>=18'}
 
   pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
@@ -7455,15 +7459,16 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  cpy-cli@6.0.0:
+  cpy-cli@7.0.0:
     dependencies:
-      cpy: 12.1.0
-      meow: 13.2.0
+      cpy: 13.2.3
+      globby: 16.2.4
+      meow: 14.1.0
 
-  cpy@12.1.0:
+  cpy@13.2.3:
     dependencies:
       copy-file: 11.1.0
-      globby: 15.0.0
+      globby: 16.2.4
       junk: 4.0.1
       micromatch: 4.0.8
       p-filter: 4.1.0
@@ -8319,14 +8324,15 @@ snapshots:
       merge2: 1.4.1
       slash: 3.0.0
 
-  globby@15.0.0:
+  globby@16.2.4:
     dependencies:
       '@sindresorhus/merge-streams': 4.0.0
       fast-glob: 3.3.3
       ignore: 7.0.11
-      path-type: 6.0.0
+      is-path-inside: 4.0.0
+      micromatch: 4.0.8
       slash: 5.1.0
-      unicorn-magic: 0.3.0
+      unicorn-magic: 0.4.1
 
   globrex@0.1.2: {}
 
@@ -8651,6 +8657,8 @@ snapshots:
 
   is-path-inside@3.0.3: {}
 
+  is-path-inside@4.0.0: {}
+
   is-plain-obj@4.1.0: {}
 
   is-reference@1.2.1:
@@ -8952,6 +8960,8 @@ snapshots:
   mdn-data@2.0.14: {}
 
   meow@13.2.0: {}
+
+  meow@14.1.0: {}
 
   merge-stream@2.0.0: {}
 
@@ -9304,8 +9314,6 @@ snapshots:
       minipass: 7.1.3
 
   path-type@4.0.0: {}
-
-  path-type@6.0.0: {}
 
   pend@1.2.0: {}
 
