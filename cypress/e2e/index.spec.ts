@@ -88,6 +88,8 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
 
         page().hasNotVisibleScrollbar().hoverOverOuterElement();
 
+        // intentionally waiting past the configured 20ms showOnHover delay
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(100);
         page().hasVisibleScrollbar();
       });
