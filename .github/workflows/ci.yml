@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: pnpm/action-setup@v6.1.0
         name: Install pnpm
         with:
           version: 10.20.0
@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: pnpm/action-setup@v6.1.0
         name: Install pnpm
         with:
           version: 10.20.0
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: pnpm/action-setup@v6.1.0
         name: Install pnpm
         with:
           version: 10.20.0
@@ -112,7 +112,7 @@ jobs:
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: pnpm/action-setup@v6.1.0
         name: Install pnpm
         with:
           version: 10.20.0
@@ -140,7 +140,7 @@ jobs:
     needs: [cache, lint]
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: pnpm/action-setup@v6.1.0
         name: Install pnpm
         with:
           version: 10.20.0
