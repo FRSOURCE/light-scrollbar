@@ -55,11 +55,11 @@
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
     "@eslint/js": "10.0.1",
-    "@frsource/frs-replace": "5.1.144",
+    "@frsource/frs-replace": "5.1.152",
     "@frsource/semantic-release-config": "1.117.0",
     "@typescript-eslint/eslint-plugin": "8.71.0",
     "@typescript-eslint/parser": "8.71.0",
-    "concurrently": "10.0.5",
+    "concurrently": "10.0.6",
     "cpy-cli": "7.0.0",
     "cypress": "15.21.1",
     "cypress-real-events": "^1.7.4",
@@ -79,7 +79,7 @@
     "ts-essentials": "10.2.1",
     "typescript": "5.9.3",
     "vitepress": "1.6.4",
-    "vue": "3.5.43",
+    "vue": "3.5.44",
     "wait-on": "^9.0.0"
   },
   "dependencies": {
