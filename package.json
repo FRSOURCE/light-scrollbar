@@ -56,7 +56,7 @@
     "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
     "@eslint/js": "10.0.1",
     "@frsource/frs-replace": "5.1.144",
-    "@frsource/semantic-release-config": "1.117.0",
+    "@frsource/semantic-release-config": "1.117.5",
     "@typescript-eslint/eslint-plugin": "8.71.0",
     "@typescript-eslint/parser": "8.71.0",
     "concurrently": "10.0.5",
