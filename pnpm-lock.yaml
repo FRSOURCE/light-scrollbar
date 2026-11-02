@@ -5,9 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  rollup-plugin-typescript2@0.32.1:
-    hash: 99e8e77a4e0cd3b11894e32a718af135219538d07f62bec56ceec88dd47a7471
-    path: patches/rollup-plugin-typescript2@0.32.1.patch
+  rollup-plugin-typescript2@0.32.1: 99e8e77a4e0cd3b11894e32a718af135219538d07f62bec56ceec88dd47a7471
 
 importers:
 
