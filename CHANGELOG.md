@@ -1,3 +1,10 @@
+## [1.4.255](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.254...v1.4.255) (2026-11-02)
+
+
+### Bug Fixes
+
+* **deps:** override vulnerable transitive dependencies ([#528](https://github.com/FRSOURCE/light-scrollbar/issues/528)) ([e59f76c](https://github.com/FRSOURCE/light-scrollbar/commit/e59f76c9b100740a1995a09491eb1988230f0703))
+
 ## [1.4.254](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.253...v1.4.254) (2026-11-02)
 
 ## [1.4.253](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.252...v1.4.253) (2026-11-02)
