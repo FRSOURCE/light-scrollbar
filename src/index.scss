@@ -2,7 +2,9 @@ $light-scrollbar-classname: "light-scrollbar" !default;
 $frs-hide-scroll-classname: $light-scrollbar-classname !default;
 $disable-default-theme: false;
 
-@import "../node_modules/@frsource/frs-hide-scrollbar/src/index.scss";
+@use "../node_modules/@frsource/frs-hide-scrollbar/src/index.scss" with (
+  $frs-hide-scroll-classname: $frs-hide-scroll-classname
+);
 
 //TODO: export in package scss file
 .#{$light-scrollbar-classname} {

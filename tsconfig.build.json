@@ -2,6 +2,9 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "sourceMap": true,
+    "rootDir": "./src",
+    // rollup-plugin-typescript2 forces moduleResolution=node10, deprecated in TS 6
+    "ignoreDeprecations": "6.0",
   },
   "include": [
     "src/**/*.ts",

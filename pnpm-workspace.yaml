@@ -1,0 +1,12 @@
+allowBuilds:
+  '@parcel/watcher': true
+  cypress: true
+  esbuild: true
+
+patchedDependencies:
+  rollup-plugin-typescript2@0.32.1: patches/rollup-plugin-typescript2@0.32.1.patch
+
+peerDependencyRules:
+  ignoreMissing:
+    - '@algolia/client-search'
+    - search-insights
