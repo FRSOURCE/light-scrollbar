@@ -77,7 +77,7 @@
     "sass": "1.105.1",
     "semantic-release": "25.0.9",
     "ts-essentials": "10.2.1",
-    "typescript": "5.9.3",
+    "typescript": "7.0.2",
     "vitepress": "1.6.4",
     "vue": "3.5.43",
     "wait-on": "^9.0.0"
