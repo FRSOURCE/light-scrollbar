@@ -19,7 +19,7 @@ const elements: Elements = {
   wrapperParentElement: undefined,
 };
 
-const isCI = Cypress.env("CI");
+const isCI = Cypress.expose("CI");
 
 const page = () =>
   new ScrollbarBaseObject({
