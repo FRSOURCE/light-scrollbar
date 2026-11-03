@@ -38,6 +38,15 @@ const initializePlugin = (el: HTMLElement, options: config = {}) => {
   instance = attach(el, options);
 };
 
+// window mouse listeners must be registered in the tested page (not the spec iframe) for dragging to work
+const initializePluginInPage = (el: HTMLElement, options: config = {}) =>
+  cy
+    .window()
+    .then((win) => win.eval('import("/dist/index.modern.mjs")') as Promise<{ attach: typeof attach }>)
+    .then((pageModule) => {
+      instance = pageModule.attach(el, options);
+    });
+
 beforeEach(() => loadPage());
 afterEach(() => {
   instance?.detach();
@@ -96,13 +105,37 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
     });
   });
 
+  describe("when both scrollbars are visible", () => {
+    afterEach(() => {
+      page().hoverBottomOfBody();
+    });
+
+    it("scrolled to the end, scrollbars should end before the corner", () => {
+      initializePlugin(elements[mount] as HTMLElement, parentOptions);
+
+      page().scrollToEnd().hasScrollbarsEndingBeforeCorner({ yWidth: 6, xHeight: 6 });
+    });
+
+    it("pressing in the corner where rails cross should not scroll", () => {
+      initializePluginInPage(elements[mount] as HTMLElement, parentOptions);
+
+      page().pressAndMoveInnerElementFromBottomRight(3, 3).hasScroll({ top: "start", left: "start" });
+    });
+
+    it("pressing on the y rail next to the corner should scroll only y", () => {
+      initializePluginInPage(elements[mount] as HTMLElement, parentOptions);
+
+      page().pressAndMoveInnerElementFromBottomRight(3, 10).hasScroll({ top: "moved", left: "start" });
+    });
+  });
+
   describe("when iniatlly got x items and y height", () => {
     it("scrollbar should have z height", () => {
       initializePlugin(elements[mount] as HTMLElement, { ...parentOptions });
 
       waitForRerender().then(() => {
         // Different values, different render on headless and headed chrome
-        page().hasScrollbarHeight(isCI ? 131.5 : 130.312);
+        page().hasScrollbarHeight(isCI ? 128.219 : 127.047);
       });
     });
   });
@@ -114,8 +147,7 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
       if (instance) {
         addElements(instance?.innerElement, 1000);
         waitForRerender().then(() => {
-          // Different values, different render on headless and headed chrome
-          page().hasScrollbarHeight(isCI ? 24 : 23.9915);
+          page().hasScrollbarHeight(23.3906);
         });
       }
     });
