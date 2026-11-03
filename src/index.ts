@@ -1,6 +1,7 @@
 import "./index.scss";
 import { removeAllStylesWithPrefix, removeAllClassesWithPrefix, restoreTabIndex } from "./utils/domUtils";
 import {
+  Axis,
   Config,
   DoActionForBothAxis,
   InternalConfig,
@@ -11,7 +12,6 @@ import {
 } from "./utils/types";
 import { deepMergeConfig, doActionForBothAxis, reverseDir } from "./utils/utils";
 // TODO: increase dragging area for y, e.g 5px to left
-// TODO: intersection of x/y scrollbars in corner should be excluded
 // TODO: add rail
 // TODO: min height should be fixed e.g 30px? maybe prop and possibility to use px and %?
 // TODO: when paginated list recalculate grab
@@ -188,6 +188,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
           realPercent: 0,
         },
         short: 0,
+        track: 0,
       },
       y: {
         isStartingPointHover: false,
@@ -204,6 +205,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
           },
         },
         short: 0,
+        track: 0,
         long: {
           percent: 0,
           pixel: 0,
@@ -241,6 +243,8 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     );
   };
 
+  const isScrollbarVisible = (dir: Axis) => data.scrollbar[dir].long.realPercent < 100;
+
   const hoverScrollbar = ({
     dir,
     reverseDir,
@@ -261,14 +265,30 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     outerElement.classList.toggle(`hover-${dir}`, data.scrollbar[dir].isStartingPointHover);
   };
 
-  const calculateLongDimensionOfScrollbars = ({ dir, dimensionLong }: DoActionForBothAxis) => {
+  const calculateVisiblePartOfContent = ({
+    dir,
+    dimensionLong,
+    scrollbarShort,
+    scrollbarOffsetShort,
+  }: DoActionForBothAxis) => {
     data.scrollbar[dir].long.realPercent = (data.container[dimensionLong] / data.content[dimensionLong]) * 100;
+    data.scrollbar[dir].short = scrollbarShort + scrollbarOffsetShort;
+  };
+
+  // track is the part of the container edge the scrollbar moves along - when both scrollbars are visible,
+  // the bottom right corner (x scrollbar height * y scrollbar width) is excluded from both tracks
+  const calculateTrackOfScrollbar = ({ dir, reverseDir, dimensionLong }: DoActionForBothAxis) => {
+    const corner = isScrollbarVisible(dir) && isScrollbarVisible(reverseDir) ? data.scrollbar[reverseDir].short : 0;
+    data.scrollbar[dir].track = data.container[dimensionLong] - corner;
+  };
+
+  const calculateLongDimensionOfScrollbars = ({ dir, dimensionLong }: DoActionForBothAxis) => {
     const realPerc = data.scrollbar[dir].long.realPercent;
     data.scrollbar[dir].long.percent = realPerc >= data.minLongPercent ? realPerc : data.minLongPercent;
-    data.scrollbar[dir].long.pixel = (data.scrollbar[dir].long.percent / 100) * data.container[dimensionLong];
+    data.scrollbar[dir].long.pixel = (data.scrollbar[dir].long.percent / 100) * data.scrollbar[dir].track;
 
-    const perc = data.scrollbar[dir].long.percent;
-    outerElement.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionLong}`, `${perc >= 100 ? 0 : perc}%`);
+    const pixel = isScrollbarVisible(dir) ? data.scrollbar[dir].long.pixel : 0;
+    outerElement.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionLong}`, `${pixel}px`);
   };
 
   const calculateTopOfScrollbar = (e: Event | undefined, { dir, dimensionLong, isLeftOrTop }: DoActionForBothAxis) => {
@@ -282,7 +302,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     const percScrollbarPosition = (scrollTopLeft / containerPlusScrollbarLong) * 100;
 
     data.scrollbar[dir].gap.toContainer.pixel =
-      (percScrollbarPosition / 100) * (data.container[dimensionLong] - data.scrollbar[dir].long.pixel);
+      (percScrollbarPosition / 100) * (data.scrollbar[dir].track - data.scrollbar[dir].long.pixel);
 
     outerElement.style.setProperty(
       `--${defaultCssVarName}-bar-${dir}-${isTop}`,
@@ -312,8 +332,10 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
 
         outerElement.classList.toggle(`active-${dir}`, data.scrollbar[dir].isGrabbed);
 
-        const perc = (data.mouse[dir] + data.scrollbar[dir].dragDiff) / data.container[dimensionLong];
-        data.scrollbar[dir].gap.toContent.pixel = data.content[dimensionLong] * perc;
+        const perc =
+          (data.mouse[dir] + data.scrollbar[dir].dragDiff) /
+          (data.scrollbar[dir].track - data.scrollbar[dir].long.pixel);
+        data.scrollbar[dir].gap.toContent.pixel = (data.content[dimensionLong] - data.container[dimensionLong]) * perc;
         innerElement[isLeftOrTop] = data.scrollbar[dir].gap.toContent.pixel;
       }
     });
@@ -322,7 +344,9 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   const calculateScrollbars = (calculate = false) => {
     if (!calculate) return;
     updateContainerDimensions();
+    doActionForBothAxis(internalConfig, calculateVisiblePartOfContent);
     doActionForBothAxis(internalConfig, (data) => {
+      calculateTrackOfScrollbar(data);
       calculateLongDimensionOfScrollbars(data);
       calculateTopOfScrollbar(void 0, data);
     });
@@ -369,15 +393,13 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
 
   const onHoverRails = (calculate = false) => {
     if (!calculate) return;
-    doActionForBothAxis(
-      internalConfig,
-      ({ dir, reverseDir, dimensionLong, dimensionShort, scrollbarShort, scrollbarOffsetShort }) => {
-        data.rail[dir].isHovered =
-          isRailHoveredShort({ dir, reverseDir, scrollbarShort, dimensionShort, scrollbarOffsetShort }) &&
-          data.mouse[dir] <= data.container[dimensionLong] &&
-          data.mouse[dir] >= 0;
-      }
-    );
+    doActionForBothAxis(internalConfig, ({ dir, reverseDir, dimensionShort, scrollbarShort, scrollbarOffsetShort }) => {
+      data.rail[dir].isHovered =
+        isScrollbarVisible(dir) &&
+        isRailHoveredShort({ dir, reverseDir, scrollbarShort, dimensionShort, scrollbarOffsetShort }) &&
+        data.mouse[dir] < data.scrollbar[dir].track &&
+        data.mouse[dir] >= 0;
+    });
   };
 
   const containerMouseMoveHandler = () => {
