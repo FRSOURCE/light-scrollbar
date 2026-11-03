@@ -5,8 +5,8 @@
   <a href="https://bundlephobia.com/result?p=@frsource/light-scrollbar" title="Visit bundlephobia for more details!">
     <img src="https://img.shields.io/bundlephobia/minzip/@frsource/light-scrollbar" alt="Core bundle size badge. Data from bundlephobia.com">
   </a>
-  <a href="https://github.com/semantic-release/semantic-release">
-    <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-relase badge">
+  <a href="https://github.com/changesets/changesets">
+    <img src="https://img.shields.io/badge/maintained%20with-changesets-176de3.svg" alt="changesets badge">
   </a>
   <a href="https://bundlephobia.com/result?p=@frsource/light-scrollbar">
     <img src="https://badgen.net/bundlephobia/tree-shaking/@frsource/light-scrollbar" alt="Tree shaking supported">
