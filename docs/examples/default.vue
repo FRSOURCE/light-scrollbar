@@ -30,6 +30,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-  @import '../assets/scss/examples.scss';
-  @import '../assets/dist/index.css';
+  @use '../assets/scss/examples';
+  @use '../assets/dist/index';
 </style>
