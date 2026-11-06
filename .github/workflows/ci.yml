@@ -6,11 +6,8 @@ on:
   push:
     branches:
       - main
-  schedule:
-    # automatic release (if there are pending changesets) twice a month
-    - cron: "0 6 1,15 * *"
-  # manual release: Actions -> CI -> Run workflow
-  workflow_dispatch:
+  # called by the Release workflow (.github/workflows/release.yml) before publishing
+  workflow_call:
 
 jobs:
   cache:
@@ -120,83 +117,6 @@ jobs:
         run: pnpm i
       - name: Check changeset
         run: pnpm changeset status --since=origin/main
-
-  release:
-    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') }}
-    name: release
-    runs-on: ubuntu-latest
-    needs: [cache, lint, test]
-    concurrency: release
-    permissions:
-      contents: write # push release commit/tag, create GitHub release
-      id-token: write # npm trusted publishing (OIDC) + provenance
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          # tags are needed to find the previous release
-          fetch-depth: "0"
-      - name: Setup git user
-        # official GitHub Actions bot account (41898282 is its user id),
-        # so release commits are attributed to github-actions[bot]
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - uses: pnpm/action-setup@v6.1.0
-        name: Install pnpm
-        with:
-          version: 12.16.1
-          run_install: false
-      - uses: actions/setup-node@v7
-        with:
-          node-version: "26.x"
-          cache: "pnpm"
-      - name: Install rimraf
-        run: npm i -g rimraf
-      - name: Install dependencies
-        run: pnpm i
-      - name: Add changeset for dependencies updates
-        run: pnpm changeset.deps
-      - name: Version package
-        id: version
-        run: |
-          if [ -z "$(find .changeset -name '*.md' ! -name README.md)" ]; then
-            echo "No changesets - nothing to release"
-            exit 0
-          fi
-          previous=$(node -p "require('./package.json').version")
-          pnpm changeset version
-          version=$(node -p "require('./package.json').version")
-          if [ "$version" = "$previous" ]; then
-            echo "Only empty changesets - nothing to release"
-            exit 0
-          fi
-          git add -A
-          git commit -m "chore(release): $version [skip ci]"
-          git tag "v$version"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: build
-        if: ${{ steps.version.outputs.version }}
-        run: pnpm build
-      - name: Push release commit and tag
-        if: ${{ steps.version.outputs.version }}
-        run: git push origin HEAD:main "v$VERSION"
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
-      - name: Publish to npm
-        if: ${{ steps.version.outputs.version }}
-        run: npm publish --provenance --access public
-        env:
-          NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
-      - name: Create GitHub release
-        if: ${{ steps.version.outputs.version }}
-        run: |
-          awk -v h="## $VERSION" '$0 == h { f = 1; next } f && /^#{1,2} / { exit } f' CHANGELOG.md > release-notes.md
-          gh release create "v$VERSION" --title "v$VERSION" --notes-file release-notes.md
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-docs:
     runs-on: ubuntu-latest
