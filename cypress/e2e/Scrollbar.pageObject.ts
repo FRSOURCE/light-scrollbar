@@ -81,13 +81,62 @@ export class ScrollbarBaseObject extends BasePage {
     this.innerElement.then((el) => {
       const { width, height } = el[0].getBoundingClientRect();
       const position = { x: width - right, y: height - bottom };
-      // rails hover state is computed from the previous mousemove, so hover twice before pressing
       cy.wrap(el)
-        .realHover({ position })
         .realHover({ position })
         .realMouseDown({ position })
         .realMouseMove(position.x, position.y - 1, { keepMouseDownButton: "left" })
         .realMouseUp({ position: { x: position.x, y: position.y - 1 } });
+    });
+    return this;
+  }
+
+  hoverCenterOfInnerElement() {
+    this.innerElement.realHover({ position: "center" });
+    return this;
+  }
+
+  // presses the middle of the given thumb and drags it along its axis by `distance` px;
+  // the thumb is hovered exactly once before pressing - like a fast user would do
+  dragThumb(axis: "x" | "y", distance: number) {
+    this.innerElement.then((el) => {
+      const inner = el[0];
+      const outer = inner.ownerDocument.querySelector<HTMLElement>(".light-scrollbar-wrapper-outside") as HTMLElement;
+      const cssVar = (name: string) => parseFloat(outer.style.getPropertyValue(name)) || 0;
+      const { width, height } = inner.getBoundingClientRect();
+      const start =
+        axis === "y"
+          ? { x: width - 3, y: cssVar("--ls-bar-y-top") + cssVar("--ls-bar-y-height") / 2 }
+          : { x: cssVar("--ls-bar-x-left") + cssVar("--ls-bar-x-width") / 2, y: height - 3 };
+      const steps = 5;
+      const at = (step: number) => {
+        const offset = (distance * step) / steps;
+        return axis === "y" ? { x: start.x, y: start.y + offset } : { x: start.x + offset, y: start.y };
+      };
+
+      cy.wrap(el).realHover({ position: start }).realMouseDown({ position: start });
+      for (let step = 1; step <= steps; step++) {
+        const { x, y } = at(step);
+        cy.wrap(el).realMouseMove(x, y, { keepMouseDownButton: "left" });
+      }
+      cy.wrap(el).realMouseUp({ position: at(steps) });
+    });
+    return this;
+  }
+
+  getScrollPosition() {
+    // waits for smooth scrolling to settle
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    return this.innerElement.then((el) => ({ top: el[0].scrollTop, left: el[0].scrollLeft }));
+  }
+
+  hasScrollPosition({ top, left }: { top?: number; left?: number }) {
+    // waits for smooth scrolling to settle
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    this.innerElement.should((el) => {
+      if (top !== undefined) expect(el[0].scrollTop, "scrollTop").to.be.closeTo(top, 1);
+      if (left !== undefined) expect(el[0].scrollLeft, "scrollLeft").to.be.closeTo(left, 1);
     });
     return this;
   }

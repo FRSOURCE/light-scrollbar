@@ -310,7 +310,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     );
   };
 
-  const scrollOnDrag = (event: MouseEvent, prevent = false) => {
+  const scrollOnDrag = () => {
     doActionForBothAxis(internalConfig, ({ dir, dimensionLong, isLeftOrTop }) => {
       if (data.rail[dir].isStartingPointHover) {
         data.rail[dir].isStartingPointHover = true;
@@ -318,8 +318,6 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
         data.rail[dir].isStartingPointHover = data.rail[dir].isHovered;
       }
       if (data.rail[dir].isStartingPointHover && data.mouse.isHoldRail) {
-        if (prevent) event.preventDefault();
-
         if (data.scrollbar[dir].isGrabbed) data.scrollbar[dir].isGrabbed = true;
         else {
           data.scrollbar[dir].isGrabbed = data.scrollbar[dir].isHovered;
@@ -355,7 +353,15 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   const windowMouseDownHandler = (e: MouseEvent) => {
     const isInScrollbar = (e.target as HTMLElement)?.closest(`.${outerElementClassname}`);
     if (!isInScrollbar) return;
+    containerRect = innerElement.getBoundingClientRect();
     updateMousePosition(e);
+    onHoverRails(true);
+    // every press starts a new drag - drop rail state left over from a previous press,
+    // otherwise the other axis would be dragged along (#531)
+    doActionForBothAxis(internalConfig, ({ dir }) => {
+      data.rail[dir].isStartingPointHover = false;
+      data.scrollbar[dir].isGrabbed = false;
+    });
     data.mouse.isHoldInsideScrollbar = true;
     data.mouse.isHoldRail = data.rail.x.isHovered || data.rail.y.isHovered;
 
@@ -382,7 +388,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
 
     if (data.mouse.isHoldInsideScrollbar) {
       innerElement.classList.add("no-smooth");
-      scrollOnDrag(e);
+      scrollOnDrag();
     } else {
       data.scrollbar.y.isStartingPointHover = false;
       data.scrollbar.x.isStartingPointHover = false;
@@ -402,14 +408,13 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     });
   };
 
-  const containerMouseMoveHandler = () => {
+  // runs before the window mousemove listener (bubbling order), so the mouse position has to be refreshed here -
+  // otherwise rails hover state would be computed from the previous event's position
+  const containerMouseMoveHandler = (e: MouseEvent) => {
+    containerRect = innerElement.getBoundingClientRect();
+    updateMousePosition(e);
     onHoverRails(true);
     calculateScrollbars(true);
-  };
-
-  const clickHandler = (e: MouseEvent) => {
-    updateMousePosition(e);
-    scrollOnDrag(e, true);
   };
 
   const focusHandler = (e: Event) => {
@@ -436,7 +441,6 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   calculateScrollbars(true);
 
   innerElement.addEventListener("scroll", scrollHandler, { passive: true });
-  outerElement.addEventListener("click", clickHandler);
   outerElement.addEventListener("mousemove", containerMouseMoveHandler, {
     passive: true,
   });
@@ -449,7 +453,6 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     resizeObserver.disconnect();
     observer.disconnect();
     innerElement.removeEventListener("scroll", scrollHandler);
-    outerElement.removeEventListener("click", clickHandler);
     outerElement.removeEventListener("mousemove", containerMouseMoveHandler);
     outerElement.removeEventListener("focus", focusHandler);
     window.removeEventListener("mousedown", windowMouseDownHandler);

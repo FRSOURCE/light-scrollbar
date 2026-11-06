@@ -127,6 +127,37 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
 
       page().pressAndMoveInnerElementFromBottomRight(3, 10).hasScroll({ top: "moved", left: "start" });
     });
+
+    it("pressing a thumb right after moving the cursor onto it should start dragging", () => {
+      initializePluginInPage(elements[mount] as HTMLElement, parentOptions);
+
+      page().hoverCenterOfInnerElement().dragThumb("y", 30).hasScroll({ top: "moved", left: "start" });
+    });
+
+    // https://github.com/FRSOURCE/light-scrollbar/issues/531
+    (
+      [
+        ["y", "x"],
+        ["x", "y"],
+      ] as const
+    ).forEach(([first, second]) => {
+      it(`dragging the ${second} thumb after dragging the ${first} thumb should not scroll ${first}`, () => {
+        initializePluginInPage(elements[mount] as HTMLElement, parentOptions);
+        const scrollKey = first === "y" ? "top" : "left";
+
+        page()
+          .dragThumb(first, 30)
+          .getScrollPosition()
+          .then((afterFirstDrag) => {
+            expect(afterFirstDrag[scrollKey], `${first} scrolled by the first drag`).to.be.greaterThan(0);
+
+            page()
+              .dragThumb(second, 30)
+              .hasScroll({ top: "moved", left: "moved" })
+              .hasScrollPosition({ [scrollKey]: afterFirstDrag[scrollKey] });
+          });
+      });
+    });
   });
 
   describe("when iniatlly got x items and y height", () => {
