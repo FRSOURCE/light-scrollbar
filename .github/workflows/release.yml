@@ -53,14 +53,41 @@ jobs:
         with:
           node-version: "26.x"
           cache: "pnpm"
+      - name: Check for an unfinished release
+        # package.json on main always holds the last tagged version. If that release failed after pushing
+        # its tag (e.g. on npm publish), finish it from the tag first - pending changesets go out in the next run.
+        run: |
+          name=$(node -p "require('./package.json').name")
+          current=$(node -p "require('./package.json').version")
+          if ! git rev-parse -q --verify "refs/tags/v$current" > /dev/null; then
+            exit 0
+          fi
+          npm=false
+          gh_release=false
+          [ -z "$(npm view "$name@$current" version 2>/dev/null)" ] && npm=true
+          gh release view "v$current" > /dev/null 2>&1 || gh_release=true
+          if [ "$npm" = false ] && [ "$gh_release" = false ]; then
+            exit 0
+          fi
+          echo "v$current is tagged but not fully released - finishing it (npm: $npm, GitHub release: $gh_release)" | tee -a "$GITHUB_STEP_SUMMARY"
+          git checkout "v$current"
+          {
+            echo "RELEASE_VERSION=$current"
+            echo "RELEASE_NEW=false"
+            echo "RELEASE_NPM=$npm"
+            echo "RELEASE_GH=$gh_release"
+          } >> "$GITHUB_ENV"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install rimraf
         run: npm i -g rimraf
       - name: Install dependencies
         run: pnpm i
       - name: Add changeset for dependencies updates
+        if: ${{ !env.RELEASE_VERSION }}
         run: pnpm changeset.deps
       - name: Version package
-        id: version
+        if: ${{ !env.RELEASE_VERSION }}
         run: |
           if [ -z "$(find .changeset -name '*.md' ! -name README.md)" ]; then
             echo "No changesets - nothing to release" | tee -a "$GITHUB_STEP_SUMMARY"
@@ -76,38 +103,38 @@ jobs:
           git add -A
           git commit -m "chore(release): $version [skip ci]"
           git tag "v$version"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          {
+            echo "RELEASE_VERSION=$version"
+            echo "RELEASE_NEW=true"
+            echo "RELEASE_NPM=true"
+            echo "RELEASE_GH=true"
+          } >> "$GITHUB_ENV"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release notes
-        if: ${{ steps.version.outputs.version }}
+        if: ${{ env.RELEASE_VERSION }}
         run: |
-          awk -v h="## $VERSION" '$0 == h { f = 1; next } f && /^#{1,2} / { exit } f' CHANGELOG.md > release-notes.md
+          awk -v h="## $RELEASE_VERSION" '$0 == h { f = 1; next } f && /^#{1,2} / { exit } f' CHANGELOG.md > release-notes.md
           {
-            if [ "$DRY_RUN" = "true" ]; then echo "## v$VERSION (dry run - nothing was published)"; else echo "## v$VERSION"; fi
+            if [ "$DRY_RUN" = "true" ]; then echo "## v$RELEASE_VERSION (dry run - nothing was published)"; else echo "## v$RELEASE_VERSION"; fi
             cat release-notes.md
           } >> "$GITHUB_STEP_SUMMARY"
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
       - name: build
-        if: ${{ steps.version.outputs.version }}
+        if: ${{ env.RELEASE_VERSION }}
         run: pnpm build
       - name: Check package contents
-        if: ${{ steps.version.outputs.version && env.DRY_RUN == 'true' }}
+        if: ${{ env.RELEASE_NPM == 'true' && env.DRY_RUN == 'true' }}
         run: npm publish --dry-run --access public
       - name: Push release commit and tag
-        if: ${{ steps.version.outputs.version && env.DRY_RUN != 'true' }}
-        run: git push origin HEAD:main "v$VERSION"
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
+        if: ${{ env.RELEASE_NEW == 'true' && env.DRY_RUN != 'true' }}
+        run: git push origin HEAD:main "v$RELEASE_VERSION"
       - name: Publish to npm
-        if: ${{ steps.version.outputs.version && env.DRY_RUN != 'true' }}
+        if: ${{ env.RELEASE_NPM == 'true' && env.DRY_RUN != 'true' }}
         run: npm publish --provenance --access public
         env:
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
       - name: Create GitHub release
-        if: ${{ steps.version.outputs.version && env.DRY_RUN != 'true' }}
-        run: gh release create "v$VERSION" --title "v$VERSION" --notes-file release-notes.md
+        if: ${{ env.RELEASE_GH == 'true' && env.DRY_RUN != 'true' }}
+        run: gh release create "v$RELEASE_VERSION" --title "v$RELEASE_VERSION" --notes-file release-notes.md
         env:
-          VERSION: ${{ steps.version.outputs.version }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
