@@ -1,5 +1,15 @@
 # @frsource/light-scrollbar
 
+## 1.5.0
+
+### Minor Changes
+
+- [#529](https://github.com/FRSOURCE/light-scrollbar/pull/529) [`5dcf691`](https://github.com/FRSOURCE/light-scrollbar/commit/5dcf69182663d06ec84df68c74265d680759c818) Thanks [@Szymon-dziewonski](https://github.com/Szymon-dziewonski)! - When both scrollbars are visible, they no longer overlap: the x scrollbar track ends before the y scrollbar width and the y scrollbar track ends before the x scrollbar height. The bottom right corner between them is excluded from rail, scrollbar and drag handling.
+
+### Patch Changes
+
+- [#532](https://github.com/FRSOURCE/light-scrollbar/pull/532) [`816e1a4`](https://github.com/FRSOURCE/light-scrollbar/commit/816e1a46b6998ee973d1e7c8e56e6ffcfee4cbf6) Thanks [@Szymon-dziewonski](https://github.com/Szymon-dziewonski)! - Dragging one scrollbar thumb no longer scrolls the other axis to its end after the other thumb was dragged before ([#531](https://github.com/FRSOURCE/light-scrollbar/issues/531)). Pressing a thumb right after moving the cursor onto it now starts dragging - rails hover state was computed from the previous mouse position.
+
 ## 1.4.255 (2026-11-02) · [diff](https://github.com/FRSOURCE/light-scrollbar/compare/v1.4.254...v1.4.255)
 
 ### Bug Fixes
