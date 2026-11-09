@@ -1,0 +1,34 @@
+/* Home page hero image (docs/public/hero-*.svg) is a wide diagram with labels - the default theme squeezes
+   hero images into a 192-320px square (and pulls it under the title with negative margins), which makes the
+   labels unreadable. Size it by its own aspect ratio instead. */
+.VPHero.has-image .image {
+  margin: 0 0 32px;
+}
+
+.VPHero.has-image .image-container {
+  width: min(100%, 520px);
+  height: auto;
+  aspect-ratio: 678 / 378.5;
+}
+
+.VPHero.has-image .image-src {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* on phones the labels would be too small to read - the diagram is left out */
+@media (max-width: 639px) {
+  .VPHero.has-image .image {
+    display: none;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero.has-image .image {
+    margin: 0;
+  }
+
+  .VPHero.has-image .image-container {
+    transform: none;
+  }
+}

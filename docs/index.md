@@ -5,6 +5,10 @@ hero:
   name: Light-scrollbar
   text: Small light custom scrollbar
   tagline: Light-scrollbar plugin is based on one wrap element and psuedo elements that creates scrollbar for X and Y axis, this provides the smallest alteration of DOM possible.
+  image:
+    light: /hero-light.svg
+    dark: /hero-dark.svg
+    alt: The scrollbar exploded into layers - your content, the rail and the scrollbar thumb on top
 
   actions:
     - theme: brand
