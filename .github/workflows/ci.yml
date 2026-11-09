@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v6.1.0
+      - uses: pnpm/action-setup@v6.1.1
         name: Install pnpm
         with:
           version: 12.16.1
@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v6.1.0
+      - uses: pnpm/action-setup@v6.1.1
         name: Install pnpm
         with:
           version: 12.16.1
@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v6.1.0
+      - uses: pnpm/action-setup@v6.1.1
         name: Install pnpm
         with:
           version: 12.16.1
@@ -104,7 +104,7 @@ jobs:
         with:
           fetch-depth: "0"
           persist-credentials: false
-      - uses: pnpm/action-setup@v6.1.0
+      - uses: pnpm/action-setup@v6.1.1
         name: Install pnpm
         with:
           version: 12.16.1
@@ -123,7 +123,7 @@ jobs:
     needs: [cache, lint]
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6.1.0
+      - uses: pnpm/action-setup@v6.1.1
         name: Install pnpm
         with:
           version: 12.16.1
