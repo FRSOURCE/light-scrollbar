@@ -1,5 +1,11 @@
 # @frsource/light-scrollbar
 
+## 1.6.1
+
+### Patch Changes
+
+- [#537](https://github.com/FRSOURCE/light-scrollbar/pull/537) [`de18212`](https://github.com/FRSOURCE/light-scrollbar/commit/de1821281c05445227b4451e8d7c4bb15f4d6681) Thanks [@Szymon-dziewonski](https://github.com/Szymon-dziewonski)! - Clicking the scrollbar strip or the rail away from the thumb now jumps the thumb there right away - before, nothing happened until the mouse moved with the button held. Clicking the thumb itself still doesn't move it, and the first mouse move of a drag is no longer lost.
+
 ## 1.6.0
 
 ### Minor Changes
