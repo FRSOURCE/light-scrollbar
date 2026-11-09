@@ -2,7 +2,7 @@
 
 Example with a rail - the background track under the scrollbar thumb. Here the rail is 10px thick and the 6px thumb is moved 2px from the edge, so it sits in the middle of the rail.
 
-On top of the rail the default theme uses a darker thumb (`#94a3b8`, hovered or dragged `#64748b`), so it stays visible against the rail background (`#f1f5f9`). With `$disable-default-theme: true` none of these colors are set.
+On top of the rail the default theme uses a darker thumb (`#94a3b8`, hovered or dragged `#64748b`), so it stays visible against the rail background (`#f1f5f9`). All of these colors and the radius can be changed with CSS variables - see [CSS → Styles](/css/styles).
 
 <script setup>
 import RailExample from './rail.vue'

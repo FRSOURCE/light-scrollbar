@@ -1,0 +1,37 @@
+// any parent of the scrollbar (or the scrollbar element itself) - keeps the custom look to this one scrollbar
+.custom-scrollbar {
+  // colors and radius - only CSS variables, no selectors to override
+  // (only the ones to change - all of them have defaults). With the rail on, the scrollbar thumb
+  // uses the `--light-scrollbar-rail-bar-*` colors
+  --light-scrollbar-rail-bar-background: #8b5cf6;
+  --light-scrollbar-rail-bar-background-active: #6d28d9;
+  --light-scrollbar-bar-radius: 2px;
+  --light-scrollbar-rail-background: #ede9fe;
+  --light-scrollbar-rail-radius: 0;
+
+  // anything else (no variable for it) - your own rules on the pseudo-elements
+
+  // bar: ::before (x) and ::after (y) of the outer element - half transparent until hovered or dragged
+  .light-scrollbar-wrapper-outside {
+    &::before,
+    &::after {
+      opacity: 0.6;
+    }
+
+    &.hover-x::before,
+    &.active-x::before,
+    &.hover-y::after,
+    &.active-y::after {
+      opacity: 1;
+    }
+  }
+
+  // rail: ::before (x) and ::after (y) of the inner element - with a border drawn inside the rail size
+  .light-scrollbar-wrapper-inside.light-scrollbar-rail {
+    &::before,
+    &::after {
+      border: 1px solid #c4b5fd;
+      box-sizing: border-box;
+    }
+  }
+}

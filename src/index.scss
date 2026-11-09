@@ -1,10 +1,21 @@
 $light-scrollbar-classname: "light-scrollbar" !default;
 $frs-hide-scroll-classname: $light-scrollbar-classname !default;
-$disable-default-theme: false;
+$disable-default-theme: false !default;
 
 @use "../node_modules/@frsource/frs-hide-scrollbar/src/index.scss" with (
   $frs-hide-scroll-classname: $frs-hide-scroll-classname
 );
+
+// default theme - override any of these variables on :root, on any parent of the scrollbar or on the scrollbar
+// element itself (see docs: CSS -> Styles). `:where()` gives the defaults zero specificity, so your own
+// declarations always win, no matter in which order the stylesheets are loaded.
+@if ($disable-default-theme != true) {
+  :where(:root) {
+    --light-scrollbar-bar-background: #cbd5e1;
+    --light-scrollbar-bar-background-active: #94a3b8; // hovered or dragged
+    --light-scrollbar-bar-radius: 12px;
+  }
+}
 
 //TODO: export in package scss file
 .#{$light-scrollbar-classname} {
@@ -57,8 +68,8 @@ $disable-default-theme: false;
       transition: background var(--ls-show-on-hover);
 
       @if ($disable-default-theme != true) {
-        background-color: #cbd5e1;
-        border-radius: 12px;
+        background-color: var(--light-scrollbar-bar-background);
+        border-radius: var(--light-scrollbar-bar-radius);
       }
     }
 
@@ -88,21 +99,13 @@ $disable-default-theme: false;
       }
     }
 
+    // hovered or dragged
     @if ($disable-default-theme != true) {
-      &.hover-y::after {
-        background-color: #94a3b8;
-      }
-
-      &.hover-x::before {
-        background-color: #94a3b8;
-      }
-
+      &.hover-x::before,
+      &.active-x::before,
+      &.hover-y::after,
       &.active-y::after {
-        background-color: #94a3b8;
-      }
-
-      &.active-x::before {
-        background-color: #94a3b8;
+        background-color: var(--light-scrollbar-bar-background-active);
       }
     }
   }

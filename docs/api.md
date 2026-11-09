@@ -1,4 +1,4 @@
-# Api
+# API
 
 * [attach](/api/attach)
     * [attach arguments](/api/attach/arguments)

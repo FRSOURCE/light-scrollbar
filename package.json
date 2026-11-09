@@ -49,8 +49,9 @@
     "restore-index": "renamer --find index_tmp.ts --replace index.ts 'src/**'",
     "clean:tmp": "rimraf src/index.ts && rimraf index_tmp.ts",
     "dev-server": "concurrently \"pnpm start\" \"http-server -p 3000\"",
-    "docs:dev": "concurrently \"pnpm start\" \"vitepress dev docs\"",
-    "docs:build": "vitepress build docs",
+    "docs:css": "sass --no-source-map --style=expanded docs/examples/customStyles.scss docs/examples/customStyles.css && prettier --write --log-level=warn docs/examples/customStyles.css",
+    "docs:dev": "pnpm docs:css && concurrently \"pnpm start\" \"vitepress dev docs\"",
+    "docs:build": "pnpm docs:css && vitepress build docs",
     "docs:serve": "vitepress serve docs"
   },
   "homepage": "https://github.com/FRSOURCE/light-scrollbar/",
