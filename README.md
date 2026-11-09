@@ -108,12 +108,12 @@ With the rail on, the rail and the thumb on top of it use `--light-scrollbar-rai
 
 For docs, please visit [frsource.org/light-scrollbar](https://www.frsource.org/light-scrollbar/)
 
-- [Getting Started](https://www.frsource.org/light-scrollbar/instalation.html)
-- [API Reference](https://www.frsource.org/light-scrollbar/api/options.html)
+- [Getting Started](https://www.frsource.org/light-scrollbar/instalation)
+- [API Reference](https://www.frsource.org/light-scrollbar/api/attach/arguments)
 
 ## Demo examples
 
-[Check our examples to see how its working!](https://www.frsource.org/light-scrollbar/examples.html)
+[Check our examples to see how its working!](https://www.frsource.org/light-scrollbar/examples)
 
 ## Questions
 
