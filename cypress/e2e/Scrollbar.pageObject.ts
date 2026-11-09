@@ -122,6 +122,33 @@ export class ScrollbarBaseObject extends BasePage {
     return this;
   }
 
+  // a single click (press + release, no move in between) at the very start of the axis strip:
+  // y - top of the right edge, x - left of the bottom edge; `fromEdge` - distance from that edge across the axis
+  clickAxisStart(axis: "x" | "y", fromEdge: number) {
+    this.innerElement.then((el) => {
+      const { width, height } = el[0].getBoundingClientRect();
+      const position = axis === "y" ? { x: width - fromEdge, y: 1 } : { x: 1, y: height - fromEdge };
+      cy.wrap(el).realHover({ position }).realMouseDown({ position }).realMouseUp({ position });
+    });
+    return this;
+  }
+
+  // a single click in the middle of the thumb
+  clickThumb(axis: "x" | "y") {
+    this.innerElement.then((el) => {
+      const position = this.thumbCenter(el[0], axis, 3);
+      cy.wrap(el).realHover({ position }).realMouseDown({ position }).realMouseUp({ position });
+    });
+    return this;
+  }
+
+  scrollTo({ top, left }: { top: number; left: number }) {
+    this.innerElement.then((el) => {
+      el[0].scrollTo({ top, left, behavior: "instant" });
+    });
+    return this;
+  }
+
   // presses the middle of the given thumb and drags it along its axis by `distance` px;
   // the thumb is hovered exactly once before pressing - like a fast user would do.
   // `fromEdge` - how far from the container edge (across the axis) the press happens

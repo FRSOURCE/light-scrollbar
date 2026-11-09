@@ -40,7 +40,7 @@ attach(el, { enableRail: true, plugins: [rail] });
 Rail thickness and offset, same shape as [`bar`](#bar). Every value that is not set is taken from `bar`, so with `enableRail` alone the rail has exactly the size and position of the scrollbar. Used only when [`enableRail`](#enablerail) is on.
 
 ::: info MOUSE AREA
-With the rail on, the whole rail reacts to the mouse like the scrollbar does: hovering, pressing and dragging work anywhere on the rail, also when it is thicker than the scrollbar or placed with a different offset. When both rails are visible, the corner where they cross is sized by the thicker of the rail and the scrollbar, and the scrollbar stops where the rail ends.
+With the rail on, the whole rail reacts to the mouse like the scrollbar does: hovering, clicking and dragging work anywhere on the rail, also when it is thicker than the scrollbar or placed with a different offset. A click away from the thumb jumps the thumb there. When both rails are visible, the corner where they cross is sized by the thicker of the rail and the scrollbar, and the scrollbar stops where the rail ends.
 :::
 
 <sup><sub>**Default value**</sub></sup>

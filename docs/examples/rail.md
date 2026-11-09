@@ -39,7 +39,7 @@ After mount (wrapper inside) the rail is drawn with the inner element's `::befor
 ```
 
 ::: info MOUSE AREA
-The whole rail reacts to the mouse like the scrollbar does - in this example you can grab the 6px thumb anywhere on the 10px rail, and pressing the rail away from the thumb and dragging moves the thumb under the cursor. The corner where both rails cross doesn't react, and the thumb stops where the rail ends.
+The whole rail reacts to the mouse like the scrollbar does - in this example you can grab the 6px thumb anywhere on the 10px rail, and clicking the rail away from the thumb jumps the thumb there (centered under the cursor) - also without moving the mouse. The corner where both rails cross doesn't react, and the thumb stops where the rail ends.
 :::
 
 ::: warning
