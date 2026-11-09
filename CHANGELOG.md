@@ -1,5 +1,15 @@
 # @frsource/light-scrollbar
 
+## 1.6.0
+
+### Minor Changes
+
+- [#536](https://github.com/FRSOURCE/light-scrollbar/pull/536) [`0302388`](https://github.com/FRSOURCE/light-scrollbar/commit/0302388e503e542eeb361d00cdcc4211b32b7194) Thanks [@Szymon-dziewonski](https://github.com/Szymon-dziewonski)! - Scrollbar and rail colors and radius are now CSS variables: `--light-scrollbar-bar-background`, `--light-scrollbar-bar-background-active`, `--light-scrollbar-bar-radius`, and with the rail `--light-scrollbar-rail-background`, `--light-scrollbar-rail-radius`, `--light-scrollbar-rail-bar-background`, `--light-scrollbar-rail-bar-background-active`. Their defaults are included in `index.css` / `rail.css` (on `:where(:root)`, zero specificity) - override only the ones you want to change, on `:root`, the scrollbar element or any of its parents. The default look doesn't change. See the new _CSS → Styles_ docs page.
+
+- [`b1d3752`](https://github.com/FRSOURCE/light-scrollbar/commit/b1d3752d2e7886ee669df451eb9771167afa9eca) - Added an optional rail - a background track under the scrollbar thumb. Turn it on with `enableRail: true` and pass the rail plugin: `import { rail } from "@frsource/light-scrollbar/rail"`, `plugins: [rail]`, plus `@frsource/light-scrollbar/dist/rail.css`. The rail is customizable like `bar` via the `rail` option, and every value that is not set is taken from `bar`. On top of the rail the default theme uses a darker thumb. The whole rail reacts to the mouse like the scrollbar, also when it is thicker than the thumb. The rail lives in a separate entry, so it is added to your bundle only when you import it.
+
+  The package now has an `exports` map. All existing import paths still resolve.
+
 ## 1.5.0
 
 ### Minor Changes
