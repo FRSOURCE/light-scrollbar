@@ -7,11 +7,30 @@
   "module": "./dist/index.es.js",
   "unpkg": "./dist/index.umd.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.es.js",
+      "import": "./dist/index.modern.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./rail": {
+      "types": "./dist/rail.d.ts",
+      "module": "./dist/rail.es.js",
+      "import": "./dist/rail.modern.mjs",
+      "require": "./dist/rail.js",
+      "default": "./dist/rail.js"
+    },
+    "./package.json": "./package.json",
+    "./*": "./*"
+  },
   "sass": "src/index.scss",
   "styles": "dist/index.css",
   "scripts": {
-    "start": "pnpm clean && microbundle --no-compress --no-sourcemap --format=modern,esm,cjs watch --tsconfig tsconfig.build.json",
-    "build": "pnpm clean && pnpm minify-data && microbundle --compress --tsconfig tsconfig.build.json && pnpm copy-tmp-to-src && pnpm clean:tmp && pnpm restore-index",
+    "start": "pnpm clean && concurrently \"microbundle --no-compress --no-sourcemap --format=modern,esm,cjs watch --tsconfig tsconfig.build.json\" \"microbundle src/rail.ts --output dist/rail.js --name lightScrollbarRail --no-compress --no-sourcemap --format=modern,esm,cjs watch --tsconfig tsconfig.build.json\"",
+    "build": "pnpm clean && pnpm minify-data && microbundle --compress --tsconfig tsconfig.build.json && pnpm copy-tmp-to-src && pnpm clean:tmp && pnpm restore-index && pnpm build:rail",
+    "build:rail": "microbundle src/rail.ts --output dist/rail.js --name lightScrollbarRail --compress --tsconfig tsconfig.build.json",
     "build-backup": "pnpm clean && microbundle --compress --tsconfig tsconfig.build.json",
     "lint": "pnpm lint.script",
     "lint.fix": "pnpm lint.script.fix",
@@ -21,7 +40,7 @@
     "prettify": "prettier --write src",
     "prettify.ci": "prettier --check src",
     "test": "concurrently \"pnpm dev-server\" \"pnpm start\" \"cypress open --e2e\"",
-    "test.ci": "concurrently --kill-others --success first \"pnpm dev-server\" \"wait-on ./dist/index.js && pnpm cypress run --headless --browser chrome --expose CI=true\"",
+    "test.ci": "concurrently --kill-others --success first \"pnpm dev-server\" \"wait-on ./dist/index.js ./dist/rail.js && pnpm cypress run --headless --browser chrome --expose CI=true\"",
     "changeset": "changeset",
     "changeset.deps": "node scripts/changeset-deps.mjs",
     "clean": "rimraf dist/**/*",

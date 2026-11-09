@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 import { LightScrollbarReturns } from "../../dist/utils/types";
 import { attach, WrapperPlacement } from "../../dist/index.js";
+import { rail } from "../../dist/rail.js";
 import type { config } from "../../dist/src/index";
 import { ScrollbarBaseObject } from "./Scrollbar.pageObject";
 import { addElements } from "./utils/addElements";
@@ -157,6 +158,157 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
               .hasScrollPosition({ [scrollKey]: afterFirstDrag[scrollKey] });
           });
       });
+    });
+  });
+
+  describe("rail", () => {
+    it("is not added by default", () => {
+      initializePlugin(elements[mount] as HTMLElement, parentOptions);
+
+      page().hasNoRail().hasNoRailContainment();
+    });
+
+    it("is not added when the rail plugin is passed without enableRail", () => {
+      initializePlugin(elements[mount] as HTMLElement, { ...parentOptions, plugins: [rail] });
+
+      // default scrollbar color - not the darker one used on top of the rail
+      page().hasNoRail().hasNoRailContainment().hasVisibleScrollbar();
+    });
+
+    it("is not added and warns when enableRail is set without the rail plugin", () => {
+      const warn = cy.spy(console, "warn");
+      initializePlugin(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true });
+
+      page().hasNoRail().hasNoRailContainment();
+      cy.then(() => expect(warn).to.have.been.calledWithMatch("enableRail requires plugins: [rail]"));
+    });
+
+    it("takes thickness and offsets from bar when rail is not configured", () => {
+      initializePlugin(elements[mount] as HTMLElement, {
+        ...parentOptions,
+        enableRail: true,
+        plugins: [rail],
+        bar: { y: { width: 8, offset: [3, 0] }, x: { height: 5, offset: [0, 2] } },
+      });
+
+      page()
+        .hasRail({
+          // the bottom right corner (other rail thickness + its offset) belongs to neither rail
+          y: { width: 8, right: 3, length: (inner) => inner.clientHeight - (5 + 2) },
+          x: { height: 5, bottom: 2, length: (inner) => inner.clientWidth - (8 + 3) },
+        })
+        .hasRailPinnedToOuterElement();
+    });
+
+    it("uses its own settings and falls back to bar only for the missing ones", () => {
+      initializePlugin(elements[mount] as HTMLElement, {
+        ...parentOptions,
+        enableRail: true,
+        plugins: [rail],
+        bar: { x: { height: 6, offset: [0, 4] } },
+        rail: { y: { width: 10, offset: [1, 0] }, x: { height: 12 } },
+      });
+
+      page()
+        .hasRail({
+          y: { width: 10, right: 1, length: (inner) => inner.clientHeight - (12 + 4) },
+          // x rail offset is not set - taken from bar.x.offset
+          x: { height: 12, bottom: 4, length: (inner) => inner.clientWidth - (10 + 1) },
+        })
+        // the thumb keeps the bar settings
+        .hasScrollbarYWidth(6);
+    });
+
+    it("is shown only for the axis that overflows and then has no corner", () => {
+      ((elements[mount] as HTMLElement).querySelector(".item") as HTMLElement).style.width = "10px";
+      initializePlugin(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page().hasRail({
+        y: { width: 6, right: 0, length: (inner) => inner.clientHeight },
+        x: { height: 6, bottom: 0, length: () => 0 },
+      });
+    });
+
+    it("makes the scrollbar darker", () => {
+      initializePlugin(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page().hasScrollbarBackground({ x: "rgb(148, 163, 184)", y: "rgb(148, 163, 184)" });
+    });
+
+    it("makes the hovered scrollbar darker still", () => {
+      initializePluginInPage(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page()
+        .hoverThumb("y")
+        .hasScrollbarBackground({ x: "rgb(148, 163, 184)", y: "rgb(100, 116, 139)" })
+        .hoverBottomOfBody();
+    });
+
+    it("is hidden together with the scrollbar when showOnHover is set", () => {
+      initializePlugin(elements[mount] as HTMLElement, {
+        ...parentOptions,
+        enableRail: true,
+        plugins: [rail],
+        showOnHover: 20,
+      });
+
+      const hidden = "rgba(0, 0, 0, 0)";
+      page().hasRailBackground(hidden).hasScrollbarBackground({ x: hidden, y: hidden }).hoverOverOuterElement();
+      // intentionally waiting past the configured 20ms showOnHover delay
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(100);
+      page()
+        .hasRailBackground("rgb(241, 245, 249)")
+        .hasScrollbarBackground({ x: "rgb(148, 163, 184)", y: "rgb(148, 163, 184)" })
+        .hoverBottomOfBody();
+    });
+
+    describe("when wider than the scrollbar", () => {
+      // 16px rails, default 6px scrollbars
+      const wideRail = { enableRail: true, plugins: [rail], rail: { y: { width: 16 }, x: { height: 16 } } };
+
+      afterEach(() => {
+        page().hoverBottomOfBody();
+      });
+
+      (["y", "x"] as const).forEach((axis) => {
+        it(`pressing the ${axis} rail outside the scrollbar thickness should drag the scrollbar`, () => {
+          initializePluginInPage(elements[mount] as HTMLElement, { ...parentOptions, ...wideRail });
+
+          page()
+            .dragThumb(axis, 30, 12)
+            .hasScroll({ top: axis === "y" ? "moved" : "start", left: axis === "x" ? "moved" : "start" });
+        });
+      });
+
+      it("pressing next to the rail should not scroll", () => {
+        initializePluginInPage(elements[mount] as HTMLElement, { ...parentOptions, ...wideRail });
+
+        page().dragThumb("y", 30, 20).hasScroll({ top: "start", left: "start" });
+      });
+
+      it("pressing in the corner where the rails cross should not scroll", () => {
+        initializePluginInPage(elements[mount] as HTMLElement, { ...parentOptions, ...wideRail });
+
+        page().pressAndMoveInnerElementFromBottomRight(12, 12).hasScroll({ top: "start", left: "start" });
+      });
+
+      it("scrolled to the end, scrollbars should end where the rails end", () => {
+        initializePlugin(elements[mount] as HTMLElement, { ...parentOptions, ...wideRail });
+
+        page().scrollToEnd().hasScrollbarsEndingBeforeCorner({ yWidth: 16, xHeight: 16 });
+      });
+    });
+
+    it("is removed on detach", () => {
+      initializePlugin(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page().hasRailPinnedToOuterElement();
+      cy.then(() => {
+        instance?.detach();
+        instance = undefined;
+      });
+      cy.get(".light-scrollbar-rail").should("not.exist");
     });
   });
 

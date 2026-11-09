@@ -95,18 +95,39 @@ export class ScrollbarBaseObject extends BasePage {
     return this;
   }
 
-  // presses the middle of the given thumb and drags it along its axis by `distance` px;
-  // the thumb is hovered exactly once before pressing - like a fast user would do
-  dragThumb(axis: "x" | "y", distance: number) {
+  // middle of the thumb along the axis, `fromEdge` px from the container edge across it - relative to the inner element
+  private thumbCenter(inner: HTMLElement, axis: "x" | "y", fromEdge: number) {
+    const outer = inner.ownerDocument.querySelector<HTMLElement>(".light-scrollbar-wrapper-outside") as HTMLElement;
+    const cssVar = (name: string) => parseFloat(outer.style.getPropertyValue(name)) || 0;
+    const { width, height } = inner.getBoundingClientRect();
+    return axis === "y"
+      ? { x: width - fromEdge, y: cssVar("--ls-bar-y-top") + cssVar("--ls-bar-y-height") / 2 }
+      : { x: cssVar("--ls-bar-x-left") + cssVar("--ls-bar-x-width") / 2, y: height - fromEdge };
+  }
+
+  hoverThumb(axis: "x" | "y") {
     this.innerElement.then((el) => {
-      const inner = el[0];
-      const outer = inner.ownerDocument.querySelector<HTMLElement>(".light-scrollbar-wrapper-outside") as HTMLElement;
-      const cssVar = (name: string) => parseFloat(outer.style.getPropertyValue(name)) || 0;
-      const { width, height } = inner.getBoundingClientRect();
-      const start =
-        axis === "y"
-          ? { x: width - 3, y: cssVar("--ls-bar-y-top") + cssVar("--ls-bar-y-height") / 2 }
-          : { x: cssVar("--ls-bar-x-left") + cssVar("--ls-bar-x-width") / 2, y: height - 3 };
+      cy.wrap(el).realHover({ position: this.thumbCenter(el[0], axis, 3) });
+    });
+    return this;
+  }
+
+  // ::before - x thumb, ::after - y thumb
+  hasScrollbarBackground({ x, y }: { x: string; y: string }) {
+    this.outerElement.should(([outer]) => {
+      const view = outer.ownerDocument.defaultView as Window;
+      expect(view.getComputedStyle(outer, "::before").backgroundColor, "x scrollbar background").to.equal(x);
+      expect(view.getComputedStyle(outer, "::after").backgroundColor, "y scrollbar background").to.equal(y);
+    });
+    return this;
+  }
+
+  // presses the middle of the given thumb and drags it along its axis by `distance` px;
+  // the thumb is hovered exactly once before pressing - like a fast user would do.
+  // `fromEdge` - how far from the container edge (across the axis) the press happens
+  dragThumb(axis: "x" | "y", distance: number, fromEdge = 3) {
+    this.innerElement.then((el) => {
+      const start = this.thumbCenter(el[0], axis, fromEdge);
       const steps = 5;
       const at = (step: number) => {
         const offset = (distance * step) / steps;
@@ -157,6 +178,85 @@ export class ScrollbarBaseObject extends BasePage {
 
       expect(yEnd, "y scrollbar end").to.be.closeTo(inner.clientHeight - xHeight, 0.5);
       expect(xEnd, "x scrollbar end").to.be.closeTo(inner.clientWidth - yWidth, 0.5);
+    });
+    return this;
+  }
+
+  // rail is drawn by the inner element pseudo-elements: ::before - x rail, ::after - y rail
+  private railStyles(inner: HTMLElement) {
+    const view = inner.ownerDocument.defaultView as Window;
+    return { x: view.getComputedStyle(inner, "::before"), y: view.getComputedStyle(inner, "::after") };
+  }
+
+  hasNoRail() {
+    this.innerElement.should(([inner]) => {
+      const rail = this.railStyles(inner);
+      expect(inner.className, "inner element classes").not.to.contain("light-scrollbar-rail");
+      expect(rail.x.content, "x rail").to.equal("none");
+      expect(rail.y.content, "y rail").to.equal("none");
+    });
+    return this;
+  }
+
+  // `xLength` / `yLength` are counted from the inner element size: e.g. `clientHeight - 6`
+  hasRail({
+    y,
+    x,
+  }: {
+    y: { width: number; right: number; length: (inner: HTMLElement) => number };
+    x: { height: number; bottom: number; length: (inner: HTMLElement) => number };
+  }) {
+    this.innerElement.should(([inner]) => {
+      const rail = this.railStyles(inner);
+      expect(rail.y.position, "y rail position").to.equal("fixed");
+      expect(parseFloat(rail.y.width), "y rail width").to.be.closeTo(y.width, 0.01);
+      expect(parseFloat(rail.y.right), "y rail right").to.be.closeTo(y.right, 0.01);
+      expect(parseFloat(rail.y.top), "y rail top").to.equal(0);
+      expect(parseFloat(rail.y.height), "y rail length").to.be.closeTo(y.length(inner), 0.5);
+      expect(rail.x.position, "x rail position").to.equal("fixed");
+      expect(parseFloat(rail.x.height), "x rail height").to.be.closeTo(x.height, 0.01);
+      expect(parseFloat(rail.x.bottom), "x rail bottom").to.be.closeTo(x.bottom, 0.01);
+      expect(parseFloat(rail.x.left), "x rail left").to.equal(0);
+      expect(parseFloat(rail.x.width), "x rail length").to.be.closeTo(x.length(inner), 0.5);
+    });
+    return this;
+  }
+
+  // the inner element is the scroll container - its pseudo-elements stay in place only when they are
+  // `position: fixed` and the outer element (`contain: layout`) is their containing block
+  hasRailPinnedToOuterElement() {
+    this.outerElement.should(([outer]) => {
+      const view = outer.ownerDocument.defaultView as Window;
+      expect(view.getComputedStyle(outer).contain, "outer element contain").to.contain("layout");
+    });
+    this.innerElement.should(([inner]) => {
+      const rail = this.railStyles(inner);
+      expect(rail.x.position, "x rail position").to.equal("fixed");
+      expect(rail.y.position, "y rail position").to.equal("fixed");
+    });
+    return this;
+  }
+
+  hasNoRailContainment() {
+    this.outerElement.should(([outer]) => {
+      const view = outer.ownerDocument.defaultView as Window;
+      expect(view.getComputedStyle(outer).contain, "outer element contain").to.equal("none");
+    });
+    return this;
+  }
+
+  hasRailBackground(color: string) {
+    this.innerElement.should(([inner]) => {
+      const rail = this.railStyles(inner);
+      expect(rail.x.backgroundColor, "x rail background").to.equal(color);
+      expect(rail.y.backgroundColor, "y rail background").to.equal(color);
+    });
+    return this;
+  }
+
+  hasScrollbarYWidth(value: number) {
+    cy.then(() => {
+      expect(this.afterElementStyle.width).to.be.equal(`${value}px`);
     });
     return this;
   }

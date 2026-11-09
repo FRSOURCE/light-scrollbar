@@ -1,0 +1,67 @@
+$light-scrollbar-classname: "light-scrollbar" !default;
+$disable-default-theme: false !default;
+
+// The rail is drawn with ::before (x) and ::after (y) of the inner element - the outer element's
+// pseudo-elements are already taken by the scrollbar thumbs.
+// The inner element is the scroll container, so absolutely positioned pseudo-elements would scroll together
+// with its content. `contain: layout` makes the outer element the containing block for `position: fixed`
+// descendants - the rails are positioned against the outer element, exactly like the thumbs, and stay in place.
+.#{$light-scrollbar-classname}-wrapper-outside.#{$light-scrollbar-classname}-rail {
+  contain: layout;
+}
+
+// on top of the rail the default thumb color would be too light, so the thumb gets darker.
+// The selectors are more specific than the default thumb color (`.…-wrapper-outside::after`), but less specific than
+// hiding with `showOnHover` (`.…-wrapper-outside.…--show-on-hover:not(:hover)::after`), so hiding still works.
+@if ($disable-default-theme != true) {
+  .#{$light-scrollbar-classname}-wrapper-outside.#{$light-scrollbar-classname}-rail {
+    &::before,
+    &::after {
+      background-color: #94a3b8;
+    }
+
+    // :where() keeps the specificity of the rule above, so the state doesn't win over `showOnHover` hiding
+    &:where(.hover-x, .active-x)::before,
+    &:where(.hover-y, .active-y)::after {
+      background-color: #64748b;
+    }
+  }
+}
+
+.#{$light-scrollbar-classname}-wrapper-inside.#{$light-scrollbar-classname}-rail {
+  &::before,
+  &::after {
+    content: "";
+    position: fixed;
+    // below the thumbs (z-index: 1)
+    z-index: 0;
+    transition: background var(--ls-show-on-hover);
+
+    @if ($disable-default-theme != true) {
+      background-color: #f1f5f9;
+      border-radius: 8px;
+    }
+  }
+
+  &::before {
+    left: 0;
+    bottom: var(--ls-rail-x-offset-y);
+    height: var(--ls-rail-x-height);
+    width: var(--ls-rail-x-width);
+  }
+
+  &::after {
+    top: 0;
+    right: var(--ls-rail-y-offset-x);
+    width: var(--ls-rail-y-width);
+    height: var(--ls-rail-y-height);
+  }
+}
+
+.#{$light-scrollbar-classname}-wrapper-outside--show-on-hover:not(:hover)
+  .#{$light-scrollbar-classname}-wrapper-inside.#{$light-scrollbar-classname}-rail {
+  &::before,
+  &::after {
+    background-color: transparent;
+  }
+}

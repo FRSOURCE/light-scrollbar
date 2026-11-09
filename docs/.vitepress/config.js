@@ -53,6 +53,7 @@ export default {
                     { text: 'Default', link: '/examples/default' },
                     { text: 'WrapperOutside', link: '/examples/wrapperOutside' },
                     { text: 'ShowOnHover', link: '/examples/showOnHover' },
+                    { text: 'Rail', link: '/examples/rail' },
                 ]
             }
         ]

@@ -75,6 +75,21 @@ const scrollingElement = document.querySelector("element-with-overflow-auto");
 window.lightScrollbar.attach(scrollingElement);
 ```
 
+### Rail (optional)
+
+A background track under the scrollbar thumb. It is a separate entry, so it is added to your bundle only when you import it:
+
+```ts
+import { attach } from "@frsource/light-scrollbar";
+import { rail } from "@frsource/light-scrollbar/rail";
+import "@frsource/light-scrollbar/dist/rail.css";
+
+// every `rail` value that is not set is taken from `bar`
+attach(scrollingElement, { enableRail: true, plugins: [rail], rail: { y: { width: 10 } } });
+```
+
+With UMD, load `dist/rail.umd.js` and pass `window.lightScrollbarRail.rail`.
+
 ## Documentation
 
 For docs, please visit [frsource.org/light-scrollbar](https://www.frsource.org/light-scrollbar/)

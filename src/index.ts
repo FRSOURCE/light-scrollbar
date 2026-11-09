@@ -9,10 +9,10 @@ import {
   RequireField,
   WrapperPlacement,
   LightScrollbarReturns,
+  PluginHitArea,
 } from "./utils/types";
 import { deepMergeConfig, doActionForBothAxis, reverseDir } from "./utils/utils";
 // TODO: increase dragging area for y, e.g 5px to left
-// TODO: add rail
 // TODO: min height should be fixed e.g 30px? maybe prop and possibility to use px and %?
 // TODO: when paginated list recalculate grab
 // TODO: increase bar once hovered
@@ -90,6 +90,12 @@ const defaultConfig: Config = {
     },
   },
   // #endregion bar
+  // #region enableRail
+  enableRail: false,
+  // #endregion enableRail
+  // #region plugins
+  plugins: [],
+  // #endregion plugins
   // #region className
   className: "light-scrollbar",
   // #endregion className
@@ -115,6 +121,15 @@ const setupWidthAndHeightForScrollbars = (internalConfig: InternalConfig, wrappe
 };
 
 export { Config, WrapperPlacement, LightScrollbarReturns };
+export type {
+  BarConfig,
+  LightScrollbarPlugin,
+  PluginAxisUpdate,
+  PluginContext,
+  PluginHitArea,
+  PluginInstance,
+  PluginUpdate,
+} from "./utils/types";
 //replace-this-start
 export const attach = (containerElement: HTMLElement, config: Config = {}): LightScrollbarReturns => {
   if (!containerElement) return;
@@ -139,6 +154,23 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   outerElement.setAttribute("tabindex", "-1");
 
   setupWidthAndHeightForScrollbars(internalConfig, outerElement);
+
+  // optional features (e.g. rail) live in separate entries, so they are bundled only when imported
+  const pluginInstances = internalConfig.plugins.map((plugin) =>
+    plugin.setup({ config: internalConfig, innerElement, outerElement })
+  );
+  if (internalConfig.enableRail && !internalConfig.plugins.some(({ name }) => name === "rail")) {
+    console.warn('[light-scrollbar] enableRail requires plugins: [rail] from "@frsource/light-scrollbar/rail"');
+  }
+  // strips along the container edge that react to the mouse: the scrollbar itself + the ones added by plugins
+  const hitAreas = {} as Record<Axis, PluginHitArea[]>;
+  doActionForBothAxis(internalConfig, ({ dir, scrollbarShort, scrollbarOffsetShort }) => {
+    hitAreas[dir] = [{ size: scrollbarShort, offset: scrollbarOffsetShort }];
+    pluginInstances.forEach((instance) => {
+      const hitArea = instance?.hitArea?.[dir];
+      if (hitArea) hitAreas[dir].push(hitArea);
+    });
+  });
 
   let containerRect = innerElement.getBoundingClientRect();
   const data = {
@@ -227,33 +259,20 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     data.content.width = innerElement.scrollWidth;
   };
 
-  type IsRailHoveredParameters = RequireField<
-  Partial<DoActionForBothAxis>,
-  "reverseDir" | "dimensionShort" | "scrollbarShort" | "scrollbarOffsetShort"
-  >;
-  const isRailHoveredShort = ({
-    reverseDir,
-    dimensionShort,
-    scrollbarShort,
-    scrollbarOffsetShort,
-  }: IsRailHoveredParameters) => {
-    return (
-      data.mouse[reverseDir] >= data.container[dimensionShort] - scrollbarShort - scrollbarOffsetShort &&
-      data.mouse[reverseDir] < data.container[dimensionShort] - scrollbarOffsetShort
+  type IsRailHoveredParameters = RequireField<Partial<DoActionForBothAxis>, "dir" | "reverseDir" | "dimensionShort">;
+  // whether the mouse is over any of the axis hit areas, measured across the axis (e.g. horizontally for y)
+  const isRailHoveredShort = ({ dir, reverseDir, dimensionShort }: IsRailHoveredParameters) =>
+    hitAreas[dir].some(
+      ({ size, offset }) =>
+        data.mouse[reverseDir] >= data.container[dimensionShort] - size - offset &&
+        data.mouse[reverseDir] < data.container[dimensionShort] - offset
     );
-  };
 
   const isScrollbarVisible = (dir: Axis) => data.scrollbar[dir].long.realPercent < 100;
 
-  const hoverScrollbar = ({
-    dir,
-    reverseDir,
-    scrollbarShort,
-    dimensionShort,
-    scrollbarOffsetShort,
-  }: DoActionForBothAxis) => {
+  const hoverScrollbar = ({ dir, reverseDir, dimensionShort }: DoActionForBothAxis) => {
     data.scrollbar[dir].isHovered =
-      isRailHoveredShort({ dir, reverseDir, scrollbarShort, dimensionShort, scrollbarOffsetShort }) &&
+      isRailHoveredShort({ dir, reverseDir, dimensionShort }) &&
       data.mouse[dir] >= data.scrollbar[dir].gap.toContainer.pixel &&
       data.mouse[dir] <= data.scrollbar[dir].gap.toContainer.pixel + data.scrollbar[dir].long.pixel;
 
@@ -265,18 +284,14 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     outerElement.classList.toggle(`hover-${dir}`, data.scrollbar[dir].isStartingPointHover);
   };
 
-  const calculateVisiblePartOfContent = ({
-    dir,
-    dimensionLong,
-    scrollbarShort,
-    scrollbarOffsetShort,
-  }: DoActionForBothAxis) => {
+  const calculateVisiblePartOfContent = ({ dir, dimensionLong }: DoActionForBothAxis) => {
     data.scrollbar[dir].long.realPercent = (data.container[dimensionLong] / data.content[dimensionLong]) * 100;
-    data.scrollbar[dir].short = scrollbarShort + scrollbarOffsetShort;
+    // the thickest hit area (e.g. a rail wider than the scrollbar) decides how big the corner is
+    data.scrollbar[dir].short = Math.max(...hitAreas[dir].map(({ size, offset }) => size + offset));
   };
 
   // track is the part of the container edge the scrollbar moves along - when both scrollbars are visible,
-  // the bottom right corner (x scrollbar height * y scrollbar width) is excluded from both tracks
+  // the bottom right corner (x hit area height * y hit area width) is excluded from both tracks
   const calculateTrackOfScrollbar = ({ dir, reverseDir, dimensionLong }: DoActionForBothAxis) => {
     const corner = isScrollbarVisible(dir) && isScrollbarVisible(reverseDir) ? data.scrollbar[reverseDir].short : 0;
     data.scrollbar[dir].track = data.container[dimensionLong] - corner;
@@ -348,6 +363,11 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
       calculateLongDimensionOfScrollbars(data);
       calculateTopOfScrollbar(void 0, data);
     });
+    const pluginUpdate = {
+      x: { visible: isScrollbarVisible("x"), length: data.scrollbar.x.track },
+      y: { visible: isScrollbarVisible("y"), length: data.scrollbar.y.track },
+    };
+    pluginInstances.forEach((instance) => instance?.update?.(pluginUpdate));
   };
 
   const windowMouseDownHandler = (e: MouseEvent) => {
@@ -399,10 +419,10 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
 
   const onHoverRails = (calculate = false) => {
     if (!calculate) return;
-    doActionForBothAxis(internalConfig, ({ dir, reverseDir, dimensionShort, scrollbarShort, scrollbarOffsetShort }) => {
+    doActionForBothAxis(internalConfig, ({ dir, reverseDir, dimensionShort }) => {
       data.rail[dir].isHovered =
         isScrollbarVisible(dir) &&
-        isRailHoveredShort({ dir, reverseDir, scrollbarShort, dimensionShort, scrollbarOffsetShort }) &&
+        isRailHoveredShort({ dir, reverseDir, dimensionShort }) &&
         data.mouse[dir] < data.scrollbar[dir].track &&
         data.mouse[dir] >= 0;
     });
@@ -458,6 +478,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     window.removeEventListener("mousedown", windowMouseDownHandler);
     window.removeEventListener("mouseup", windowMouseUpHandler);
     window.removeEventListener("mousemove", windowMouseMoveHandler);
+    pluginInstances.forEach((instance) => instance?.detach?.());
     unwrap(outerElement, innerElement, internalConfig.className);
   };
 
