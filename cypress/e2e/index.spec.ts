@@ -129,6 +129,23 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
       page().pressAndMoveInnerElementFromBottomRight(3, 10).hasScroll({ top: "moved", left: "start" });
     });
 
+    (["y", "x"] as const).forEach((axis) => {
+      it(`clicking the ${axis} scrollbar strip away from the thumb should jump the thumb there`, () => {
+        initializePluginInPage(elements[mount] as HTMLElement, parentOptions);
+
+        page()
+          .scrollToEnd()
+          .clickAxisStart(axis, 3)
+          .hasScroll({ top: axis === "y" ? "start" : "moved", left: axis === "x" ? "start" : "moved" });
+      });
+    });
+
+    it("clicking the thumb should not move it", () => {
+      initializePluginInPage(elements[mount] as HTMLElement, parentOptions);
+
+      page().scrollTo({ top: 40, left: 0 }).clickThumb("y").hasScrollPosition({ top: 40, left: 0 });
+    });
+
     it("pressing a thumb right after moving the cursor onto it should start dragging", () => {
       initializePluginInPage(elements[mount] as HTMLElement, parentOptions);
 
@@ -354,6 +371,25 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
             .dragThumb(axis, 30, 12)
             .hasScroll({ top: axis === "y" ? "moved" : "start", left: axis === "x" ? "moved" : "start" });
         });
+      });
+
+      it("clicking the top left corner of a 20px rail with a 10px scrollbar should jump the thumb to the top", () => {
+        initializePluginInPage(elements[mount] as HTMLElement, {
+          ...parentOptions,
+          enableRail: true,
+          plugins: [rail],
+          bar: { y: { width: 10 } },
+          rail: { y: { width: 20 } },
+        });
+
+        // the rail's left edge (1px inside it, so the click doesn't land on the boundary) - outside the 10px scrollbar
+        page().scrollToEnd().clickAxisStart("y", 19).hasScroll({ top: "start", left: "moved" });
+      });
+
+      it("clicking the x rail away from the thumb should jump the thumb there", () => {
+        initializePluginInPage(elements[mount] as HTMLElement, { ...parentOptions, ...wideRail });
+
+        page().scrollToEnd().clickAxisStart("x", 12).hasScroll({ top: "moved", left: "start" });
       });
 
       it("pressing next to the rail should not scroll", () => {

@@ -386,6 +386,10 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     data.mouse.isHoldRail = data.rail.x.isHovered || data.rail.y.isHovered;
 
     doActionForBothAxis(internalConfig, hoverScrollbar);
+    // start the drag on the press itself, not on the first move: pressing the rail (or the scrollbar strip)
+    // away from the thumb jumps the thumb under the cursor right away, and pressing the thumb itself
+    // remembers where it was grabbed - so it doesn't move until the mouse does
+    scrollOnDrag();
   };
 
   const windowMouseUpHandler = (e: MouseEvent) => {
