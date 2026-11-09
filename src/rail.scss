@@ -10,21 +10,26 @@ $disable-default-theme: false !default;
   contain: layout;
 }
 
-// on top of the rail the default thumb color would be too light, so the thumb gets darker.
-// The selectors are more specific than the default thumb color (`.…-wrapper-outside::after`), but less specific than
-// hiding with `showOnHover` (`.…-wrapper-outside.…--show-on-hover:not(:hover)::after`), so hiding still works.
+// default theme - override any of these variables on :root, on any parent of the scrollbar or on the scrollbar
+// element itself (see docs: CSS -> Styles). `:where()` gives the defaults zero specificity, so your own
+// declarations always win, no matter in which order the stylesheets are loaded.
 @if ($disable-default-theme != true) {
-  .#{$light-scrollbar-classname}-wrapper-outside.#{$light-scrollbar-classname}-rail {
-    &::before,
-    &::after {
-      background-color: #94a3b8;
-    }
+  :where(:root) {
+    --light-scrollbar-rail-background: #f1f5f9;
+    --light-scrollbar-rail-radius: 8px;
+    // scrollbar thumb on top of the rail - darker than the default one, so it stays visible on the rail
+    --light-scrollbar-rail-bar-background: #94a3b8;
+    --light-scrollbar-rail-bar-background-active: #64748b; // hovered or dragged
+  }
+}
 
-    // :where() keeps the specificity of the rule above, so the state doesn't win over `showOnHover` hiding
-    &:where(.hover-x, .active-x)::before,
-    &:where(.hover-y, .active-y)::after {
-      background-color: #64748b;
-    }
+// on top of the rail the scrollbar thumb uses the `--light-scrollbar-rail-bar-*` colors: the thumb rules from
+// index.css stay as they are (incl. hover, drag and `showOnHover` hiding), only the variables they read are
+// pointed to the rail ones - so no selector has to win over another and the stylesheets order doesn't matter
+@if ($disable-default-theme != true) {
+  :where(.#{$light-scrollbar-classname}-wrapper-outside.#{$light-scrollbar-classname}-rail) {
+    --light-scrollbar-bar-background: var(--light-scrollbar-rail-bar-background);
+    --light-scrollbar-bar-background-active: var(--light-scrollbar-rail-bar-background-active);
   }
 }
 
@@ -38,8 +43,8 @@ $disable-default-theme: false !default;
     transition: background var(--ls-show-on-hover);
 
     @if ($disable-default-theme != true) {
-      background-color: #f1f5f9;
-      border-radius: 8px;
+      background-color: var(--light-scrollbar-rail-background);
+      border-radius: var(--light-scrollbar-rail-radius);
     }
   }
 

@@ -1,0 +1,22 @@
+.custom-scrollbar {
+  --light-scrollbar-rail-bar-background: #8b5cf6;
+  --light-scrollbar-rail-bar-background-active: #6d28d9;
+  --light-scrollbar-bar-radius: 2px;
+  --light-scrollbar-rail-background: #ede9fe;
+  --light-scrollbar-rail-radius: 0;
+}
+.custom-scrollbar .light-scrollbar-wrapper-outside::before,
+.custom-scrollbar .light-scrollbar-wrapper-outside::after {
+  opacity: 0.6;
+}
+.custom-scrollbar .light-scrollbar-wrapper-outside.hover-x::before,
+.custom-scrollbar .light-scrollbar-wrapper-outside.active-x::before,
+.custom-scrollbar .light-scrollbar-wrapper-outside.hover-y::after,
+.custom-scrollbar .light-scrollbar-wrapper-outside.active-y::after {
+  opacity: 1;
+}
+.custom-scrollbar .light-scrollbar-wrapper-inside.light-scrollbar-rail::before,
+.custom-scrollbar .light-scrollbar-wrapper-inside.light-scrollbar-rail::after {
+  border: 1px solid #c4b5fd;
+  box-sizing: border-box;
+}

@@ -161,6 +161,81 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
     });
   });
 
+  describe("CSS variables", () => {
+    afterEach(() => {
+      page().hoverBottomOfBody();
+    });
+
+    it("change the scrollbar colors and radius", () => {
+      initializePluginInPage(elements[mount] as HTMLElement, parentOptions);
+
+      page()
+        .setCssVariables({
+          "--light-scrollbar-bar-background": "rgb(255, 0, 0)",
+          "--light-scrollbar-bar-background-active": "rgb(0, 0, 255)",
+          "--light-scrollbar-bar-radius": "3px",
+        })
+        .hasScrollbarBackground({ x: "rgb(255, 0, 0)", y: "rgb(255, 0, 0)" })
+        .hasScrollbarBorderRadius("3px")
+        .hoverThumb("y")
+        .hasScrollbarBackground({ x: "rgb(255, 0, 0)", y: "rgb(0, 0, 255)" });
+    });
+
+    it("change the rail colors and radius, and the colors of the scrollbar on top of the rail", () => {
+      initializePluginInPage(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page()
+        .setCssVariables({
+          "--light-scrollbar-rail-bar-background": "rgb(255, 0, 0)",
+          "--light-scrollbar-rail-bar-background-active": "rgb(0, 0, 255)",
+          "--light-scrollbar-rail-background": "rgb(0, 128, 0)",
+          "--light-scrollbar-rail-radius": "1px",
+        })
+        .hasRailBackground("rgb(0, 128, 0)")
+        .hasRailBorderRadius("1px")
+        .hasScrollbarBackground({ x: "rgb(255, 0, 0)", y: "rgb(255, 0, 0)" })
+        .hoverThumb("x")
+        .hasScrollbarBackground({ x: "rgb(0, 0, 255)", y: "rgb(255, 0, 0)" });
+    });
+
+    it("work on top of the rail no matter the stylesheets order", () => {
+      initializePluginInPage(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page()
+        .loadRailStylesBeforeCoreStyles()
+        .setCssVariables({
+          "--light-scrollbar-rail-bar-background": "rgb(255, 0, 0)",
+          "--light-scrollbar-rail-bar-background-active": "rgb(0, 0, 255)",
+        })
+        .hasScrollbarBackground({ x: "rgb(255, 0, 0)", y: "rgb(255, 0, 0)" })
+        .hoverThumb("y")
+        .hasScrollbarBackground({ x: "rgb(255, 0, 0)", y: "rgb(0, 0, 255)" });
+    });
+
+    it("have defaults declared on :root that a :root declaration overrides", () => {
+      initializePlugin(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page()
+        .hasRootCssVariables({
+          "--light-scrollbar-bar-background": "#cbd5e1",
+          "--light-scrollbar-bar-background-active": "#94a3b8",
+          "--light-scrollbar-bar-radius": "12px",
+          "--light-scrollbar-rail-background": "#f1f5f9",
+          "--light-scrollbar-rail-radius": "8px",
+          "--light-scrollbar-rail-bar-background": "#94a3b8",
+          "--light-scrollbar-rail-bar-background-active": "#64748b",
+        })
+        .setRootCssVariables({ "--light-scrollbar-rail-background": "rgb(0, 128, 0)" })
+        .hasRailBackground("rgb(0, 128, 0)");
+    });
+
+    it("keep the default theme when not set", () => {
+      initializePlugin(elements[mount] as HTMLElement, { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page().hasScrollbarBorderRadius("12px").hasRailBorderRadius("8px").hasRailBackground("rgb(241, 245, 249)");
+    });
+  });
+
   describe("rail", () => {
     it("is not added by default", () => {
       initializePlugin(elements[mount] as HTMLElement, parentOptions);

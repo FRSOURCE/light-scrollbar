@@ -25,7 +25,8 @@ export default {
             copyright: 'Copyright © 2022-present FRSOURCE - Szymon Dziewoński'
         },
         nav: [
-            {   text: 'Api', link: '/api' },
+            {   text: 'API', link: '/api' },
+            {   text: 'CSS', link: '/css/styles' },
             {
                 text: version,
                 items: [{
@@ -48,12 +49,19 @@ export default {
             },
             { ...apiNav(), link: '/api', },
             {
+                text: 'CSS',
+                items: [
+                    { text: 'styles', link: '/css/styles' },
+                ]
+            },
+            {
                 text: 'Examples',
                 items: [
                     { text: 'Default', link: '/examples/default' },
                     { text: 'WrapperOutside', link: '/examples/wrapperOutside' },
                     { text: 'ShowOnHover', link: '/examples/showOnHover' },
                     { text: 'Rail', link: '/examples/rail' },
+                    { text: 'CustomStyles', link: '/examples/customStyles' },
                 ]
             }
         ]
@@ -62,7 +70,7 @@ export default {
 
 function apiNav() {
     return {
-        text: 'Api',
+        text: 'API',
         items: [{
             text: 'attach', link: '/api/attach', items: [
                 { text: 'arguments', link: '/api/attach/arguments' },

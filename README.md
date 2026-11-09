@@ -90,6 +90,20 @@ attach(scrollingElement, { enableRail: true, plugins: [rail], rail: { y: { width
 
 With UMD, load `dist/rail.umd.js` and pass `window.lightScrollbarRail.rail`.
 
+### Styles
+
+Colors and radius are CSS variables with defaults included in the styles - override only the ones you want to change, on the scrollbar element, any of its parents or `:root`:
+
+```css
+.my-scrollbar {
+  --light-scrollbar-bar-background: #8b5cf6;
+  --light-scrollbar-bar-background-active: #6d28d9;
+  --light-scrollbar-bar-radius: 2px;
+}
+```
+
+With the rail on, the rail and the thumb on top of it use `--light-scrollbar-rail-background`, `--light-scrollbar-rail-radius`, `--light-scrollbar-rail-bar-background` and `--light-scrollbar-rail-bar-background-active`.
+
 ## Documentation
 
 For docs, please visit [frsource.org/light-scrollbar](https://www.frsource.org/light-scrollbar/)

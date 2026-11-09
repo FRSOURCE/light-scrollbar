@@ -254,6 +254,62 @@ export class ScrollbarBaseObject extends BasePage {
     return this;
   }
 
+  // on the body - an ancestor of the scrollbar, the variables are inherited
+  setCssVariables(variables: Record<string, string>) {
+    this.bodyElement.then(([body]) => {
+      Object.entries(variables).forEach(([name, value]) => body.style.setProperty(name, value));
+    });
+    return this;
+  }
+
+  // moves rail.css before index.css - the styles must not depend on the stylesheets order
+  loadRailStylesBeforeCoreStyles() {
+    this.bodyElement.then(([body]) => {
+      const head = body.ownerDocument.head;
+      const railStyles = head.querySelector('link[href$="rail.css"]') as HTMLLinkElement;
+      head.insertBefore(railStyles, head.querySelector('link[href$="index.css"]'));
+    });
+    return this;
+  }
+
+  // inline on <html> - more specific than the library defaults declared on `:where(:root)`
+  setRootCssVariables(variables: Record<string, string>) {
+    this.bodyElement.then(([body]) => {
+      const root = body.ownerDocument.documentElement;
+      Object.entries(variables).forEach(([name, value]) => root.style.setProperty(name, value));
+    });
+    return this;
+  }
+
+  hasRootCssVariables(variables: Record<string, string>) {
+    this.bodyElement.should(([body]) => {
+      const root = body.ownerDocument.documentElement;
+      const styles = (body.ownerDocument.defaultView as Window).getComputedStyle(root);
+      Object.entries(variables).forEach(([name, value]) =>
+        expect(styles.getPropertyValue(name).trim(), name).to.equal(value)
+      );
+    });
+    return this;
+  }
+
+  hasScrollbarBorderRadius(value: string) {
+    this.outerElement.should(([outer]) => {
+      const view = outer.ownerDocument.defaultView as Window;
+      expect(view.getComputedStyle(outer, "::before").borderRadius, "x scrollbar radius").to.equal(value);
+      expect(view.getComputedStyle(outer, "::after").borderRadius, "y scrollbar radius").to.equal(value);
+    });
+    return this;
+  }
+
+  hasRailBorderRadius(value: string) {
+    this.innerElement.should(([inner]) => {
+      const rail = this.railStyles(inner);
+      expect(rail.x.borderRadius, "x rail radius").to.equal(value);
+      expect(rail.y.borderRadius, "y rail radius").to.equal(value);
+    });
+    return this;
+  }
+
   hasScrollbarYWidth(value: number) {
     cy.then(() => {
       expect(this.afterElementStyle.width).to.be.equal(`${value}px`);
