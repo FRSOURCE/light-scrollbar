@@ -11,14 +11,9 @@ import {
   LightScrollbarReturns,
   PluginHitArea,
 } from "./utils/types";
-import { deepMergeConfig, doActionForBothAxis, reverseDir } from "./utils/utils";
+import { deepMergeConfig, doActionForBothAxis, getScrollableAxes, reverseDir } from "./utils/utils";
 // TODO: increase dragging area for y, e.g 5px to left
-// TODO: min height should be fixed e.g 30px? maybe prop and possibility to use px and %?
-// TODO: when paginated list recalculate grab
 // TODO: increase bar once hovered
-// TODO: offset to edges
-// TODO: hide when overflow:hidden?
-// TODO: create update() method with hidden(maybe or check mutation) and changing width/height
 
 let originalState: OriginalState;
 let outerHadTabIndex: string | null = null;
@@ -173,7 +168,13 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   });
 
   let containerRect = innerElement.getBoundingClientRect();
+  // no comments inside `data` - scripts/replace.js flattens it into a single line to mangle its keys.
+  // `canScroll` - axes the inner element can be scrolled along (overflow: auto / scroll), see getScrollableAxes
   const data = {
+    canScroll: {
+      x: true,
+      y: true,
+    },
     mouse: {
       x: 0,
       y: 0,
@@ -268,10 +269,12 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
         data.mouse[reverseDir] < data.container[dimensionShort] - offset
     );
 
-  const isScrollbarVisible = (dir: Axis) => data.scrollbar[dir].long.realPercent < 100;
+  // a scrollbar is shown only when the axis is scrollable (overflow: auto / scroll) and the content overflows
+  const isScrollbarVisible = (dir: Axis) => data.canScroll[dir] && data.scrollbar[dir].long.realPercent < 100;
 
   const hoverScrollbar = ({ dir, reverseDir, dimensionShort }: DoActionForBothAxis) => {
     data.scrollbar[dir].isHovered =
+      isScrollbarVisible(dir) &&
       isRailHoveredShort({ dir, reverseDir, dimensionShort }) &&
       data.mouse[dir] >= data.scrollbar[dir].gap.toContainer.pixel &&
       data.mouse[dir] <= data.scrollbar[dir].gap.toContainer.pixel + data.scrollbar[dir].long.pixel;
@@ -304,6 +307,8 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
 
     const pixel = isScrollbarVisible(dir) ? data.scrollbar[dir].long.pixel : 0;
     outerElement.style.setProperty(`--${defaultCssVarName}-bar-${dir}-${dimensionLong}`, `${pixel}px`);
+    // a hidden scrollbar can't stay hovered or dragged (e.g. overflow switched to hidden in the middle of a drag)
+    if (!pixel) outerElement.classList.remove(`hover-${dir}`, `active-${dir}`);
   };
 
   const calculateTopOfScrollbar = (e: Event | undefined, { dir, dimensionLong, isLeftOrTop }: DoActionForBothAxis) => {
@@ -332,7 +337,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
       } else {
         data.rail[dir].isStartingPointHover = data.rail[dir].isHovered;
       }
-      if (data.rail[dir].isStartingPointHover && data.mouse.isHoldRail) {
+      if (data.rail[dir].isStartingPointHover && data.mouse.isHoldRail && isScrollbarVisible(dir)) {
         if (data.scrollbar[dir].isGrabbed) data.scrollbar[dir].isGrabbed = true;
         else {
           data.scrollbar[dir].isGrabbed = data.scrollbar[dir].isHovered;
@@ -356,6 +361,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
 
   const calculateScrollbars = (calculate = false) => {
     if (!calculate) return;
+    data.canScroll = getScrollableAxes(innerElement);
     updateContainerDimensions();
     doActionForBothAxis(internalConfig, calculateVisiblePartOfContent);
     doActionForBothAxis(internalConfig, (data) => {
@@ -462,6 +468,18 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     characterData: true,
   });
 
+  // `overflow` usually changes through a class or an inline style - of the inner element (the scroll container)
+  // or of the outer one (the generated inner element inherits it). Other sources (e.g. a class on an ancestor,
+  // a media query) aren't observed - call `update()` then.
+  const overflowObserver = new MutationObserver(() => {
+    const canScroll = getScrollableAxes(innerElement);
+    // our own class / style changes (hover, thumb position) don't touch overflow - nothing to recalculate then
+    if (canScroll.x !== data.canScroll.x || canScroll.y !== data.canScroll.y) calculateScrollbars(true);
+  });
+  [innerElement, outerElement].forEach((element) =>
+    overflowObserver.observe(element, { attributes: true, attributeFilter: ["class", "style"] })
+  );
+
   calculateScrollbars(true);
 
   innerElement.addEventListener("scroll", scrollHandler, { passive: true });
@@ -476,6 +494,7 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
   const detach = () => {
     resizeObserver.disconnect();
     observer.disconnect();
+    overflowObserver.disconnect();
     innerElement.removeEventListener("scroll", scrollHandler);
     outerElement.removeEventListener("mousemove", containerMouseMoveHandler);
     outerElement.removeEventListener("focus", focusHandler);
@@ -486,8 +505,15 @@ export const attach = (containerElement: HTMLElement, config: Config = {}): Ligh
     unwrap(outerElement, innerElement, internalConfig.className);
   };
 
+  // recalculates everything from the current DOM - for changes the plugin doesn't observe
+  const update = () => {
+    containerRect = innerElement.getBoundingClientRect();
+    calculateScrollbars(true);
+  };
+
   return {
     detach,
+    update,
     innerElement,
     outerElement,
   };

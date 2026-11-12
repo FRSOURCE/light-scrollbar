@@ -355,6 +355,18 @@ export class ScrollbarBaseObject extends BasePage {
     return this;
   }
 
+  // shown scrollbar has a length (::before width - x, ::after height - y), a hidden one has 0
+  hasScrollbars({ x, y }: { x: "shown" | "hidden"; y: "shown" | "hidden" }) {
+    this.outerElement.should(([outer]) => {
+      const view = outer.ownerDocument.defaultView as Window;
+      const xLength = parseFloat(view.getComputedStyle(outer, "::before").width);
+      const yLength = parseFloat(view.getComputedStyle(outer, "::after").height);
+      expect(xLength > 0, `x scrollbar ${x}`).to.equal(x === "shown");
+      expect(yLength > 0, `y scrollbar ${y}`).to.equal(y === "shown");
+    });
+    return this;
+  }
+
   hoverBottomOfBody() {
     this.bodyElement.realHover({ position: "bottom" });
     return this;

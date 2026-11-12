@@ -13,6 +13,10 @@ yarn add @frsource/light-scrollbar
 pnpm add @frsource/light-scrollbar
 ```
 
+::: tip
+The element you attach to needs `overflow: auto` (or `scroll`) - along an axis with `overflow: hidden` / `visible` no scrollbar is shown. Changes of `overflow` are followed, see [update](/api/update#overflow).
+:::
+
 ### Modern JS/Typescript
 
 ```ts

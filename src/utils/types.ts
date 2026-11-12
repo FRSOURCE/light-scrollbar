@@ -62,6 +62,9 @@ export type LightScrollbarReturns = {
   // #region AttachReturn
   detach: () => void
   // #endregion AttachReturn
+  // #region AttachUpdate
+  update: () => void
+  // #endregion AttachUpdate
 } | undefined;
 
 export type Axis = "x" | "y";

@@ -178,6 +178,98 @@ const checkConfigDescribe = (mount: keyof Elements, parentOptions: config = {}) 
     });
   });
 
+  describe("overflow", () => {
+    // with the wrapper placed outside the attached element is the scroll container,
+    // placed inside - the generated scroll container inherits overflow from it
+    const mounted = () => elements[mount] as HTMLElement;
+
+    it("auto - both scrollbars are shown", () => {
+      initializePlugin(mounted(), parentOptions);
+
+      page().hasScrollbars({ x: "shown", y: "shown" });
+    });
+
+    it("scroll - both scrollbars are shown", () => {
+      mounted().classList.add("overflow-scroll");
+      initializePlugin(mounted(), parentOptions);
+
+      page().hasScrollbars({ x: "shown", y: "shown" });
+    });
+
+    it("hidden - no scrollbar is shown", () => {
+      mounted().classList.add("overflow-hidden");
+      initializePlugin(mounted(), parentOptions);
+
+      page().hasScrollbars({ x: "hidden", y: "hidden" });
+    });
+
+    it("hidden on one axis - only the other scrollbar is shown", () => {
+      mounted().classList.add("overflow-x-hidden");
+      initializePlugin(mounted(), parentOptions);
+
+      page().hasScrollbars({ x: "hidden", y: "shown" });
+    });
+
+    it("hidden - pressing where the scrollbar would be should not scroll", () => {
+      mounted().classList.add("overflow-hidden");
+      initializePluginInPage(mounted(), parentOptions);
+
+      page().pressAndMoveInnerElementFromBottomRight(3, 10).hasScroll({ top: "start", left: "start" });
+    });
+
+    it("hidden - the rail is hidden too", () => {
+      mounted().classList.add("overflow-hidden");
+      initializePlugin(mounted(), { ...parentOptions, enableRail: true, plugins: [rail] });
+
+      page()
+        .hasScrollbars({ x: "hidden", y: "hidden" })
+        .hasRail({
+          y: { width: 6, right: 0, length: () => 0 },
+          x: { height: 6, bottom: 0, length: () => 0 },
+        });
+    });
+
+    it("changed by a class - scrollbars follow it", () => {
+      initializePlugin(mounted(), parentOptions);
+
+      page().hasScrollbars({ x: "shown", y: "shown" });
+      cy.then(() => mounted().classList.add("overflow-hidden"));
+      page().hasScrollbars({ x: "hidden", y: "hidden" });
+      cy.then(() => mounted().classList.remove("overflow-hidden"));
+      page().hasScrollbars({ x: "shown", y: "shown" });
+    });
+
+    it("changed by an inline style - scrollbars follow it", () => {
+      initializePlugin(mounted(), parentOptions);
+
+      cy.then(() => (mounted().style.overflowY = "hidden"));
+      page().hasScrollbars({ x: "shown", y: "hidden" });
+      // restore the original inline style - checked after each test
+      cy.then(() => mounted().style.removeProperty("overflow-y"));
+      page().hasScrollbars({ x: "shown", y: "shown" });
+    });
+
+    it("changed somewhere not observed (an ancestor class) - update() applies it", () => {
+      initializePlugin(mounted(), parentOptions);
+
+      cy.get(".body-example").then(([body]) => body.classList.add("ancestor-overflow-hidden"));
+      cy.then(() => instance?.update());
+      page().hasScrollbars({ x: "hidden", y: "hidden" });
+    });
+  });
+
+  describe("update()", () => {
+    it("recalculates the scrollbars after a DOM change the plugin doesn't observe", () => {
+      initializePlugin(elements[mount] as HTMLElement, parentOptions);
+
+      page().hasScrollbars({ x: "shown", y: "shown" });
+      // an attribute change deep in the content - neither a resize of the container nor a childList mutation
+      cy.then(() => (((elements[mount] as HTMLElement).querySelector(".item") as HTMLElement).style.width = "10px"));
+      cy.then(() => instance?.update());
+      page().hasScrollbars({ x: "hidden", y: "shown" });
+    });
+  });
+
   describe("CSS variables", () => {
     afterEach(() => {
       page().hoverBottomOfBody();

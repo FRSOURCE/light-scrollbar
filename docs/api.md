@@ -4,3 +4,4 @@
     * [attach arguments](/api/attach/arguments)
     * [attach returns](/api/attach/returns)
 * [detach](/api/detach)
+* [update](/api/update)

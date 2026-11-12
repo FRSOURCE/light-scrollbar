@@ -11,6 +11,14 @@ export const dimensionShort = (dir: Axis) => isHeightOrWidth(!isDirY(dir));
 export const scrollbarShort = (dir: Axis, internalConfig: InternalConfig) =>
   isDirY(dir) ? internalConfig.bar.y.width : internalConfig.bar.x.height;
 
+// `overflow` values that let the user scroll the element (`overlay` - legacy alias of `auto`);
+// `visible`, `hidden` and `clip` don't
+const scrollableOverflow = /^(auto|scroll|overlay)$/;
+export const getScrollableAxes = (element: HTMLElement): Record<Axis, boolean> => {
+  const { overflowX, overflowY } = getComputedStyle(element);
+  return { x: scrollableOverflow.test(overflowX), y: scrollableOverflow.test(overflowY) };
+};
+
 export const doActionForBothAxis = (internalConfig: InternalConfig, callback: (callbackData: DoActionForBothAxis) => void) => {
   (["x", "y"] as Axis[]).forEach((dir) => {
     callback({

@@ -19,6 +19,23 @@
         .item:hover {
             height: 50px;
         }
+
+        /* toggled by the overflow tests - declared after .my-scrollbar, so they win over its overflow: auto */
+        .overflow-hidden {
+            overflow: hidden;
+        }
+
+        .overflow-x-hidden {
+            overflow-x: hidden;
+        }
+
+        .overflow-scroll {
+            overflow: scroll;
+        }
+
+        .ancestor-overflow-hidden .my-scrollbar {
+            overflow: hidden;
+        }
     </style>
 </head>
 

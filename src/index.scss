@@ -33,10 +33,12 @@ $disable-default-theme: false !default;
     &-outside {
       scroll-behavior: smooth;
     }
+    // the generated inner element is the scroll container - it takes `overflow` from the element you attached to,
+    // so `overflow: hidden` (or a change of it) there hides the scrollbar
     &-inside[data-ls-created] {
       position: absolute;
       inset: 0;
-      overflow: auto;
+      overflow: inherit;
       padding: inherit;
     }
   }
@@ -50,8 +52,13 @@ $disable-default-theme: false !default;
   &-wrapper-outside {
     $selfWrapperOutside: &;
 
-    overflow: initial;
     position: relative;
+
+    // with the wrapper placed outside, the scroll container is the inner element - the outer one must not scroll.
+    // With the wrapper placed inside, the outer element keeps its own `overflow`, the generated inner one inherits it.
+    &:not(:has(> [data-ls-created])) {
+      overflow: initial;
+    }
 
     &#{$selfWrapperOutside}--show-on-hover:not(:hover){
       &::after,

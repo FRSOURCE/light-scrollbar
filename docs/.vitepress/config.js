@@ -80,6 +80,8 @@ function apiNav() {
             ]
         }, {
             text: 'detach', link: '/api/detach'
+        }, {
+            text: 'update', link: '/api/update'
         }]
     }
 }

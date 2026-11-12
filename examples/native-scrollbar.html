@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Native scrollbar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+    }
+
+    /* bigger than the window in both directions - the browser shows both native scrollbars */
+    .content {
+      width: 200vw;
+      height: 200vh;
+      padding: 24px;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #e0e7ff, #fce7f3);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <h1>Native scrollbar</h1>
+    <p>This div is 200vw × 200vh, so the page scrolls horizontally and vertically.</p>
+  </div>
+</body>
+
+</html>

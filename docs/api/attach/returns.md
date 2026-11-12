@@ -25,3 +25,11 @@ Method that can be used to destroy/detach light-scrollbar from your element
 <sup><sub>**Type**</sub></sup>
 
 <<< ../../../src/utils/types.ts#AttachReturn
+
+## `update`
+
+Method that recalculates the scrollbars from the current DOM - see [update](/api/update)
+
+<sup><sub>**Type**</sub></sup>
+
+<<< ../../../src/utils/types.ts#AttachUpdate
