@@ -76,7 +76,7 @@
     "@changesets/cli": "3.0.3",
     "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
     "@eslint/js": "10.0.1",
-    "@frsource/frs-replace": "5.1.155",
+    "@frsource/frs-replace": "5.1.157",
     "@typescript-eslint/eslint-plugin": "8.72.1",
     "@typescript-eslint/parser": "8.72.1",
     "@typescript/native": "npm:typescript@7.0.2",

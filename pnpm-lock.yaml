@@ -43,8 +43,8 @@ importers:
         specifier: 10.0.1
         version: 10.0.1(eslint@10.14.0(supports-color@8.1.1))
       '@frsource/frs-replace':
-        specifier: 5.1.155
-        version: 5.1.155
+        specifier: 5.1.157
+        version: 5.1.157
       '@typescript-eslint/eslint-plugin':
         specifier: 8.72.1
         version: 8.72.1(@typescript-eslint/parser@8.72.1(@typescript/typescript6@6.0.2)(eslint@10.14.0(supports-color@8.1.1))(supports-color@8.1.1))(@typescript/typescript6@6.0.2)(eslint@10.14.0(supports-color@8.1.1))(supports-color@8.1.1)
@@ -1093,8 +1093,8 @@ packages:
     resolution: {integrity: sha512-HiJd+lrJSBMniNVfTIapYXOU8a4I/bs51syaoN7OXq8e/YdRc43pctJf0yhagzLbag3w7ZGqJw7u1MHbs2uTUA==}
     engines: {node: '>=18'}
 
-  '@frsource/frs-replace@5.1.155':
-    resolution: {integrity: sha512-MxbhavAmVwMk9jGHeYJeYD8+BkL+6veifmXWaApJdbmP04X9l2TX+7gAmlrbIZVm4cGi7MJAy1XkVO9+89ozCA==}
+  '@frsource/frs-replace@5.1.157':
+    resolution: {integrity: sha512-8PuWgfmTOPhIqQw5dGxrGxG8m/Luoh8Jn29Rp1/02tVANHSIN9l/8QJTY2HqN86CMj7IKMTNCo92SaMBDa8pqg==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -5832,7 +5832,7 @@ snapshots:
 
   '@frsource/frs-hide-scrollbar@2.0.176': {}
 
-  '@frsource/frs-replace@5.1.155':
+  '@frsource/frs-replace@5.1.157':
     dependencies:
       fast-glob: 3.3.3
       get-stdin: 10.0.0
